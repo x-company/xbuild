@@ -247,5 +247,6 @@
         "xcom",
         "xinit",
         "xnodeimage"
-    ]
+    ],
+    "git-graph.fetchAvatars": true
 }
