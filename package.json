@@ -35,8 +35,8 @@
     "postbuild": "yarn docker:tag",
     "test": "docker-compose -f ./tests/unit/docker-compose.yml up",
     "commit": "appvmgr add-git-tag",
-    "prepublish": "yarn build && yarn commit",
-    "publish": "yarn docker:release"
+    "prerelease": "yarn build && yarn commit",
+    "release": "yarn docker:release"
   },
   "devDependencies": {
     "appversion-mgr": "^0.7.0",
