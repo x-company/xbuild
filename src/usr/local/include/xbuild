@@ -55,8 +55,8 @@ export DEBIAN_FRONTEND=noninteractive
 export INITRD=no
 
 log "Test is internal Mirror available ..."
-internal=$(grep -E 'fritz.box|x-company.de' /etc/resolv.conf || "")
-if [ ! -z "$internal" ]
+isInternal=$(grep -E 'fritz.box|x-company.de' /etc/resolv.conf || echo "")
+if [ ! -z "$isInternal" ]
 then
     log "Internal Mirror is available!"
     export XBUILD_MIRROR_IS_AVAIL="true"
