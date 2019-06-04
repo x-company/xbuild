@@ -23,6 +23,4 @@ COPY ./.build/install.bats.sh /
 
 RUN /install.bats.sh
 
-RUN xbuild
-
 WORKDIR /code
