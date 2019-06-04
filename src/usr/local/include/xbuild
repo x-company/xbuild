@@ -23,7 +23,7 @@ fi
 set -e
 
 # Enable if you want extended Outputs
-set -x
+# set -x
 
 # shellcheck source=../include/xbuild-cleanup
 source /usr/local/include/xbuild-cleanup
@@ -54,17 +54,11 @@ export DEBIAN_FRONTEND=noninteractive
 export INITRD=no
 
 log "Test is internal Mirror available ..."
-if [ -f /etc/resolv.conf ]
+internal=$(grep -E 'fritz.box|x-company.de' /etc/resolv.conf)
+if [ "$internal" -ne "" ]
 then
-    internal=$(grep -E 'fritz.box|x-company.de' /etc/resolv.conf)
-    if [ ! -z "$internal" ]
-    then
-        log "Internal Mirror is available!"
-        export XBUILD_MIRROR_IS_AVAIL="true"
-    else
-        log "Internal Mirror is not available. Use Public Mirrors!"
-        export XBUILD_MIRROR_IS_AVAIL="false"
-    fi
+    log "Internal Mirror is available!"
+    export XBUILD_MIRROR_IS_AVAIL="true"
 else
     log "Internal Mirror is not available. Use Public Mirrors!"
     export XBUILD_MIRROR_IS_AVAIL="false"
