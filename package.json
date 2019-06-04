@@ -34,6 +34,7 @@
     "build": "yarn docker:build",
     "postbuild": "yarn docker:tag",
     "test": "docker-compose -f ./tests/unit/docker-compose.yml up",
+    "test:clean": "docker container prune -f && docker image rm -f xbuild:unit",
     "commit": "appvmgr add-git-tag",
     "prerelease": "yarn build && yarn commit",
     "release": "yarn docker:release"

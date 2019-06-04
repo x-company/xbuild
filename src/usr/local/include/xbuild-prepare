@@ -37,29 +37,30 @@ function prepare()
 
         if [ "$XBUILD_MIRROR_IS_AVAIL" = "true" ]
         then
+            XBUILD_MIRROR="http://xlca097.in.x-company.de"
+
             if [ "$XBUILD_OSNAME" = "debian" ]
             then
                 {
-                    echo "deb [arch=amd64] $XBUILD_MIRROR/debian/major $XBUILD_OSCODENAME main contrib non-free"
-                    echo "deb [arch=amd64] $XBUILD_MIRROR/debian/major $XBUILD_OSCODENAME-updates main contrib non-free"
-                    echo "deb [arch=amd64] $XBUILD_MIRROR/debian/major $XBUILD_OSCODENAME-backports main contrib non-free"
-                    echo "deb [arch=amd64] $XBUILD_MIRROR/debian/security $XBUILD_OSCODENAME/updates main contrib non-free"
-                    echo "#deb [arch=amd64] $XBUILD_MIRROR/debian/major sid main contrib non-free"
+                    echo "deb [arch=amd64] $XBUILD_MIRROR/$XBUILD_OSNAME/major $XBUILD_OSCODENAME main contrib non-free"
+                    echo "deb [arch=amd64] $XBUILD_MIRROR/$XBUILD_OSNAME/major $XBUILD_OSCODENAME-updates main contrib non-free"
+                    echo "deb [arch=amd64] $XBUILD_MIRROR/$XBUILD_OSNAME/major $XBUILD_OSCODENAME-backports main contrib non-free"
+                    echo "deb [arch=amd64] $XBUILD_MIRROR/$XBUILD_OSNAME/security $XBUILD_OSCODENAME/updates main contrib non-free"
+                    echo "#deb [arch=amd64] $XBUILD_MIRROR/$XBUILD_OSNAME/major sid main contrib non-free"
                 } > /etc/apt/sources.list
             else
                 {
-                    echo "deb [arch=amd64] $XBUILD_MIRROR/ubuntu/major $XBUILD_OSCODENAME main restricted universe multiverse"
-                    echo "deb [arch=amd64] $XBUILD_MIRROR/ubuntu/major $XBUILD_OSCODENAME-updates main restricted universe multiverse"
-                    echo "deb [arch=amd64] $XBUILD_MIRROR/ubuntu/major $XBUILD_OSCODENAME-backports main restricted universe multiverse"
-                    echo "deb [arch=amd64] $XBUILD_MIRROR/ubuntu/partner $XBUILD_OSCODENAME partner"
-                    echo "deb [arch=amd64] $XBUILD_MIRROR/ubuntu/security $XBUILD_OSCODENAME-security main restricted universe multiverse"
+                    echo "deb [arch=amd64] $XBUILD_MIRROR/$XBUILD_OSNAME/major $XBUILD_OSCODENAME main restricted universe multiverse"
+                    echo "deb [arch=amd64] $XBUILD_MIRROR/$XBUILD_OSNAME/major $XBUILD_OSCODENAME-updates main restricted universe multiverse"
+                    echo "deb [arch=amd64] $XBUILD_MIRROR/$XBUILD_OSNAME/major $XBUILD_OSCODENAME-backports main restricted universe multiverse"
+                    echo "deb [arch=amd64] $XBUILD_MIRROR/$XBUILD_OSNAME/partner $XBUILD_OSCODENAME partner"
+                    echo "deb [arch=amd64] $XBUILD_MIRROR/$XBUILD_OSNAME/security $XBUILD_OSCODENAME-security main restricted universe multiverse"
                 }  > /etc/apt/sources.list
             fi
         else
             touch /etc/apt/sources.list
             mv "/etc/apt/sources.list.d/$XBUILD_OSNAME.$XBUILD_OSCODENAME.disabled" "/etc/apt/sources.list.d/$XBUILD_OSNAME.$XBUILD_OSCODENAME.list"
         fi
-
 
         log "Cleanup Package Sources ..."
         execute apt-get clean
