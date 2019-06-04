@@ -225,6 +225,7 @@
         "appversion",
         "appvmgr",
         "baseimage",
+        "chmod",
         "crit",
         "datetime",
         "dockerignore",
@@ -238,15 +239,20 @@
         "prebuild",
         "predocker",
         "printf",
+        "repo",
+        "rolbre",
         "runit",
         "sbin",
         "sourcemap",
         "testarea",
         "tslib",
+        "uname",
         "xbuild",
         "xcom",
+        "xcompany",
         "xinit",
-        "xnodeimage"
+        "xnodeimage",
+        "yourimage"
     ],
     "git-graph.fetchAvatars": true
 }

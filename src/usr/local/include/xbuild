@@ -52,14 +52,19 @@ export DEBIAN_FRONTEND=noninteractive
 # https://journal.paul.querna.org/articles/2013/10/15/docker-ubuntu-on-rackspace/
 # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=594189
 export INITRD=no
-export XBUILD_MIRROR_IS_AVAIL="false"
 
 log "Test is internal Mirror available ..."
-internal=$(grep -E 'fritz.box|x-company.de' /etc/resolv.conf)
-if [ ! -z "$internal" ]
+if [ -f /etc/resolv.conf ]
 then
-    log "Internal Mirror is available!"
-    export XBUILD_MIRROR_IS_AVAIL="true"
+    internal=$(grep -E 'fritz.box|x-company.de' /etc/resolv.conf)
+    if [ ! -z "$internal" ]
+    then
+        log "Internal Mirror is available!"
+        export XBUILD_MIRROR_IS_AVAIL="true"
+    else
+        log "Internal Mirror is not available. Use Public Mirrors!"
+        export XBUILD_MIRROR_IS_AVAIL="false"
+    fi
 else
     log "Internal Mirror is not available. Use Public Mirrors!"
     export XBUILD_MIRROR_IS_AVAIL="false"
