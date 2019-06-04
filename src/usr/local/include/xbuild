@@ -55,7 +55,7 @@ export INITRD=no
 export XBUILD_MIRROR_IS_AVAIL="false"
 
 log "Test is internal Mirror available ..."
-internal=$(< /etc/resolv.conf grep -E 'fritz.box|x-company.de')
+internal=$(grep -E 'fritz.box|x-company.de' /etc/resolv.conf)
 if [ ! -z "$internal" ]
 then
     log "Internal Mirror is available!"
