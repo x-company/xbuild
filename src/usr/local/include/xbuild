@@ -21,6 +21,7 @@ fi
 
 # Exit if a Command returns non-zero status
 set -e
+set -o pipefail
 
 # Enable if you want extended Outputs
 # set -x
@@ -54,9 +55,8 @@ export DEBIAN_FRONTEND=noninteractive
 export INITRD=no
 
 log "Test is internal Mirror available ..."
-echo $(< /etc/resolv.conf)
-internal=$(grep -E 'fritz.box|x-company.de' /etc/resolv.conf)
-if [ "$internal" -ne "" ]
+internal=$(grep -E 'fritz.box|x-company.de' /etc/resolv.conf || "")
+if [ ! -z "$internal" ]
 then
     log "Internal Mirror is available!"
     export XBUILD_MIRROR_IS_AVAIL="true"
