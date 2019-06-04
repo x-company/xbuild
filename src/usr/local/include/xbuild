@@ -55,6 +55,7 @@ export INITRD=no
 
 log "Test is internal Mirror available ..."
 internal=$(grep -E 'fritz.box|x-company.de' /etc/resolv.conf)
+cat /etc/resolv.conf
 if [ "$internal" -ne "" ]
 then
     log "Internal Mirror is available!"
