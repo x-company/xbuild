@@ -5,7 +5,5 @@ source /usr/local/include/xbuild
 
 header "Prepare Docker Image for Bash Testing"
 
-execute apt-get -q update
-
 log "Install Bats ..."
 install bats
