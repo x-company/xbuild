@@ -16,7 +16,7 @@ FROM prod AS dev
 
 LABEL maintainer="info@x-company.de" \
     vendor="IT Solutions Roland Breitschaft" \
-    description="A Base Image for Development of xinit and xbuild" \
+    description="A Base Image for Development for the xbuild System" \
     version="0.1.0"
 
 COPY ./.build/install.bats.sh /

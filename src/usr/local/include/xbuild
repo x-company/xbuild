@@ -23,7 +23,7 @@ fi
 set -e
 
 # Enable if you want extended Outputs
-# set -x
+set -x
 
 # shellcheck source=../include/xbuild-cleanup
 source /usr/local/include/xbuild-cleanup
@@ -44,7 +44,7 @@ source /usr/local/include/xbuild-prepare
 
 header "Prepare global Variables and verify the Environment"
 
-log " Export needed Variables ..."
+log "Export needed Variables ..."
 export LC_ALL=C
 export DEBIAN_FRONTEND=noninteractive
 
@@ -54,14 +54,14 @@ export DEBIAN_FRONTEND=noninteractive
 export INITRD=no
 export XBUILD_MIRROR_IS_AVAIL="false"
 
-log "Test is Mirror available ..."
+log "Test is internal Mirror available ..."
 internal=$(< /etc/resolv.conf grep -E 'fritz.box|x-company.de')
 if [ ! -z "$internal" ]
 then
-    log "Mirror is available!"
+    log "Internal Mirror is available!"
     export XBUILD_MIRROR_IS_AVAIL="true"
 else
-    log "Mirror is not available. Use Public Mirrors!"
+    log "Internal Mirror is not available. Use Public Mirrors!"
     export XBUILD_MIRROR_IS_AVAIL="false"
 fi
 
