@@ -13,7 +13,8 @@ function install()
         log "No Packages given to install. Please call 'install --packages <package1> <package2> ... <packageN>'"
         return 1
     else
-        for opt in "${args[@]}"; do
+        for opt in "${args[@]}"
+        do
             if [ "$opt" != "-p" ] && [ "$opt" != "--packages" ]
             then
                 packages+="$opt "
