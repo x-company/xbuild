@@ -32,11 +32,11 @@
     "clean": "yarn docker:clean:image && yarn docker:clean:latest",
     "prebuild": "appvmgr update build",
     "build": "yarn docker:build",
-    "postbuild": "yarn docker:tag",
+    "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
     "test": "docker-compose -f ./tests/unit/docker-compose.yml up",
     "test:clean": "docker container prune -f && docker image rm -f xbuild:unit",
     "commit": "appvmgr add-git-tag",
-    "prerelease": "yarn build && yarn commit",
+    "prerelease": "yarn build && yarn commit && git push --all",
     "release": "yarn docker:release"
   },
   "devDependencies": {

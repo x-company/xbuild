@@ -4,7 +4,7 @@
 
 [![xbuild-version](https://img.shields.io/badge/Version-0.1.0-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)
 [![xbuild-status](https://img.shields.io/badge/Status-development%201-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild/releases)
-[![xbuild-build](https://img.shields.io/badge/Builds-3-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)
+[![xbuild-build](https://img.shields.io/badge/Builds-5-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)
 [![CircleCI](https://circleci.com/gh/x-company/xbuild/tree/master.svg?style=svg)](https://circleci.com/gh/x-company/xbuild/tree/master)
 
 ## What is xBuild?
