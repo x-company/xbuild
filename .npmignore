@@ -13,3 +13,8 @@ package-lock.json
 
 # Local Ignores
 tests
+.github
+.circleci
+.build
+coverage
+
