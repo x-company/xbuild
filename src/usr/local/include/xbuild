@@ -20,11 +20,14 @@ else
 fi
 
 # Exit if a Command returns non-zero status
-set -e
-set -o pipefail
+# -e Exit if a Command returns non-zero status
+# -u Treat unset variables as an error
+# -x Extended Output (be carefull, it will extract also secrets and passwords)
+
+set -eu -o pipefail
 
 # Enable if you want extended Outputs
-# set -x
+# set -eux -o pipefail
 
 # shellcheck source=../include/xbuild-cleanup
 source /usr/local/include/xbuild-cleanup
@@ -55,7 +58,7 @@ export DEBIAN_FRONTEND=noninteractive
 export INITRD=no
 
 log "Test is internal Mirror available ..."
-isInternal=$(grep -E 'fritz.box|x-company.de' /etc/resolv.conf || echo "")
+isInternal=$(< /etc/resolv.conf sed '/fritz.box\|x-company.de/!d')
 if [ ! -z "$isInternal" ]
 then
     log "Internal Mirror is available!"
@@ -66,8 +69,9 @@ else
 fi
 
 log "Determine current OS Name ..."
-osname=$(< /etc/os-release grep 'NAME="Ubuntu"' | cut -d'=' -f2)
-if [ "$osname" == "\"Ubuntu\"" ]
+#osname=$(< /etc/os-release)
+osname=$(< /etc/os-release sed '/ID=ubuntu/!d')
+if [ ! -z "$osname" ]
 then
     export XBUILD_OSNAME="ubuntu"
 else
@@ -75,8 +79,17 @@ else
 fi
 
 log "Determine current OS Code Name ..."
-osversion=$(< /etc/os-release grep VERSION= | cut -d'(' -f 2 | cut -d')' -f 1 | cut -d' ' -f1)
-export XBUILD_OSCODENAME=${osversion,,} # ToLower
+#osversion=$(< /etc/os-release grep 'VERSION=' | cut -d'(' -f 2 | cut -d')' -f 1 | cut -d' ' -f1)
+oscodenames=("buster" "jessie" "stretch" "bionic" "cosmic" "disco" "xenial")
+for oscodename in "${oscodenames[@]}"
+do
+    tmp=$(< /etc/os-release sed "/$oscodename/!d")
+    if [ ! -z "$tmp" ]
+    then
+        export XBUILD_OSCODENAME="$oscodename"
+        break
+    fi
+done
 
 log "Current OS is '$XBUILD_OSNAME'."
 log "Current OS Code Name is '$XBUILD_OSCODENAME'."
