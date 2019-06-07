@@ -1,0 +1,31 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+	"name": "xbuild system",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "xbuild",
+
+	// Uncomment the next line if you want to publish any ports.
+	// "appPort": [],
+
+	// Uncomment the next line if you want to add in default container specific settings.json values
+	// "settings":  { "workbench.colorTheme": "Quiet Light" },
+
+	// Uncomment the next line to run commands after the container is created.
+	// "postCreateCommand": "yarn install",
+
+	"extensions": [
+        "rogalmic.bash-debug",
+        "bat-snippets.bat-snippets",
+        "jetmartin.bats",
+        "streetsidesoftware.code-spell-checker",
+        "streetsidesoftware.code-spell-checker-german",
+        "xiaokangtu.codeheader",
+        "philhindle.errorlens",
+        "ymotongpoo.licenser",
+        "ionutvmi.path-autocomplete",
+        "christian-kohler.path-intellisense",
+        "rpinski.shebang-snippets",
+        "foxundermoon.shell-format",
+        "remisa.shellman",
+    ]
+}
