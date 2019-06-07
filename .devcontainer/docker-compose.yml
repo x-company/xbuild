@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  xbuild:
+    image: xbuild:dev
+    build:
+      context: ../
+      target: dev
+    volumes:
+      - ..:/workspace
+    cap_add:
+        - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    command: sleep infinity
