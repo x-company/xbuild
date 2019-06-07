@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-set -e
-
 # Load the xBuild System
-source /usr/local/sbin/xbuild
+source /usr/local/include/xbuild/loader
+
+# Load the Environment Variables to the current Session
+loadvars
 
 # Prepare the Image
 prepare
@@ -18,5 +19,11 @@ execute apt update
 
 # Install Nano Editor
 install nano
+
+# Cleanup the Build
+cleanup
+
+# Persist Environment Variables
+savevars
 
 log "That's it. xBuild has finished his work. Have a nice Day"
