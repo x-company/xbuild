@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+
+# Define the Shell Options
+
+# Meanings (see also man set)
+# -e            Exit if a Command returns non-zero status
+# -u            Treat unset variables as an error
+# -x            Extended Output (be carefull, it will extract also secrets and passwords)
+# -o pipefail   Fails safely in Continues Integration Environments
+
+# Normal Call
+set -eu -o pipefail
+
+# Enable if you want extended Outputs
+# set -eux -o pipefail

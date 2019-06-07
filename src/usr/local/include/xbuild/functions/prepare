@@ -69,7 +69,7 @@ function prepare()
         execute apt-get -q update
 
         log "Install Install Packages and Tools ..."
-        install apt-utils apt-transport-https ca-certificates software-properties-common wget gnupg aptitude nano psmisc
+        install apt-utils apt-transport-https ca-certificates software-properties-common wget gnupg psmisc
 
         log "Execte System Upgrade ..."
         execute apt-get dist-upgrade -qy --no-install-recommends -o Dpkg::Options::="--force-confold"
@@ -85,6 +85,15 @@ function prepare()
         echo 'LANG="de_DE.UTF-8"' > /etc/default/locale
         dpkg-reconfigure --frontend=noninteractive locales
         update-locale LANG=de_DE.UTF-8
+
+        xvar "LANG" "de_DE.UTF-8"
+
+        log "Link Profile Loader Script ..."
+        execute ln -s /etc/xinit/xinit_profile.sh /etc/profile.d/
+
+        log "Install runit daemon ..."
+        install "runit-systemd"
+
 
         execute touch $flag_file
     else

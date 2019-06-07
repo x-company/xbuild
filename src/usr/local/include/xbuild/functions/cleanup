@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-function cleanup()
+function xbuild-cleanup()
 {
     # Cleans up the Image after an build.
     # Remark: If no excludes defined, previously installed Packages will maybe removed.
