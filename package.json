@@ -29,6 +29,7 @@
     "docker:release": "docker login --username $npm_package_config_repo_user && docker image push $npm_package_config_image_name",
     "docker:start": "docker container run -d -i --rm $npm_package_config_image_name:$npm_package_version",
     "clean": "yarn docker:clean:image && yarn docker:clean:latest",
+
     "prebuild": "appvmgr update build",
     "build": "yarn docker:build",
     "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
