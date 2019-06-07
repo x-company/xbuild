@@ -22,5 +22,3 @@ LABEL maintainer="info@x-company.de" \
 COPY ./.build/install.bats.sh /
 
 RUN /install.bats.sh
-
-WORKDIR /code
