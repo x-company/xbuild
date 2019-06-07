@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+
+function build()
+{
+    args=("$@")
+
+    if [ -z "$args" ]
+    then
+        log "No Services given to build. Please call 'build --services <service1> <service2> ... <serviceN>'"
+        return 1
+    else
+        for service in "${args[@]}"
+        do
+            if [ "$service" != "-p" ] && [ "$service" != "--services" ]
+            then
+
+                header "Build Service '$service' ..."
+
+                if [ -d "/build/services/$service" ]
+                then
+                    cp -rf "/build/services/$service/runit/*" /etc/sv
+                    chmod 0755 "/etc/sv/$service/*"
+                    chown -R root:root "/etc/sv/$service"
+                    ln -s "/etc/sv/$service" /etc/service
+                fi
+            fi
+        done
+    fi
+}

@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+
+# shellcheck source=globals/logcolors
+source /usr/local/include/xbuild/globals/logcolors
+
+# shellcheck source=globals/shelloptions
+source /usr/local/include/xbuild/globals/shelloptions
+
+
+# shellcheck source=functions/build
+source /usr/local/include/xbuild/functions/build
+
+# shellcheck source=functions/cleanup
+source /usr/local/include/xbuild/functions/cleanup
+
+# shellcheck source=functions/configure
+source /usr/local/include/xbuild/functions/configure
+
+# shellcheck source=functions/copy
+source /usr/local/include/xbuild/functions/copy
+
+# shellcheck source=functions/execute
+source /usr/local/include/xbuild/functions/execute
+
+# shellcheck source=functions/header
+source /usr/local/include/xbuild/functions/header
+
+# shellcheck source=functions/install
+source /usr/local/include/xbuild/functions/install
+
+# shellcheck source=functions/loadvars
+source /usr/local/include/xbuild/functions/loadvars
+
+# shellcheck source=functions/log
+source /usr/local/include/xbuild/functions/log
+
+# shellcheck source=functions/prepare
+source /usr/local/include/xbuild/functions/prepare
+
+# shellcheck source=functions/printvars
+source /usr/local/include/xbuild/functions/printvars
+
+# shellcheck source=functions/savevars
+source /usr/local/include/xbuild/functions/savevars
+
+# shellcheck source=functions/setvar
+source /usr/local/include/xbuild/functions/setvar

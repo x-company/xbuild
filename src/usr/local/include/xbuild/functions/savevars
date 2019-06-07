@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+
+function savevars()
+{
+    header "Save all Environment Variables ..."
+    env -0 | while IFS='=' read -r -d '' env_name env_value
+    do
+        echo "$env_value" > "/etc/xinit/env.d/$env_name"
+    done
+}
