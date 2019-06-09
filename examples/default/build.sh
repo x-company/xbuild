@@ -4,6 +4,12 @@
 # Load the xBuild System
 source /usr/local/include/xbuild/loader
 
+# Enable Debug Mode
+# debug --on
+
+# Enable Debug Mode inclusive Debug Outputs from Shell
+# debug --on --dev
+
 # Load the Environment Variables to the current Session
 loadvars
 

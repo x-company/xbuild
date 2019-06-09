@@ -21,6 +21,7 @@ function savevars()
 
         if [ "$isExcluded" == "false" ]
         then
+            log "Save Environment Variable '$env_name'"
             echo "$env_value" > "/etc/xinit/env.d/$env_name"
         fi
     done

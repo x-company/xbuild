@@ -87,7 +87,7 @@ function prepare()
     # If flag exists a prepare is already done
     flag_file=/var/local/xbuild/finished
 
-    header "Prepare the Environment for the Build"
+    header "Install Core Utils for Package Installations"
 
     if [ ! -f "$flag_file" ]
     then
@@ -111,12 +111,13 @@ function prepare()
             execute ln -sf /bin/true /usr/bin/ischroot
         fi
 
-        log "Switch to the complete Package Source List of our Mirror"
+        header "Prepare Package Source Lists"
         rm -f /etc/apt/sources.list
 
         if [ "$XBUILD_MIRROR_IS_AVAIL" = "true" ]
         then
             XBUILD_MIRROR="http://xlca097.in.x-company.de"
+            log "Use internal Mirror '$XBUILD_MIRROR'"
 
             if [ "$XBUILD_OSNAME" = "debian" ]
             then
@@ -139,6 +140,7 @@ function prepare()
 
             if [ "$withnode" = "true" ]
             then
+                log "Add NodeJS Mirror"
                 {
                     echo "deb [arch=amd64] $XBUILD_MIRROR/node/node_$nodever.x $XBUILD_OSCODENAME main"
                 } > /etc/apt/sources.list.d/node.list
@@ -146,16 +148,20 @@ function prepare()
 
             if [ "$withdotnet" = "true" ] || [ "$withpowershell" = "true" ]
             then
+                log "Add Microsoft Mirror"
                 {
                     echo "deb [arch=amd64] $XBUILD_MIRROR/microsoft/$XBUILD_OSNAME/$XBUILD_OSRELEASE/prod $XBUILD_OSCODENAME main"
                 } > /etc/apt/sources.list.d/dotnet.list
             fi
         else
+            log "Use external Mirrors"
+
             touch /etc/apt/sources.list
             mv "/etc/apt/sources.list.d/$XBUILD_OSNAME.$XBUILD_OSCODENAME.disabled" "/etc/apt/sources.list.d/$XBUILD_OSNAME.$XBUILD_OSCODENAME.list"
 
             if [ "$withnode" = "true" ]
             then
+                log "Add NodeJS Mirror"
                 {
                     echo "deb https://deb.nodesource.com/node_$nodever.x $XBUILD_OSCODENAME main"
                     echo "deb-src https://deb.nodesource.com/node_$nodever.x $XBUILD_OSCODENAME main"
@@ -164,6 +170,7 @@ function prepare()
 
             if [ "$withdotnet" = "true" ]
             then
+                log "Add DotNet Core Mirror"
                 {
                     echo "deb [arch=amd64] https://packages.microsoft.com/$XBUILD_OSNAME/$XBUILD_OSRELEASE/prod $XBUILD_OSCODENAME main"
                 } > /etc/apt/sources.list.d/dotnet.list
@@ -171,15 +178,17 @@ function prepare()
 
             if [ "$withpowershell" = "true" ]
             then
+                log "Add PowerShell Core Mirror"
                 {
                     echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-$XBUILD_OSNAME-$XBUILD_OSCODENAME-prod $XBUILD_OSCODENAME main"
                 } > /etc/apt/sources.list.d/powershell.list
             fi
         fi
 
-        # Set Security
+        header "Set Folder Security"
         mkfolders --only-security
 
+        header "Prepare now the System with the configured Package Sources"
         log "Cleanup Package Sources"
         execute apt-get clean
         execute apt-get -qy autoremove
@@ -189,18 +198,18 @@ function prepare()
         log "Install Install Packages and Tools"
         install --packages apt-utils apt-transport-https ca-certificates software-properties-common wget nano gnupg psmisc aptitude dirmngr
 
-        log "Set Nano as default editor"
+        header "Configure Nano Editor"
         setvar "VISUAL" "nano"
         setvar "EDITOR" "nano"
 
-        log "Execte System Upgrade"
+        header "Execute System Upgrade"
         execute apt-get dist-upgrade -qy --no-install-recommends -o Dpkg::Options::="--force-confold"
 
-        log "Configure timezone"
+        header "Configure timezone"
         echo "Europe/Berlin" > /etc/timezone
         dpkg-reconfigure -f noninteractive tzdata
 
-        log "Configure locale"
+        header "Configure locale"
         install --packages locales
         sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
         sed -i -e 's/# de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/' /etc/locale.gen
@@ -210,15 +219,15 @@ function prepare()
 
         setvar "LANG" "de_DE.UTF-8"
 
-        log "Link Profile Loader Script"
+        header "Link Profile Loader Script"
         execute ln -s /etc/xinit/xinit_profile.sh /etc/profile.d/
 
-        log "Install runit daemon"
+        header "Install runit daemon"
         install --packages runit-systemd
 
         if [ "$withnode" = "true" ]
         then
-            log "Install NodeJS '$nodever'"
+            header "Install NodeJS '$nodever'"
             install --packages nodejs
 
             log "Install yarn"
@@ -235,7 +244,7 @@ function prepare()
         then
             setvar "DOTNET_CLI_TELEMETRY_OPTOUT" "1"
 
-            log "Install DotNet Core Runtime $dotnetver"
+            header "Install DotNet Core Runtime $dotnetver"
             install --packages "aspnetcore-runtime-$dotnetver"
 
             if [ "$dev" = "true" ]
@@ -247,7 +256,7 @@ function prepare()
 
         if [ "$withpowershell" = "true" ]
         then
-            log "Install Powershell"
+            header "Install Powershell"
             install --packages powershell
         fi
 

@@ -28,6 +28,9 @@ function loadvars()
     # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=594189
     setvar "INITRD" "no"
 
+    # Set Debug Mode Off
+    setvar "XBUILD_DEBUG" "0"
+
     # Determine internal Mirror
     isInternal=$(< /etc/resolv.conf sed '/fritz.box\|x-company.de/!d')
     if [ ! -z "$isInternal" ]
