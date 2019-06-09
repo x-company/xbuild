@@ -8,6 +8,16 @@
             "cwd": "${workspaceFolder}",
             "program": "${command:SelectScriptName}",
             "args": []
+        },
+        {
+            "type": "bashdb",
+            "request": "launch",
+            "name": "Bats-Debug",
+            "cwd": "${workspaceFolder}",
+            "program": "/usr/bin/bats",
+            "args": [
+                "${relativeFile}"
+            ]
         }
     ]
 }
