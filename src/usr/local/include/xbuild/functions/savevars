@@ -6,7 +6,7 @@ function savevars()
     header "Save all Environment Variables"
 
     # Excluded Vars from saving
-    excludes=("HOME" "USER" "GROUP" "UID" "GID" "HOSTNAME" "PATH" "PWD" "SHLVL")
+    excludes=("HOME" "USER" "GROUP" "UID" "GID" "HOSTNAME" "PATH" "PWD" "SHLVL" "_")
 
     env -0 | while IFS='=' read -r -d '' env_name env_value
     do
