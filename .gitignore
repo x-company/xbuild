@@ -2,3 +2,4 @@
 node_modules
 yarn-error.log
 3rdParty/phusion/baseimage-docker-0.11
+.nyc_output
