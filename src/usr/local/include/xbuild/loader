@@ -35,6 +35,9 @@ source /usr/local/include/xbuild/functions/loadvars
 # shellcheck source=functions/log
 source /usr/local/include/xbuild/functions/log
 
+# shellcheck source=functions/mkfolders
+source /usr/local/include/xbuild/functions/mkfolders
+
 # shellcheck source=functions/prepare
 source /usr/local/include/xbuild/functions/prepare
 
@@ -46,3 +49,6 @@ source /usr/local/include/xbuild/functions/savevars
 
 # shellcheck source=functions/setvar
 source /usr/local/include/xbuild/functions/setvar
+
+# Create needed Folders
+mkfolders
