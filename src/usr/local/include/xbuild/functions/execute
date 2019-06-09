@@ -6,7 +6,7 @@ function execute()
 
     # Execute an Command and print the Command to the Console
     local cmd="+ $@"
-    echo "${YELLOW}${cmd}${RESET}"
+    echo "${FOREROUND_COLOR}${cmd}${RESET}"
 
     if [ ! -z "$XBUILD_DEBUG" ] && [ "$XBUILD_DEBUG" = 1 ]
     then
