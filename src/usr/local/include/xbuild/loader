@@ -55,11 +55,12 @@ source /usr/local/include/xbuild/functions/setvar
 
 header "Start Building your Image"
 
+# TRICKY: Debug Mode must setted before other commands will executed. Otherwise
+# enabling or disabling of the Debug Mode is not possible
+declare -gx "XBUILD_DEBUG=0"
+
 # Create needed Folders
 mkfolders
 
-# TRICKY: Debug Mode must setted before other commands will executed. Otherwise
-# enabling or disabling of the Debug Mode is not possible
 log "Disable Debug Mode"
 debug --off
-
