@@ -12,9 +12,9 @@ COPY ./src/ /
 
 CMD [ "cat", "/var/local/xbuild/README.txt" ]
 
-############################################
-# Global Base Image with the xBuild System for Development
-FROM prod AS dev
+################################################################
+# Global Base Image with the xBuild System for the Dev Container
+FROM prod AS devcontainer
 
 LABEL maintainer="info@x-company.de" \
     vendor="IT Solutions Roland Breitschaft" \

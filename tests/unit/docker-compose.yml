@@ -5,7 +5,7 @@ services:
     image: xcompany/xbuild:unit
     build:
       context: ../../
-      target: dev
+      target: devcontainer
     volumes:
       # Map the current Source Folder
       - ../../tests/unit/:/workspace/tests/unit

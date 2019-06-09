@@ -2,10 +2,10 @@ version: "3.7"
 
 services:
   xbuild:
-    image: xcompany/xbuild:dev
+    image: xcompany/xbuild:devcontainer
     build:
       context: ../
-      target: dev
+      target: devcontainer
     volumes:
       # Map the current Source Folder
       - ..:/workspace
