@@ -5,7 +5,7 @@
     "service": "xbuild",
     "workspaceFolder": "/workspace",
     "shutdownAction": "stopCompose",
-    
+
 
 	// Uncomment the next line if you want to publish any ports.
 	// "appPort": [],
@@ -17,9 +17,7 @@
 	// "postCreateCommand": "yarn install",
 
 	"extensions": [
-        "rogalmic.bash-debug",
-        "bat-snippets.bat-snippets",
-        "jetmartin.bats",
+        // Global Extensions
         "streetsidesoftware.code-spell-checker",
         "streetsidesoftware.code-spell-checker-german",
         "xiaokangtu.codeheader",
@@ -27,8 +25,29 @@
         "ymotongpoo.licenser",
         "ionutvmi.path-autocomplete",
         "christian-kohler.path-intellisense",
+        "alefragnani.bookmarks",
+        "pomber.git-file-history",
+        "mhutchie.git-graph",
+        "emilast.logfilehighlighter",
+        "ibm.output-colorizer",
+        "johnpapa.vscode-peacock",
+        "gruntfuggly.todo-tree",
+        "coenraads.bracket-pair-colorizer-2",
+        "github.vscode-pull-request-github",
+        "emmanuelbeziat.vscode-great-icons",
+
+        // Markdown Extensions
+        "davidanson.vscode-markdownlint",
+        "docsmsft.docs-article-templates",
+        "docsmsft.docs-markdown",
+        "docsmsft.docs-preview",
+
+        // Bash Extensions
+        "rogalmic.bash-debug",
+        "bat-snippets.bat-snippets",
+        "jetmartin.bats",
         "rpinski.shebang-snippets",
         "foxundermoon.shell-format",
-        "remisa.shellman",
+        "remisa.shellman"
     ]
 }
