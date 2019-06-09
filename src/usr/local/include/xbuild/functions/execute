@@ -7,5 +7,5 @@ function execute()
     # Execute an Command and print the Command to the Console
     local cmd="+ $@"
     echo "${YELLOW}${cmd}${RESET}"
-    "$@"
+    "$@" 2>&1
 }

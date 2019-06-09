@@ -10,12 +10,14 @@ function build()
         log "No Services given to build. Please call 'build --services <service1> <service2> ... <serviceN>'"
         return 1
     else
-        for service in "${args[@]}"
+        for arg in "${args[@]}"
         do
-            if [ "$service" != "-p" ] && [ "$service" != "--services" ]
+            service=$arg
+
+            if [ "$service" != "-s" ] && [ "$service" != "--services" ]
             then
 
-                header "Build Service '$service' ..."
+                header "Build Service '$service'"
 
                 if [ -d "/build/services/$service" ]
                 then
