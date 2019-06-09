@@ -94,7 +94,7 @@ function prepare()
 
         log "Update the Package Sources"
         execute apt-get -q update
-        install --packages apt-utils apt-transport-https gnupg
+        install --packages apt-utils apt-transport-https gnupg ca-certificates
 
         if [ "$XBUILD_OSNAME" = "ubuntu" ]
         then
@@ -195,7 +195,7 @@ function prepare()
         execute apt-get -q update
 
         log "Install Install Packages and Tools"
-        install --packages apt-utils apt-transport-https ca-certificates software-properties-common wget nano psmisc aptitude dirmngr
+        install --packages apt-utils apt-transport-https software-properties-common wget nano psmisc aptitude dirmngr
 
         header "Configure Nano Editor"
         setvar "VISUAL" "nano"
