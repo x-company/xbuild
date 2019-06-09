@@ -39,7 +39,7 @@ function cleanup()
     # Keep installed User Packages
     excludes=$system_packages$(< /var/local/xbuild/installs)
 
-    execute apt-get -qy purge $(aptitude search "$excludes" | awk '{print $2}')
+    execute apt-get -qy purge "$(aptitude search "$excludes" | awk '{print $2}')"
     execute apt-get -qy purge aptitude
     execute apt-get -qy autoremove
     execute apt-get clean
