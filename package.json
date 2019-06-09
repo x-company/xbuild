@@ -1,6 +1,6 @@
 {
   "name": "xbuild",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A Build System for Docker Images",
   "license": "MIT",
   "repository": {
@@ -33,7 +33,7 @@
     "build": "yarn docker:build",
     "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
     "test": "docker-compose -f ./tests/unit/docker-compose.yml up",
-    "test:clean": "docker container prune -f && docker image rm -f xbuild:unit",
+    "test:clean": "docker container prune -f && docker image rm -f xcompany/xbuild:unit",
     "prerelease": "yarn build && appvmgr add-git-tag && git push --all",
     "release": "yarn docker:release"
   },

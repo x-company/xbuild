@@ -1,0 +1,19 @@
+version: "3.7"
+
+services:
+  xbuild:
+    image: xcompany/xbuild:unit
+    build:
+      context: ../../
+      target: dev
+    volumes:
+      # Map the current Source Folder
+      - ../..:/workspace
+    cap_add:
+        - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    command: "/usr/bin/bats /workspace/tests/unit/"
+
+volumes:
+  vscode-server:
