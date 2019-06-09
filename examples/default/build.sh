@@ -50,4 +50,4 @@ savevars
 # Cleanup the Build and the Image. It should called when you finished your Work
 cleanup
 
-log "That's it. xBuild has finished his work. Have a nice Day"
+header "That's it. xBuild has finished his work. Have a nice Day"
