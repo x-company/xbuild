@@ -11,6 +11,7 @@ function install()
     # This Packages will not saved. So it could later removed by cleanup
     excludes=("wget" "apt-utils" "nano" "psmisc" "software-properties-common")
 
+    # shellcheck disable=SC2128
     if [ -z "$args" ]
     then
         log "No Packages given to install. Please call 'install --packages <package1> <package2> ... <packageN>'"
@@ -45,6 +46,6 @@ function install()
         done
 
         log "Install Package(s) '$packages'"
-        execute apt-get install -qy --no-install-recommends $packages
+        execute apt-get install -qy --no-install-recommends "$packages"
     fi
 }
