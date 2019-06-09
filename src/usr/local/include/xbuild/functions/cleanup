@@ -39,7 +39,7 @@ function cleanup()
     # Keep installed User Packages
     excludes=$system_packages$(< /var/local/xbuild/installs)
 
-    packages_for_remove=( "$(aptitude search "$excludes" --display-format "%p")" )
+    packages_for_remove=( $(aptitude search "$excludes" --display-format "%p") )
     for package in "${packages_for_remove[@]}"
     do
         execute apt-get -qy purge "$package"

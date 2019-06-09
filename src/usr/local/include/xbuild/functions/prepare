@@ -262,6 +262,7 @@ function prepare()
 
         if [ "$dev" = "true" ]
         then
+            header "Install Development Tools"
             install --packages bats shellcheck git
         fi
 
