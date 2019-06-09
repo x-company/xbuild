@@ -39,7 +39,7 @@ function cleanup()
     # Keep installed User Packages
     excludes=$system_packages$(< /var/local/xbuild/packages.retain)
 
-    packages_to_remove=( $(aptitude search "$excludes" --display-format "%p") )
+    mapfile -t packages_to_remove < <(aptitude search "$excludes" --display-format "%p")
     packages_to_remove+=( "$(< /var/local/xbuild/packages.remove)" )
     for package in "${packages_to_remove[@]}"
     do
