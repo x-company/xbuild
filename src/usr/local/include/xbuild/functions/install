@@ -9,7 +9,7 @@ function install()
     local packages=""
 
     # This Packages will not saved. So it could later removed by cleanup
-    excludes=("wget" "gnupg" "apt-utils" "nano" "psmisc" "software-properties-common")
+    excludes=("wget" "apt-utils" "nano" "psmisc" "software-properties-common")
 
     if [ -z "$args" ]
     then
