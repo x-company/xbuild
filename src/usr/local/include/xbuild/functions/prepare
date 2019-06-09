@@ -164,7 +164,6 @@ function prepare()
                 log "Add NodeJS Mirror"
                 {
                     echo "deb [arch=amd64] https://deb.nodesource.com/node_$nodever.x $XBUILD_OSCODENAME main"
-                    echo "deb-src [arch=amd64] https://deb.nodesource.com/node_$nodever.x $XBUILD_OSCODENAME main"
                 } > /etc/apt/sources.list.d/node.list
             fi
 
