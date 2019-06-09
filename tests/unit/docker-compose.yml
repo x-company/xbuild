@@ -8,5 +8,5 @@ services:
       target: dev
     volumes:
       # Map the current Source Folder
-      - ../..:/workspace
+      - ../../tests/unit/:/workspace/tests/unit
     command: "/usr/bin/bats /workspace/tests/unit/"
