@@ -5,7 +5,7 @@ jobs:
     docker:
       - image: node:latest
 
-    working_directory: ~/repo
+    working_directory: /workspace
 
     steps:
       - checkout
