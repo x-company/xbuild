@@ -6,16 +6,95 @@ function prepare()
     # Prepares the Image. Only needed for the Base Image.
     # Attention!!! Dont execute twice.
 
+    args=("$@")
+    local withnode="false"
+    local withdotnet="false"
+    local withpowershell="false"
+    local dev="false"
+    local nodever="12"
+    local dotnetver="2.2"
+
+    if [ ! -z "$args" ]
+    then
+        for arg in "${args[@]}"
+        do
+            if [ "$arg" = "--with-node" ] || [ "$arg" = "--with-node-8" ] || [ "$arg" = "--with-node-10" ] || [ "$arg" = "--with-node-11" ] || [ "$arg" = "--with-node-12" ]
+            then
+                withnode="true"
+                if [ "$arg" = "--with-node-8" ]
+                then
+                    nodever="8"
+                fi
+
+                if [ "$arg" = "--with-node-10" ]
+                then
+                    nodever="10"
+                fi
+
+                if [ "$arg" = "--with-node-11" ]
+                then
+                    nodever="11"
+                fi
+            fi
+
+            if [ "$arg" = "--with-dotnet" ] || [ "$arg" = "--with-dotnet-10" ] || [ "$arg" = "--with-dotnet-11" ] || [ "$arg" = "--with-dotnet-20" ] || [ "$arg" = "--with-dotnet-21" ] || [ "$arg" = "--with-dotnet-22" ] || [ "$arg" = "--with-dotnet-30" ]
+            then
+                withdotnet="true"
+            fi
+
+            if [ "$arg" = "--with-dotnet-10" ]
+            then
+                dotnetver="1.0"
+            fi
+
+            if [ "$arg" = "--with-dotnet-11" ]
+            then
+                dotnetver="1.1"
+            fi
+
+            if [ "$arg" = "--with-dotnet-20" ]
+            then
+                dotnetver="2.0"
+            fi
+
+            if [ "$arg" = "--with-dotnet-21" ]
+            then
+                dotnetver="2.1"
+            fi
+
+            if [ "$arg" = "--with-dotnet-22" ]
+            then
+                dotnetver="2.2"
+            fi
+
+            if [ "$arg" = "--with-dotnet-30" ]
+            then
+                dotnetver="3.0"
+            fi
+
+            if [ "$arg" = "--with-powershell" ]
+            then
+                withpowershell="true"
+            fi
+
+            if [ "$arg" = "--dev" ]
+            then
+                dev="true"
+            fi
+        done
+    fi
+
+    # If flag exists a prepare is already done
     flag_file=/var/local/xbuild/finished
 
-    header "Prepare the Environment for the Build ..."
+    header "Prepare the Environment for the Build"
 
     if [ ! -f "$flag_file" ]
     then
 
-        log "Update the Package Sources ..."
+        log "Update the Package Sources"
         execute apt-get -q update
-        install apt-utils apt-transport-https
+        install --packages apt-utils apt-transport-https
 
         if [ "$XBUILD_OSNAME" = "ubuntu" ]
         then
@@ -32,7 +111,7 @@ function prepare()
             execute ln -sf /bin/true /usr/bin/ischroot
         fi
 
-        log "Switch to the complete Package Source List of our Mirror ..."
+        log "Switch to the complete Package Source List of our Mirror"
         rm -f /etc/apt/sources.list
 
         if [ "$XBUILD_MIRROR_IS_AVAIL" = "true" ]
@@ -57,21 +136,68 @@ function prepare()
                     echo "deb [arch=amd64] $XBUILD_MIRROR/$XBUILD_OSNAME/security $XBUILD_OSCODENAME-security main restricted universe multiverse"
                 }  > /etc/apt/sources.list
             fi
+
+            if [ "$withnode" = "true" ]
+            then
+                {
+                    echo "deb [arch=amd64] $XBUILD_MIRROR/node/node_$nodever.x $XBUILD_OSCODENAME main"
+                } > /etc/apt/sources.list.d/node.list
+            fi
+
+            if [ "$withdotnet" = "true" ] || [ "$withpowershell" = "true" ]
+            then
+                {
+                    echo "deb [arch=amd64] $XBUILD_MIRROR/microsoft/$XBUILD_OSNAME/$XBUILD_OSRELEASE/prod $XBUILD_OSCODENAME main"
+                } > /etc/apt/sources.list.d/dotnet.list
+            fi
         else
             touch /etc/apt/sources.list
             mv "/etc/apt/sources.list.d/$XBUILD_OSNAME.$XBUILD_OSCODENAME.disabled" "/etc/apt/sources.list.d/$XBUILD_OSNAME.$XBUILD_OSCODENAME.list"
+
+            if [ "$withnode" = "true" ]
+            then
+                {
+                    echo "deb https://deb.nodesource.com/node_$nodever.x $XBUILD_OSCODENAME main"
+                    echo "deb-src https://deb.nodesource.com/node_$nodever.x $XBUILD_OSCODENAME main"
+                } > /etc/apt/sources.list.d/node.list
+            fi
+
+            if [ "$withdotnet" = "true" ]
+            then
+                {
+                    echo "deb [arch=amd64] https://packages.microsoft.com/$XBUILD_OSNAME/$XBUILD_OSRELEASE/prod $XBUILD_OSCODENAME main"
+                } > /etc/apt/sources.list.d/dotnet.list
+            fi
+
+            if [ "$withpowershell" = "true" ]
+            then
+                {
+                    echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-$XBUILD_OSNAME-$XBUILD_OSCODENAME-prod $XBUILD_OSCODENAME main"
+                } > /etc/apt/sources.list.d/powershell.list
+            fi
         fi
 
-        log "Cleanup Package Sources ..."
+        log "Cleanup Package Sources"
         execute apt-get clean
         execute apt-get -qy autoremove
         execute rm -rf /var/lib/apt/lists/*
         execute apt-get -q update
 
-        log "Install Install Packages and Tools ..."
-        install apt-utils apt-transport-https ca-certificates software-properties-common wget gnupg psmisc
+        log "Set Security for Repository Sources"
+        chown root:root -R /etc/apt
+        chmod 755 /etc/apt/trusted.gpg.d/
+        chmod 755 /etc/apt/trusted.gpg.d/
+        chmod 644 /etc/apt/trusted.gpg.d/*
+        chmod 644 /etc/apt/trusted.gpg.d/*
 
-        log "Execte System Upgrade ..."
+        log "Install Install Packages and Tools"
+        install --packages apt-utils apt-transport-https ca-certificates software-properties-common wget nano gnupg psmisc aptitude dirmngr
+
+        log "Set Nano as default editor"
+        setvar "VISUAL" "nano"
+        setvar "EDITOR" "nano"
+
+        log "Execte System Upgrade"
         execute apt-get dist-upgrade -qy --no-install-recommends -o Dpkg::Options::="--force-confold"
 
         log "Configure timezone"
@@ -79,25 +205,64 @@ function prepare()
         dpkg-reconfigure -f noninteractive tzdata
 
         log "Configure locale"
-        install locales
+        install --packages locales
         sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen
         sed -i -e 's/# de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/' /etc/locale.gen
         echo 'LANG="de_DE.UTF-8"' > /etc/default/locale
         dpkg-reconfigure --frontend=noninteractive locales
         update-locale LANG=de_DE.UTF-8
 
-        xvar "LANG" "de_DE.UTF-8"
+        setvar "LANG" "de_DE.UTF-8"
 
-        log "Link Profile Loader Script ..."
+        log "Link Profile Loader Script"
         execute ln -s /etc/xinit/xinit_profile.sh /etc/profile.d/
 
-        log "Install runit daemon ..."
-        install "runit-systemd"
+        log "Install runit daemon"
+        install --packages runit-systemd
 
+        if [ "$withnode" = "true" ]
+        then
+            log "Install NodeJS '$nodever'"
+            install --packages nodejs
+
+            log "Install yarn"
+            execute npm install -g yarn
+
+            if [ "$dev" = "true" ]
+            then
+                log "Install Node Dev Packages"
+                execute npm install -g typescript ts-node rimraf yarn mocha chai nyc nodemon appversion-mgr
+            fi
+        fi
+
+        if [ "$withdotnet" = "true" ]
+        then
+            setvar "DOTNET_CLI_TELEMETRY_OPTOUT" "1"
+
+            log "Install DotNet Core Runtime $dotnetver"
+            install --packages "aspnetcore-runtime-$dotnetver"
+
+            if [ "$dev" = "true" ]
+            then
+                log "Install DotNet Core SDK $dotnetver"
+                install --packages "dotnet-sdk-$dotnetver"
+            fi
+        fi
+
+        if [ "$withpowershell" = "true" ]
+        then
+            log "Install Powershell"
+            install --packages powershell
+        fi
+
+        if [ "$dev" = "true" ]
+        then
+            install --packages bats shellcheck git
+        fi
 
         execute touch $flag_file
     else
-        log "Environment already prepared. Now only update Package Sources ..."
+        log "Environment already prepared. Now only update Package Sources"
         execute apt-get -q update
     fi
 }

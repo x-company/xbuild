@@ -8,20 +8,40 @@ function install()
     args=("$@")
     local packages=""
 
+    # This Packages will not saved. So it could later removed by cleanup
+    excludes=("wget" "gnupg" "apt-utils" "nano" "psmisc" "software-properties-common")
+
     if [ -z "$args" ]
     then
         log "No Packages given to install. Please call 'install --packages <package1> <package2> ... <packageN>'"
         return 1
     else
-        for opt in "${args[@]}"
+        for arg in "${args[@]}"
         do
-            if [ "$opt" != "-p" ] && [ "$opt" != "--packages" ]
+            if [ "$arg" != "-p" ] && [ "$arg" != "--packages" ]
             then
-                packages+="$opt "
+                packages+="$arg "
+                should_saved="true"
+
+                for exclude in "${excludes[@]}"
+                do
+                    if [ "$exclude" = "$arg" ]
+                    then
+                        should_saved="false"
+                    fi
+                done
+
+                if [ "$should_saved" = "true" ]
+                then
+                    # Save the Package to remind it
+                    {
+                        echo -n "!$arg"
+                    } >> /var/local/xbuild/installs
+                fi
             fi
         done
 
-        log "Install Package(s) '$packages' ..."
+        log "Install Package(s) '$packages'"
         execute apt-get install -qy --no-install-recommends $packages
     fi
 }

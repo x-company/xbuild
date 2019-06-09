@@ -3,7 +3,7 @@
 
 function loadvars()
 {
-	header "Load the Environment Variables ..."
+	header "Load the Environment Variables"
 
     log "Load persisted Environment Variables"
     if [ -d /etc/xinit/env.d ]
@@ -19,57 +19,49 @@ function loadvars()
         done
     fi
 
-    log "Set global Locale"
     setvar "LC_ALL" "C"
-
-    log "Set the Debian Frontend"
     setvar "DEBIAN_FRONTEND" "noninteractive"
-
-    log "Set the default Shell"
     setvar "SHELL" "/bin/bash"
 
     # Prevent initramfs updates from trying to run grub and lilo.
     # https://journal.paul.querna.org/articles/2013/10/15/docker-ubuntu-on-rackspace/
     # http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=594189
-    log "Set INITRD"
     setvar "INITRD" "no"
 
-    log "Determine internal Mirror"
-    if [ -z "$XBUILD_MIRROR_IS_AVAIL" ]
+    # Determine internal Mirror
+    isInternal=$(< /etc/resolv.conf sed '/fritz.box\|x-company.de/!d')
+    if [ ! -z "$isInternal" ]
     then
-        isInternal=$(< /etc/resolv.conf sed '/fritz.box\|x-company.de/!d')
-        if [ ! -z "$isInternal" ]
-        then
-            setvar "XBUILD_MIRROR_IS_AVAIL" "true"
-        else
-            setvar "XBUILD_MIRROR_IS_AVAIL" "false"
-        fi
+        setvar "XBUILD_MIRROR_IS_AVAIL" "true"
+    else
+        setvar "XBUILD_MIRROR_IS_AVAIL" "false"
     fi
 
-    log "Determine OS"
-    if [ -z "$XBUILD_OSNAME" ]
+    # Determine OS
+    osname=$(< /etc/os-release sed '/ID=ubuntu/!d')
+    if [ ! -z "$osname" ]
     then
-        osname=$(< /etc/os-release sed '/ID=ubuntu/!d')
-        if [ ! -z "$osname" ]
-        then
-            setvar "XBUILD_OSNAME" "ubuntu"
-        else
-            setvar "XBUILD_OSNAME" "debian"
-        fi
+        setvar "XBUILD_OSNAME" "ubuntu"
+    else
+        setvar "XBUILD_OSNAME" "debian"
     fi
 
-    log "Determine OS Codename"
-    if [ -z "$XBUILD_OSCODENAME" ]
+
+    # Determine OS Codename
+    oscodenames=("buster" "jessie" "stretch" "bionic" "cosmic" "disco" "xenial")
+    for oscodename in "${oscodenames[@]}"
+    do
+        tmp=$(< /etc/os-release sed "/$oscodename/!d")
+        if [ ! -z "$tmp" ]
+        then
+            setvar "XBUILD_OSCODENAME" "$oscodename"
+            break
+        fi
+    done
+
+    osid=$(< /etc/os-release sed '/VERSION_ID=/!d' | sed 's/VERSION_ID=\|"//g')
+    if [ ! -z "$osid" ]
     then
-        oscodenames=("buster" "jessie" "stretch" "bionic" "cosmic" "disco" "xenial")
-        for oscodename in "${oscodenames[@]}"
-        do
-            tmp=$(< /etc/os-release sed "/$oscodename/!d")
-            if [ ! -z "$tmp" ]
-            then
-                setvar "XBUILD_OSCODENAME" "$oscodename"
-                break
-            fi
-        done
+        setvar "XBUILD_OSRELEASE" "$osid"
     fi
 }

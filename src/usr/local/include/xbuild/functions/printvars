@@ -3,7 +3,7 @@
 
 function printvars()
 {
-    header "Print current Environment Variables ..."
+    header "Print current Environment Variables"
 
     env -0 | while IFS='=' read -r -d '' env_name env_value
     do

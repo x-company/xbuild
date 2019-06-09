@@ -1,29 +1,10 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-function xbuild-cleanup()
+function cleanup()
 {
     # Cleans up the Image after an build.
-    # Remark: If no excludes defined, previously installed Packages will maybe removed.
 
-    args=("$@")
-    local excludes
-
-    if [ -z "$args" ]
-    then
-        log "No excludes given. If no excludes defined, previously installed Packages will maybe removed by build."
-        log "Please call 'cleanup --excludes <package1> <package2> ... <packageN>'"
-    else
-        for opt in "${args[@]}"
-        do
-            if [ "$opt" != "-e" ] && [ "$opt" != "--excludes" ]
-            then
-                excludes+="!$opt"
-            fi
-        done
-    fi
-
-    log "Remove non-critical packages"
     # Remove non-critical packages (don't remove busybox -> don't sure if this ist still a problem on debian 7)
     # ~i 					-> list all installed packages
     # !~M 					-> don't list automatic installed packages
@@ -47,36 +28,32 @@ function xbuild-cleanup()
     # !apt-transport-https
     # !ca-certificates
 
-    # Optional Packages
-    # !wget
-    # !gnupg
-    # !apt-utils
-    # !aptitude
-    # !nano
-    # !psmisc
-    # !software-properties-common
-
+    log "Remove non-critical packages"
     base_pattern="~i!~M!~prequired!~pimportant!~R~prequired!~R~R~prequired!~R~pimportant!~R~R~pimportant"
 
-    system_packages="$base_pattern!runit-systemd!cron!syslog-ng-core!logrotate!locales!apt-transport-https!ca-certificates"
-    optional_packages="!wget!gnupg!apt-utils!aptitude!nano!psmisc!software-properties-common!grub!initramfs-tools"
+    # Keep System Packages
+    system_packages="$base_pattern!busybox!grub!initramfs-tools!ca-certificates"
 
-    excludes+=$system_packages
-    if [ -z "$args" ]
-    then
-        # Only remove optional Packages when Parameter --excludes is given. This assumes that the Build Administrator has finished his work.
-        # This Scenario is for Users of the baseimage to cleanup their work.
-        excludes+=$optional_packages
-    fi
+    # Keep installed User Packages
+    excludes=$system_packages$(< /var/local/xbuild/installs)
 
     execute apt-get -qy purge $(aptitude search "$excludes" | awk '{print $2}')
+    execute apt-get -qy purge aptitude
     execute apt-get -qy autoremove
     execute apt-get clean
 
     #find /.build/ -not \( -name '.build' -or -name 'buildconfig' -or -name 'cleanup.sh' \) -delete
 
+    log "Cleanup the Temp Folder"
     execute rm -rf /tmp/* /var/tmp/*
+
+    log "Remove cached Package Lists"
     execute rm -rf /var/lib/apt/lists/*
+
+    log "Remove SSH Host keys"
     execute rm -f /etc/ssh/ssh_host_*
-    execute rm -rf /build
+
+    log "Set vi as default editor"
+    setvar "VISUAL" "vi"
+    setvar "EDITOR" "vi"
 }
