@@ -37,13 +37,16 @@ function cleanup()
     system_packages="$base_pattern!busybox!grub!initramfs-tools!ca-certificates"
 
     # Keep installed User Packages
-    excludes=$system_packages$(< /var/local/xbuild/installs)
+    excludes=$system_packages$(< /var/local/xbuild/packages.retain)
 
-    packages_for_remove=( $(aptitude search "$excludes" --display-format "%p") )
-    for package in "${packages_for_remove[@]}"
+    packages_to_remove=( $(aptitude search "$excludes" --display-format "%p") )
+    packages_to_remove+=( "$(< /var/local/xbuild/packages.remove)" )
+    for package in "${packages_to_remove[@]}"
     do
         execute apt-get -qy purge "$package"
     done
+
+
     execute apt-get -qy purge aptitude
     execute apt-get -qy autoremove
     execute apt-get clean

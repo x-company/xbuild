@@ -28,6 +28,9 @@ function install()
                     if [ "$exclude" = "$arg" ]
                     then
                         should_saved="false"
+                        {
+                            echo "$arg"
+                        } >> /var/local/xbuild/packages.remove
                     fi
                 done
 
@@ -36,7 +39,7 @@ function install()
                     # Save the Package to remind it
                     {
                         echo -n "!$arg"
-                    } >> /var/local/xbuild/installs
+                    } >> /var/local/xbuild/packages.retain
                 fi
             fi
         done
