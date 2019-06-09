@@ -26,7 +26,7 @@
     "docker:clean:latest": "docker image rm -f $npm_package_config_image_name:latest",
     "docker:build": "docker build --target prod --label version=$npm_package_version --tag $npm_package_config_image_name:$npm_package_version --rm .",
     "docker:tag": "docker image tag $npm_package_config_image_name:$npm_package_version $npm_package_config_image_name:latest",
-    "docker:release": "docker login --username $npm_package_config_repo_user && docker image push $npm_package_config_image_name",
+    "docker:release": "docker login --username $npm_package_config_repo_user && docker image push $npm_package_config_image_name:$npm_package_version",
     "docker:start": "docker container run -d -i --rm $npm_package_config_image_name:$npm_package_version",
     "clean": "yarn docker:clean:image && yarn docker:clean:latest",
     "prebuild": "appvmgr update build",
