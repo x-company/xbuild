@@ -177,43 +177,14 @@ function prepare()
             fi
         fi
 
+        # Set Security
+        mkfolders --only-security
+
         log "Cleanup Package Sources"
         execute apt-get clean
         execute apt-get -qy autoremove
         execute rm -rf /var/lib/apt/lists/*
         execute apt-get -q update
-
-        log "Create needed Folders"
-        execute mkdir -p /etc/xinit/env.d/
-        execute mkdir -p /etc/xinit/health.d/
-        execute mkdir -p /etc/xinit/service.d/
-        execute mkdir -p /var/local/xbuild/
-        execute mkdir -p /var/local/xinit/
-
-        log "Set Security for all files and folders"
-        execute chown root:root -R /etc/apt
-        execute chown root:root -R /etc/xinit
-        execute chown root:root -R /usr/local/include/xbuild
-        execute chown root:root -R /var/local/xbuild
-        execute chown root:root -R /var/local/xinit
-
-        execute chmod 755 /etc/apt/sources.list.d/
-        execute chmod 755 /etc/apt/trusted.gpg.d/
-        execute chmod 755 /etc/xinit/
-        execute chmod 755 /usr/local/include/xbuild/
-        execute chmod 755 /usr/local/include/xbuild/functions/
-        execute chmod 755 /usr/local/include/xbuild/globals/
-        execute chmod 755 /var/local/xbuild/
-        execute chmod 755 /var/local/xinit/
-
-        execute chmod 644 /etc/apt/sources.list.d/*
-        execute chmod 644 /etc/apt/trusted.gpg.d/*
-        execute chmod 644 /etc/xinit/*
-        execute chmod 644 /usr/local/include/xbuild/*
-        execute chmod 644 /usr/local/include/xbuild/functions/*
-        execute chmod 644 /usr/local/include/xbuild/globals/*
-        execute chmod 644 /var/local/xbuild/*
-        execute chmod 644 /var/local/xinit/*
 
         log "Install Install Packages and Tools"
         install --packages apt-utils apt-transport-https ca-certificates software-properties-common wget nano gnupg psmisc aptitude dirmngr
