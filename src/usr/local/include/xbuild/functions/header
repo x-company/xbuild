@@ -5,6 +5,6 @@ function header()
 {
     local title="$1"
     echo ""
-    echo "${BLUE_BG}${YELLOW}${BOLD}${title}${RESET}"
+    echo "${BACKGROUND_COLOR}${FOREROUND_COLOR}${BOLD}${ITALIC}${title}${RESET}"
     echo "------------------------------------------"
 }

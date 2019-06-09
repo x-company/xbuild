@@ -4,5 +4,5 @@
 function log()
 {
 	local msg="$1"
-	echo "${YELLOW}${msg}${RESET}"
+	echo "${FOREROUND_COLOR}${msg}${RESET}"
 }
