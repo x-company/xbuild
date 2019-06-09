@@ -4,6 +4,7 @@
 function header()
 {
     local title="$1"
+    echo ""
     echo "${BLUE_BG}${YELLOW}${BOLD}${title}${RESET}"
     echo "------------------------------------------"
 }

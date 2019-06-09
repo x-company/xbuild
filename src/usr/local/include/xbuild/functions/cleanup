@@ -28,6 +28,8 @@ function cleanup()
     # !apt-transport-https
     # !ca-certificates
 
+    header "Cleanup Build"
+
     log "Remove non-critical packages"
     base_pattern="~i!~M!~prequired!~pimportant!~R~prequired!~R~R~prequired!~R~pimportant!~R~R~pimportant"
 
@@ -53,6 +55,7 @@ function cleanup()
     log "Remove SSH Host keys"
     execute rm -f /etc/ssh/ssh_host_*
 
+    header "Reconfigure Default Editor"
     log "Set vi as default editor"
     setvar "VISUAL" "vi"
     setvar "EDITOR" "vi"

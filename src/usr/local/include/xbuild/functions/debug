@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
+
+function debug()
+{
+    # Enable/Disable Debug Output
+
+    args=("$@")
+    local debugmode="0"
+    local devmode="0"
+
+    for arg in "${args[@]}"
+    do
+        if [ "$arg" = "--on" ]
+        then
+            debugmode="1"
+        fi
+
+        if [ "$arg" = "--dev" ]
+        then
+            devmode="1"
+        fi
+    done
+
+    if [ "$devmode" = "1" ]
+    then
+        set -eux -o pipefail
+    else
+        set -eu -o pipefail
+    fi
+
+    setvar "XBUILD_DEBUG" "$debugmode"
+}

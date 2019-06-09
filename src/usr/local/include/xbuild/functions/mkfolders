@@ -3,45 +3,67 @@
 
 function mkfolders()
 {
-    onlySecurity="false"
+    args=("$@")
+    local onlySecurity="false"
 
-    if [ "$1" = "--only-security" ]
-    then
-        onlySecurity="true"
-    fi
+    for arg in "${args[@]}"
+    do
+        if [ "$arg" = "--only-security" ]
+        then
+            onlySecurity="true"
+        fi
+    done
 
     if [ "$onlySecurity" = "false" ]
     then
         log "Create needed Folders"
+        execute mkdir -p /etc/apt/sources.list.d
+        execute mkdir -p /etc/apt/trusted.gpg.d
         execute mkdir -p /etc/xinit/env.d/
         execute mkdir -p /etc/xinit/health.d/
         execute mkdir -p /etc/xinit/service.d/
         execute mkdir -p /var/local/xbuild/
         execute mkdir -p /var/local/xinit/
+    else
+
+        log "Set Security for all files and folders"
+        execute chown root:root -R /etc/apt
+        execute chown root:root -R /etc/xinit
+        execute chown root:root -R /usr/local/include/xbuild
+        execute chown root:root -R /var/local/xbuild
+        execute chown root:root -R /var/local/xinit
+
+        execute chmod 755 /etc/apt/sources.list.d/
+        execute chmod 755 /etc/apt/trusted.gpg.d/
+        execute chmod 755 /etc/xinit/
+        execute chmod 755 /usr/local/include/xbuild/
+        execute chmod 755 /usr/local/include/xbuild/functions/
+        execute chmod 755 /usr/local/include/xbuild/globals/
+        execute chmod 755 /var/local/xbuild/
+        execute chmod 755 /var/local/xinit/
+
+        patterns=()
+        patterns+=( "/etc/apt/sources.list.d/" )
+        patterns+=( "/etc/apt/trusted.gpg.d/" )
+        patterns+=( "/etc/xinit/" )
+        patterns+=( "/etc/xinit/env.d/" )
+        patterns+=( "/etc/xinit/health.d/" )
+        patterns+=( "/etc/xinit/service.d/" )
+        patterns+=( "/usr/local/include/xbuild/" )
+        patterns+=( "/usr/local/include/xbuild/functions/" )
+        patterns+=( "/usr/local/include/xbuild/globals/" )
+        patterns+=( "/var/local/xbuild/" )
+        patterns+=( "/var/local/xinit/" )
+
+        for pattern in "${patterns[@]}"
+        do
+            [ -d "$pattern" ] || continue
+
+            files=( $(ls -1 "$pattern") )
+            for file in "${files[@]}"
+            do
+                execute chmod 644 "${pattern}${file}"
+            done
+        done
     fi
-
-    log "Set Security for all files and folders"
-    execute chown root:root -R /etc/apt
-    execute chown root:root -R /etc/xinit
-    execute chown root:root -R /usr/local/include/xbuild
-    execute chown root:root -R /var/local/xbuild
-    execute chown root:root -R /var/local/xinit
-
-    execute chmod 755 /etc/apt/sources.list.d/
-    execute chmod 755 /etc/apt/trusted.gpg.d/
-    execute chmod 755 /etc/xinit/
-    execute chmod 755 /usr/local/include/xbuild/
-    execute chmod 755 /usr/local/include/xbuild/functions/
-    execute chmod 755 /usr/local/include/xbuild/globals/
-    execute chmod 755 /var/local/xbuild/
-    execute chmod 755 /var/local/xinit/
-
-    execute chmod 644 /etc/apt/sources.list.d/*
-    execute chmod 644 /etc/apt/trusted.gpg.d/*
-    execute chmod 644 /etc/xinit/*
-    execute chmod 644 /usr/local/include/xbuild/*
-    execute chmod 644 /usr/local/include/xbuild/functions/*
-    execute chmod 644 /usr/local/include/xbuild/globals/*
-    execute chmod 644 /var/local/xbuild/*
-    execute chmod 644 /var/local/xinit/*
 }

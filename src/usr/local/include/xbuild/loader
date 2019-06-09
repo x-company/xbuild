@@ -20,6 +20,9 @@ source /usr/local/include/xbuild/functions/configure
 # shellcheck source=functions/copy
 source /usr/local/include/xbuild/functions/copy
 
+# shellcheck source=functions/debug
+source /usr/local/include/xbuild/functions/debug
+
 # shellcheck source=functions/execute
 source /usr/local/include/xbuild/functions/execute
 
@@ -49,6 +52,13 @@ source /usr/local/include/xbuild/functions/savevars
 
 # shellcheck source=functions/setvar
 source /usr/local/include/xbuild/functions/setvar
+
+header "Start Building your Image"
+
+# TRICKY: Debug Mode must setted before other commands will executed. Otherwise
+# enabling or disabling of the Debug Mode is not possible
+log "Disable Debug Mode"
+debug --off
 
 # Create needed Folders
 mkfolders
