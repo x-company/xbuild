@@ -8,7 +8,7 @@ function setvar()
 
     log "Set Environment Variable '$env_name'"
 
-    if [ -d /etc/xinit/env.d/ ]
+    if [ ! -d /etc/xinit/env.d/ ]
     then
         mkdir -p /etc/xinit/env.d/
     fi
