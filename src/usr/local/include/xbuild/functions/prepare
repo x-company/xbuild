@@ -91,6 +91,8 @@ function prepare()
 
     if [ ! -f "$flag_file" ]
     then
+        # Create needed Folders
+        mkfolders
 
         log "Update the Package Sources"
         execute apt-get -q update
@@ -235,7 +237,7 @@ function prepare()
             if [ "$dev" = "true" ]
             then
                 log "Install Node Dev Packages"
-                execute npm install -g typescript ts-node rimraf yarn mocha chai nyc nodemon appversion-mgr
+                execute npm install -g typescript ts-node rimraf yarn mocha chai nodemon appversion-mgr
             fi
         fi
 
