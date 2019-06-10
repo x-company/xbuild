@@ -21,18 +21,19 @@ prepare
 
 # Alternatives
 # Remarks: If you add the Param --dev additional Development Tools will installed
+# Example: prepare --dev
 
-# Prepare the Image in Development Mode
-# prepare --dev
+# Prepare the Image
+# prepare
 
-# Prepare the Image inclusive NodeJS 12.x in Development Mode
-# prepare --with-node-12 --dev
+# Prepare the Image inclusive NodeJS 12.x
+# prepare --with-node-12
 
-# Prepare the Image inclusive DotNet Core in Development Mode
-# prepare --with-dotnet --dev
+# Prepare the Image inclusive DotNet Core
+# prepare --with-dotnet
 
-# Prepare the Image inclusive PowerShell in Development Mode
-# prepare --with-powershell --dev
+# Prepare the Image inclusive PowerShell
+# prepare --with-powershell
 
 # Execute here your own Build and Install Needs
 # ...
