@@ -15,7 +15,6 @@
 
 - *build* to build runit Services
 - *cleanup* to cleanup the Build Process
-- *configure* to configure runit Services
 - *copy* to copy Files to your Docker Image
 - *debug* to enable or disable the Debug Mode
 - *execute* to execute Commands in your Docker Image
