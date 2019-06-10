@@ -14,9 +14,6 @@ source /usr/local/include/xbuild/functions/build
 # shellcheck source=functions/cleanup
 source /usr/local/include/xbuild/functions/cleanup
 
-# shellcheck source=functions/configure
-source /usr/local/include/xbuild/functions/configure
-
 # shellcheck source=functions/copy
 source /usr/local/include/xbuild/functions/copy
 
