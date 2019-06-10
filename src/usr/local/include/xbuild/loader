@@ -57,4 +57,5 @@ header "Start Building your Image"
 
 # TRICKY: Debug Mode must setted before other commands will executed. Otherwise
 # enabling or disabling of the Debug Mode is not possible
-declare -gx "XBUILD_DEBUG=0"
+log "Disable Debug Mode"
+debug --off

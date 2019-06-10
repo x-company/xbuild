@@ -12,7 +12,6 @@ function mkfolders()
     execute mkdir -p /var/local/xbuild/
     execute mkdir -p /var/local/xinit/
 
-
     log "Change User and Group"
     execute chown root:root -R /etc/apt
     execute chown root:root -R /etc/xinit
@@ -20,7 +19,7 @@ function mkfolders()
     execute chown root:root -R /var/local/xbuild
     execute chown root:root -R /var/local/xinit
 
-    log "Enable Listing of Directories"
+    log "Enable Listing for Directories"
     execute chmod 755 /etc/apt/sources.list.d/
     execute chmod 755 /etc/apt/trusted.gpg.d/
     execute chmod 755 /etc/xinit/
@@ -43,7 +42,7 @@ function mkfolders()
     patterns+=( "/var/local/xbuild/" )
     patterns+=( "/var/local/xinit/" )
 
-    log "Set Read/Write Permissions for User 'root'"
+    log "Set Read/Write Permissions"
     for pattern in "${patterns[@]}"
     do
         [ -d "$pattern" ] || continue
