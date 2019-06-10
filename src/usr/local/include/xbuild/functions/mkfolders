@@ -3,80 +3,66 @@
 
 function mkfolders()
 {
-    args=("$@")
-    local onlySecurity="false"
+    log "Create needed Folders"
+    execute mkdir -p /etc/apt/sources.list.d
+    execute mkdir -p /etc/apt/trusted.gpg.d
+    execute mkdir -p /etc/xinit/env.d/
+    execute mkdir -p /etc/xinit/health.d/
+    execute mkdir -p /etc/xinit/service.d/
+    execute mkdir -p /var/local/xbuild/
+    execute mkdir -p /var/local/xinit/
 
-    for arg in "${args[@]}"
+
+    log "Change User and Group"
+    execute chown root:root -R /etc/apt
+    execute chown root:root -R /etc/xinit
+    execute chown root:root -R /usr/local/include/xbuild
+    execute chown root:root -R /var/local/xbuild
+    execute chown root:root -R /var/local/xinit
+
+    log "Enable Listing of Directories"
+    execute chmod 755 /etc/apt/sources.list.d/
+    execute chmod 755 /etc/apt/trusted.gpg.d/
+    execute chmod 755 /etc/xinit/
+    execute chmod 755 /usr/local/include/xbuild/
+    execute chmod 755 /usr/local/include/xbuild/functions/
+    execute chmod 755 /usr/local/include/xbuild/globals/
+    execute chmod 755 /var/local/xbuild/
+    execute chmod 755 /var/local/xinit/
+
+    patterns=()
+    patterns+=( "/etc/apt/sources.list.d/" )
+    patterns+=( "/etc/apt/trusted.gpg.d/" )
+    patterns+=( "/etc/xinit/" )
+    patterns+=( "/etc/xinit/env.d/" )
+    patterns+=( "/etc/xinit/health.d/" )
+    patterns+=( "/etc/xinit/service.d/" )
+    patterns+=( "/usr/local/include/xbuild/" )
+    patterns+=( "/usr/local/include/xbuild/functions/" )
+    patterns+=( "/usr/local/include/xbuild/globals/" )
+    patterns+=( "/var/local/xbuild/" )
+    patterns+=( "/var/local/xinit/" )
+
+    log "Set Read/Write Permissions for User 'root'"
+    for pattern in "${patterns[@]}"
     do
-        if [ "$arg" = "--only-security" ]
-        then
-            onlySecurity="true"
-        fi
+        [ -d "$pattern" ] || continue
+
+        mapfile -t files < <(ls -1 "$pattern")
+        for file in "${files[@]}"
+        do
+            execute chmod 644 "${pattern}${file}"
+        done
     done
 
-    if [ "$onlySecurity" = "false" ]
-    then
-        log "Create needed Folders"
-        execute mkdir -p /etc/apt/sources.list.d
-        execute mkdir -p /etc/apt/trusted.gpg.d
-        execute mkdir -p /etc/xinit/env.d/
-        execute mkdir -p /etc/xinit/health.d/
-        execute mkdir -p /etc/xinit/service.d/
-        execute mkdir -p /var/local/xbuild/
-        execute mkdir -p /var/local/xinit/
-    else
+    patterns=()
+    patterns+=( "/etc/xinit/xinit_profile.sh" )
 
-        log "Change User and Group"
-        execute chown root:root -R /etc/apt
-        execute chown root:root -R /etc/xinit
-        execute chown root:root -R /usr/local/include/xbuild
-        execute chown root:root -R /var/local/xbuild
-        execute chown root:root -R /var/local/xinit
+    log "Set Execute Permissions"
+    for pattern in "${patterns[@]}"
+    do
+        [ -e "$pattern" ] || continue
 
-        log "Enable Listing of Directories"
-        execute chmod 755 /etc/apt/sources.list.d/
-        execute chmod 755 /etc/apt/trusted.gpg.d/
-        execute chmod 755 /etc/xinit/
-        execute chmod 755 /usr/local/include/xbuild/
-        execute chmod 755 /usr/local/include/xbuild/functions/
-        execute chmod 755 /usr/local/include/xbuild/globals/
-        execute chmod 755 /var/local/xbuild/
-        execute chmod 755 /var/local/xinit/
-
-        patterns=()
-        patterns+=( "/etc/apt/sources.list.d/" )
-        patterns+=( "/etc/apt/trusted.gpg.d/" )
-        patterns+=( "/etc/xinit/" )
-        patterns+=( "/etc/xinit/env.d/" )
-        patterns+=( "/etc/xinit/health.d/" )
-        patterns+=( "/etc/xinit/service.d/" )
-        patterns+=( "/usr/local/include/xbuild/" )
-        patterns+=( "/usr/local/include/xbuild/functions/" )
-        patterns+=( "/usr/local/include/xbuild/globals/" )
-        patterns+=( "/var/local/xbuild/" )
-        patterns+=( "/var/local/xinit/" )
-
-        log "Set Read/Write Permissions for User 'root'"
-        for pattern in "${patterns[@]}"
-        do
-            [ -d "$pattern" ] || continue
-
-            mapfile -t files < <(ls -1 "$pattern")
-            for file in "${files[@]}"
-            do
-                execute chmod 644 "${pattern}${file}"
-            done
-        done
-
-        patterns=()
-        patterns+=( "/etc/xinit/xinit_profile.sh" )
-
-        log "Set Execute Permissions"
-        for pattern in "${patterns[@]}"
-        do
-            [ -e "$pattern" ] || continue
-
-            execute chmod 755 "${pattern}"
-        done
-    fi
+        execute chmod 755 "${pattern}"
+    done
 }
