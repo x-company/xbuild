@@ -40,12 +40,16 @@ function cleanup()
     excludes=$system_packages$(< /var/local/xbuild/packages.retain)
 
     mapfile -t packages_to_remove < <(aptitude search "$excludes" --display-format "%p")
-    packages_to_remove+=( "$(< /var/local/xbuild/packages.remove)" )
     for package in "${packages_to_remove[@]}"
     do
         execute apt-get -qy purge "$package"
     done
 
+    mapfile -t packages_to_remove < <(cat /var/local/xbuild/packages.remove)
+    for package in "${packages_to_remove[@]}"
+    do
+        execute apt-get -qy purge "$package"
+    done
 
     execute apt-get -qy purge aptitude
     execute apt-get -qy autoremove
