@@ -11,6 +11,8 @@ function mkfolders()
     execute mkdir -p /etc/xinit/service.d/
     execute mkdir -p /var/local/xbuild/
     execute mkdir -p /var/local/xinit/
+    execute mkdir -p /var/log/xinit/
+    execute mkdir -p /var/run/xinit/
 
     log "Change User and Group"
     execute chown root:root -R /etc/apt
@@ -18,6 +20,8 @@ function mkfolders()
     execute chown root:root -R /usr/local/include/xbuild
     execute chown root:root -R /var/local/xbuild
     execute chown root:root -R /var/local/xinit
+    execute chown root:root -R /var/log/xinit
+    execute chown root:root -R /var/run/xinit
 
     log "Enable Listing for Directories"
     execute chmod 755 /etc/apt/sources.list.d/
@@ -50,18 +54,21 @@ function mkfolders()
         mapfile -t files < <(ls -1 "$pattern")
         for file in "${files[@]}"
         do
+            execute chown root:root "${pattern}${file}"
             execute chmod 644 "${pattern}${file}"
         done
     done
 
     patterns=()
     patterns+=( "/etc/xinit/xinit_profile.sh" )
+    patterns+=( "/usr/local/bin/healthcheck.sh" )
 
     log "Set Execute Permissions"
     for pattern in "${patterns[@]}"
     do
         [ -e "$pattern" ] || continue
 
+        execute chown root:root "${pattern}"
         execute chmod 755 "${pattern}"
     done
 }
