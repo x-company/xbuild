@@ -26,6 +26,11 @@ function build()
                     chown -R root:root "/etc/sv/$service"
                     ln -s "/etc/sv/$service" /etc/service
                 fi
+
+                if [ -f "/build/services/$service/$service.health" ]
+                then
+                    copy "/build/services/$service/$service.health" "/etc/xinit/health.d/"
+                fi
             fi
         done
     fi
