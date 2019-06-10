@@ -73,3 +73,9 @@ Now create a `build.sh` in the same Location as your Dockerfile and use the xBui
 > Don't forget to add Execution Permission to the `build.sh`, e.g. `chmod +x build.sh`
 
 Last but not least build your Dockerfile with `docker build --tag <yourimage> .` That's it!
+
+## QandA - Questions and Answers
+
+### Message: 'debconf: delaying package configuration, since apt-utils is not installed'
+
+This Message could ignored. After *apt-utils* is installed this warning will fixed.
