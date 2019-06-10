@@ -1,6 +1,6 @@
 {
   "name": "xbuild",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A Build System for Docker Images",
   "license": "MIT",
   "repository": {
