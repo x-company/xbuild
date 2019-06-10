@@ -62,7 +62,6 @@ function mkfolders()
             [ -d "$pattern" ] || continue
 
             mapfile -t files < <(ls -1 "$pattern")
-            # files=( $(ls -1 "$pattern") )
             for file in "${files[@]}"
             do
                 execute chmod 644 "${pattern}${file}"
@@ -75,14 +74,9 @@ function mkfolders()
         log "Set Execute Permissions"
         for pattern in "${patterns[@]}"
         do
-            [ -d "$pattern" ] || continue
+            [ -e "$pattern" ] || continue
 
-            # files=( $(ls -1 "$pattern") )
-            mapfile -t files < <(ls -1 "$pattern")
-            for file in "${files[@]}"
-            do
-                execute chmod 755 "${pattern}${file}"
-            done
+            execute chmod 755 "${pattern}"
         done
     fi
 }
