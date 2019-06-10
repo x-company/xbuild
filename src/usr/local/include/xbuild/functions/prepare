@@ -91,8 +91,6 @@ function prepare()
 
     if [ ! -f "$flag_file" ]
     then
-        # Create needed Folders
-        mkfolders
 
         log "Update the Package Sources"
         execute apt-get -q update
@@ -186,8 +184,8 @@ function prepare()
             fi
         fi
 
-        header "Set Folder Security"
-        mkfolders --only-security
+        header "Create Folders and set the Folder Security"
+        mkfolders
 
         header "Prepare now the System with the configured Package Sources"
         log "Cleanup Package Sources"
