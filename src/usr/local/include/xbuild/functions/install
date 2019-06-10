@@ -9,7 +9,7 @@ function install()
     local packages=""
 
     # This Packages will not saved. So it could later removed by cleanup
-    excludes=("apt-utils" "software-properties-common" "psmisc" "wget" "nano" "dirmngr")
+    excludes=("apt-utils" "software-properties-common" "psmisc" "wget" "dirmngr")
 
     # shellcheck disable=SC2128
     if [ -z "$args" ]

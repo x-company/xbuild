@@ -78,4 +78,4 @@ Last but not least build your Dockerfile with `docker build --tag <yourimage> .`
 
 ### Message: 'debconf: delaying package configuration, since apt-utils is not installed'
 
-This Message could ignored. After *apt-utils* is installed this warning will fixed.
+This Message could ignored. After *apt-utils* is installed this warning will be obsolete.
