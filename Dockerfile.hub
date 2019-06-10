@@ -1,6 +1,4 @@
-############################################
-# Global Base Image with the xBuild System
-FROM debian:stretch-slim AS prod
+FROM debian:stretch-slim
 
 LABEL maintainer="info@x-company.de" \
     vendor="IT Solutions Roland Breitschaft" \
