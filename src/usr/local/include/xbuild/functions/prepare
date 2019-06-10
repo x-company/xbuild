@@ -195,11 +195,7 @@ function prepare()
         execute apt-get -q update
 
         log "Install Install Packages and Tools"
-        install --packages wget nano aptitude dirmngr
-
-        header "Configure Nano Editor"
-        setvar "VISUAL" "nano"
-        setvar "EDITOR" "nano"
+        install --packages wget aptitude dirmngr
 
         header "Execute System Upgrade"
         execute apt-get dist-upgrade -qy --no-install-recommends -o Dpkg::Options::="--force-confold"
