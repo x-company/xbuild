@@ -1,6 +1,6 @@
 # xbuild - A easy to use Framework for your Installation Needs of Docker Base Images
 
-[![xbuild-version](https://img.shields.io/badge/Version-0.1.11-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)
+[![xbuild-version](https://img.shields.io/badge/Version-0.1.12-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)
 [![xbuild-status](https://img.shields.io/badge/Status-development%201-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild/releases)
 [![xbuild-build](https://img.shields.io/badge/Builds-6-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)
 [![CircleCI](https://circleci.com/gh/x-company/xbuild/tree/master.svg?style=svg)](https://circleci.com/gh/x-company/xbuild/tree/master)
