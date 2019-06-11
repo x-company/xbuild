@@ -8,7 +8,8 @@ function mkfolders()
     execute mkdir -p /etc/apt/trusted.gpg.d
     execute mkdir -p /etc/xinit/env.d/
     execute mkdir -p /etc/xinit/health.d/
-    execute mkdir -p /etc/xinit/service.d/
+    execute mkdir -p /etc/xinit/events.d/prev.d/
+    execute mkdir -p /etc/xinit/events.d/post.d/
     execute mkdir -p /var/local/xbuild/
     execute mkdir -p /var/local/xinit/
     execute mkdir -p /var/log/xinit/
@@ -27,6 +28,10 @@ function mkfolders()
     execute chmod 755 /etc/apt/sources.list.d/
     execute chmod 755 /etc/apt/trusted.gpg.d/
     execute chmod 755 /etc/xinit/
+    execute chmod 755 /etc/xinit/health.d/
+    execute chmod 755 /etc/xinit/events.d/
+    execute chmod 755 /etc/xinit/events.d/prev.d/
+    execute chmod 755 /etc/xinit/events.d/post.d/
     execute chmod 755 /usr/local/include/xbuild/
     execute chmod 755 /usr/local/include/xbuild/functions/
     execute chmod 755 /usr/local/include/xbuild/globals/
@@ -39,7 +44,7 @@ function mkfolders()
     patterns+=( "/etc/xinit/" )
     patterns+=( "/etc/xinit/env.d/" )
     patterns+=( "/etc/xinit/health.d/" )
-    patterns+=( "/etc/xinit/service.d/" )
+    patterns+=( "/etc/xinit/events.d/" )
     patterns+=( "/usr/local/include/xbuild/" )
     patterns+=( "/usr/local/include/xbuild/functions/" )
     patterns+=( "/usr/local/include/xbuild/globals/" )

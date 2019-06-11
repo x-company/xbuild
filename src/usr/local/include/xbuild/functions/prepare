@@ -231,7 +231,7 @@ function prepare()
             if [ "$dev" = "true" ]
             then
                 log "Install Node Dev Packages"
-                execute npm install -g typescript ts-node rimraf yarn mocha chai nodemon appversion-mgr
+                execute npm install -g typescript ts-node yarn mocha chai appversion-mgr
             fi
         fi
 

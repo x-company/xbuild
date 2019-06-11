@@ -19,16 +19,37 @@ function build()
 
                 header "Build Service '$service'"
 
-                if [ -d "/build/services/$service" ]
+                if [ -d "/build/services/$service/runit/" ]
                 then
-                    cp -rf "/build/services/$service/runit/*" /etc/sv
-                    chmod 0755 "/etc/sv/$service/*"
-                    chown -R root:root "/etc/sv/$service"
-                    ln -s "/etc/sv/$service" /etc/service
+                    log "Prepare Service Home"
+                    local serviceHome="/etc/sv/$service"
+                    local activeServiceHome="/etc/service/$service"
+                    if [ -d "$activeServiceHome" ]
+                    then
+                        execute rm -rf "$activeServiceHome"
+                    fi
+
+                    if [ -d "$serviceHome" ]
+                    then
+                        execute rm -rf "$serviceHome"
+                    fi
+                    execute mkdir -p "$serviceHome"
+
+                    for file in /build/services/$service/runit/*
+                    do
+                        copy "$file" $serviceHome
+
+                        local onlyFileName=$(basename $file)
+
+                        execute chmod 0755 "$serviceHome/$onlyFileName"
+                        execute chown -R root:root "$serviceHome/$onlyFileName"
+                        execute ln -s "$serviceHome" "$activeServiceHome"
+                    done
                 fi
 
                 if [ -f "/build/services/$service/$service.health" ]
                 then
+                    log "Copy Health Check Scripts"
                     copy "/build/services/$service/$service.health" "/etc/xinit/health.d/"
                 fi
             fi
