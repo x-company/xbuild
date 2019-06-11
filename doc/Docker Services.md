@@ -1,0 +1,4 @@
+- https://microbadger.com
+- https://app.snyk.io
+- https://cloud.docker.com
+- https://shields.io
