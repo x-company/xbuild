@@ -3,6 +3,9 @@
 [![xbuild-version](https://img.shields.io/badge/Version-0.1.13-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)
 [![xbuild-status](https://img.shields.io/badge/Status-development%201-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild/releases)
 [![xbuild-build](https://img.shields.io/badge/Builds-6-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)
+[![](https://images.microbadger.com/badges/image/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own image badge on microbadger.com")
+[![](https://images.microbadger.com/badges/version/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own version badge on microbadger.com")
+[![Known Vulnerabilities](https://snyk.io//test/github/x-company/xbuild/badge.svg?targetFile=package.json)](https://snyk.io//test/github/x-company/xbuild?targetFile=package.json)
 [![CircleCI](https://circleci.com/gh/x-company/xbuild/tree/master.svg?style=svg)](https://circleci.com/gh/x-company/xbuild/tree/master)
 
 ## What is xBuild
@@ -34,7 +37,9 @@
 /etc/xinit                  # Main Folder for the xinit System
 /etc/xinit/env.d            # Home of persisted Variables
 /etc/xinit/health.d         # Home for Healthcare Scripts for Services
-/etc/xinit/service.d        # Home of the Service Control Scripts
+/etc/xinit/events.d         # Home of Event Scripts for xinit
+/etc/xinit/events.d/prev.d/ # Home of Pre Event Scripts for xinit
+/etc/xinit/events.d/post.d/ # Home of Post Event Scripts for xinit
 /usr/local/include/xbuild   # Home of the xbuild Framework
 /var/local/xbuild           # Home for dynamic Data of xbuild Framework
 /var/local/xinit            # Home for dynamic Data of xinit System
