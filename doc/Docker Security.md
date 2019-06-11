@@ -1,0 +1,4 @@
+- https://snyk.io/blog/10-docker-image-security-best-practices/
+- https://dev.to/petermbenjamin/docker-security-best-practices-45ih
+- https://foxutech.com/docker-security/
+- https://developpaper.com/dockerfile-best-practices/
