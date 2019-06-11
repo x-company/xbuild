@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-function xbuild-copy()
+function copy()
 {
 	log "Copy File $1 to Destination $2"
 
