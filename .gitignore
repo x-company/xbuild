@@ -1,5 +1,6 @@
 # Global ignores
 node_modules
 yarn-error.log
-3rdParty/phusion/baseimage-docker-0.11
 .nyc_output
+3rdParty/phusion/baseimage-docker-master
+3rdParty/phusion/passenger-docker-master

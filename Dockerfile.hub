@@ -8,4 +8,6 @@ LABEL maintainer="info@x-company.de" \
 # Copy xbuild Files to root
 COPY ./src/ /
 
+
+
 CMD [ "cat", "/var/local/xbuild/README.txt" ]

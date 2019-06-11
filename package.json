@@ -17,8 +17,7 @@
     "build"
   ],
   "config": {
-    "image_name": "xcompany/xbuild",
-    "repo_user": "rolbre"
+    "image_name": "xcompany/xbuild"
   },
   "scripts": {
     "docker:clean": "docker system prune -f",
@@ -36,7 +35,6 @@
   },
   "devDependencies": {
     "appversion-mgr": "^0.7.0",
-    "nyc": "^14.1.1",
-    "yarn": "^1.16.0"
+    "nyc": "^14.1.1"
   }
 }
