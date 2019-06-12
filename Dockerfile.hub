@@ -1,9 +1,9 @@
 FROM debian:stretch-slim
 
 LABEL maintainer="info@x-company.de" \
-    vendor="IT Solutions Roland Breitschaft" \
-    description="A easy to use Framework for your Installation Needs of Docker Base Images" \
-    version="0.1.0"
+      vendor="IT Solutions Roland Breitschaft" \
+      description="A easy to use Framework for your Installation Needs of Docker Base Images" \
+      version="0.1.0"
 
 # Copy xbuild Files to root
 COPY ./src/ /
