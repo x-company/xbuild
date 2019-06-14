@@ -6,9 +6,9 @@
     "badge": "[![xbuild-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)"
   },
   "build": {
-    "date": "2019-06-10T15:11:01.130Z",
-    "number": 1,
-    "total": 22,
+    "date": "2019-06-14T15:54:47.686Z",
+    "number": 3,
+    "total": 24,
     "badge": "[![xbuild-build](https://img.shields.io/badge/Builds-${n}-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)"
   },
   "status": {

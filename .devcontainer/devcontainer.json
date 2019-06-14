@@ -1,6 +1,6 @@
 // See https://aka.ms/vscode-remote/devcontainer.json for format details.
 {
-	"name": "xbuild system",
+	"name": "xcompany/xbuild",
     "dockerComposeFile": "docker-compose.yml",
     "service": "xbuild",
     "workspaceFolder": "/workspace",
