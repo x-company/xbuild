@@ -5,8 +5,10 @@ services:
     image: xcompany/xbuild:unit
     build:
       context: ../../
-      target: devcontainer
     volumes:
       # Map the current Source Folder
       - ../../tests/unit/:/workspace/tests/unit
-    command: "/usr/bin/bats /workspace/tests/unit/"
+      - ../../.devcontainer/build.sh:/build.sh:ro
+    command:
+      - "/build.sh"
+      - "/usr/bin/bats /workspace/tests/unit/"

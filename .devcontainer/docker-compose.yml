@@ -3,10 +3,12 @@ version: "3.7"
 services:
   xbuild:
     image: xcompany/xbuild:devcontainer
-    build:
-      context: ../
-      target: devcontainer
+    build: ..
     volumes:
+      # Map Build File
+      - ./build.sh:/build.sh:ro
+      # Map Sources
+      - ../src/:/
       # Map the current Source Folder
       - ..:/workspace
       # Configure Git with the current local Settings
@@ -17,7 +19,9 @@ services:
         - SYS_PTRACE
     security_opt:
       - seccomp:unconfined
-    command: sleep infinity
+    command:
+      - build.sh
+      - sleep infinity
 
 volumes:
   vscode-server:
