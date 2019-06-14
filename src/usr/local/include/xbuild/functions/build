@@ -1,56 +1,87 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-function build()
-{
+function build() {
     args=("$@")
 
-    if [ -z "$args" ]
-    then
+    if [ -z "$args" ]; then
         log "No Services given to build. Please call 'build --services <service1> <service2> ... <serviceN>'"
         return 1
     else
-        for arg in "${args[@]}"
-        do
+
+        if [ -d "/build/fsroot" ]; then
+            header "Copy File System Root Files"
+            cp -Rf "/build/fsroot/*" /
+        fi
+
+        if [ -d "/build/events" ]; then
+
+            for event in /build/events/*; do
+                header "Copy Events ..."
+                copy "$event" /etc/xinit/events.d
+            done
+
+            if [ -d "/build/events/post" ]; then
+
+                for event in /build/events/post/*; do
+                    header "Copy Post Events ..."
+                    copy "$event" /etc/xinit/events.d/post.d
+                done
+            fi
+
+            if [ -d "/build/events/prev" ]; then
+
+                for event in /build/events/prev/*; do
+                    header "Copy Prev Events ..."
+                    copy "$event" /etc/xinit/events.d/prev.d
+                done
+            fi
+        fi
+
+        for arg in "${args[@]}"; do
             service=$arg
 
-            if [ "$service" != "-s" ] && [ "$service" != "--services" ]
-            then
+            if [ "$service" != "-s" ] && [ "$service" != "--services" ]; then
 
                 header "Build Service '$service'"
 
-                if [ -d "/build/services/$service/runit/" ]
-                then
+                if [ -d "/build/services/$service/" ]; then
                     log "Prepare Service Home"
                     local serviceHome="/etc/sv/$service"
                     local activeServiceHome="/etc/service/$service"
-                    if [ -d "$activeServiceHome" ]
-                    then
+                    if [ -d "$activeServiceHome" ]; then
                         execute rm -rf "$activeServiceHome"
                     fi
 
-                    if [ -d "$serviceHome" ]
-                    then
+                    if [ -d "$serviceHome" ]; then
                         execute rm -rf "$serviceHome"
                     fi
                     execute mkdir -p "$serviceHome"
 
-                    for file in /build/services/$service/runit/*
-                    do
-                        copy "$file" $serviceHome
+                    copy "/build/services/$service/$service.run" "$serviceHome"
+                    execute chmod 0755 "$serviceHome/$service.run"
+                    execute chown -R root:root "$serviceHome/$service.run"
 
-                        local onlyFileName=$(basename $file)
+                    if [ -f "/build/services/$service/$service.finish" ]; then
+                        copy "/build/services/$service/$service.finish" "$serviceHome"
+                        execute chmod 0755 "$serviceHome/$service.finish"
+                        execute chown -R root:root "$serviceHome/$service.finish"
+                    fi
 
-                        execute chmod 0755 "$serviceHome/$onlyFileName"
-                        execute chown -R root:root "$serviceHome/$onlyFileName"
-                        execute ln -s "$serviceHome" "$activeServiceHome"
-                    done
+                    execute ln -s "$serviceHome" "$activeServiceHome"
                 fi
 
-                if [ -f "/build/services/$service/$service.health" ]
-                then
+                if [ -f "/build/services/$service/$service.health" ]; then
                     log "Copy Health Check Scripts"
                     copy "/build/services/$service/$service.health" "/etc/xinit/health.d/"
+                fi
+
+                buildFile="/build/services/$service/$service.build"
+                if [ -f "$buildFile" ]; then
+                    log "Execute Service Build File"
+                    execute chmod 0755 "$buildFile"
+                    execute chown -R root:root "$buildFile"
+                    /usr/bin/bash -c "$buildFile"
                 fi
             fi
         done
