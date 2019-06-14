@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-function cleanup()
-{
+function cleanup() {
     # Cleans up the Image after an build.
 
     # Remove non-critical packages (don't remove busybox -> don't sure if this ist still a problem on debian 7)
@@ -30,24 +29,25 @@ function cleanup()
 
     header "Cleanup Build"
 
-    log "Remove non-critical packages"
-    base_pattern="~i!~M!~prequired!~pimportant!~R~prequired!~R~R~prequired!~R~pimportant!~R~R~pimportant"
+    if [ -f /usr/bin/aptitude ]
+    then
+        log "Remove non-critical packages"
+        base_pattern="~i!~M!~prequired!~pimportant!~R~prequired!~R~R~prequired!~R~pimportant!~R~R~pimportant"
 
-    # Keep System Packages
-    system_packages="$base_pattern!busybox!grub!initramfs-tools!ca-certificates"
+        # Keep System Packages
+        system_packages="$base_pattern!busybox!grub!initramfs-tools!ca-certificates"
 
-    # Keep installed User Packages
-    excludes=$system_packages$(< /var/local/xbuild/packages.retain)
+        # Keep installed User Packages
+        excludes=$system_packages$(</var/local/xbuild/packages.retain)
 
-    mapfile -t packages_to_remove < <(aptitude search "$excludes" --display-format "%p")
-    for package in "${packages_to_remove[@]}"
-    do
-        execute apt-get -qy purge "$package"
-    done
+        mapfile -t packages_to_remove < <(aptitude search "$excludes" --display-format "%p")
+        for package in "${packages_to_remove[@]}"; do
+            execute apt-get -qy purge "$package"
+        done
+    fi
 
     mapfile -t packages_to_remove < <(cat /var/local/xbuild/packages.remove)
-    for package in "${packages_to_remove[@]}"
-    do
+    for package in "${packages_to_remove[@]}"; do
         execute apt-get -qy purge "$package"
     done
 
@@ -55,7 +55,7 @@ function cleanup()
     execute apt-get -qy autoremove
     execute apt-get clean
 
-    find /build/ -not \( -name 'build.sh'\) -delete
+    find /build/ -not -name 'build.sh' -delete
 
     log "Cleanup the Temp Folder"
     execute rm -rf /tmp/* /var/tmp/*
@@ -67,8 +67,7 @@ function cleanup()
     execute rm -f /etc/ssh/ssh_host_*
 
     log "Remove Build Folder and Script"
-    if [ -d /build ]
-    then
+    if [ -d /build ]; then
         rm -rf /build
     fi
 }

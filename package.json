@@ -20,6 +20,10 @@
     "image_name": "xcompany/xbuild"
   },
   "scripts": {
+    "dockerfile:XBUILD_BUILD_DATE": "echo \"$(sed -e \"s/__XBUILD_BUILD_DATE__/$(date -u +'%Y-%m-%dT%H:%M:%SZ')/g\" ./Dockerfile.tmpl)\" > ./Dockerfile",
+    "dockerfile:XBUILD_VCS_REF": "echo \"$(sed -e \"s/__XBUILD_VCS_REF__/$(git rev-parse --short HEAD)/g\" ./Dockerfile)\" > ./Dockerfile",
+    "dockerfile:XBUILD_VERSION": "echo \"$(sed -e \"s/__XBUILD_VERSION__/$npm_package_version/g\" ./Dockerfile)\" > ./Dockerfile",
+    "dockerfile:build" : "yarn dockerfile:XBUILD_BUILD_DATE && yarn dockerfile:XBUILD_VCS_REF && yarn dockerfile:XBUILD_VERSION",
     "docker:clean": "docker system prune -f",
     "docker:clean:image": "docker image rm -f $npm_package_config_image_name:$npm_package_version",
     "docker:clean:latest": "docker image rm -f $npm_package_config_image_name:latest",
@@ -31,11 +35,8 @@
     "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
     "test": "docker-compose -f ./tests/unit/docker-compose.yml up",
     "test:clean": "docker container prune -f && docker image rm -f xcompany/xbuild:unit",
-    "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all",
-    "dockerfile:XBUILD_BUILD_DATE": "echo \"$(sed -e \"s/__XBUILD_BUILD_DATE__/$(date -u +'%Y-%m-%dT%H:%M:%SZ')/g\" ./Dockerfile.tmpl)\" > ./Dockerfile",
-    "dockerfile:XBUILD_VCS_REF": "echo \"$(sed -e \"s/__XBUILD_VCS_REF__/$(git rev-parse --short HEAD)/g\" ./Dockerfile)\" > ./Dockerfile",
-    "dockerfile:XBUILD_VERSION": "echo \"$(sed -e \"s/__XBUILD_VERSION__/$npm_package_version/g\" ./Dockerfile)\" > ./Dockerfile",
-    "dockerfile:build" : "yarn dockerfile:XBUILD_BUILD_DATE && yarn dockerfile:XBUILD_VCS_REF && yarn dockerfile:XBUILD_VERSION"
+    "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all"
+
   },
   "devDependencies": {
     "appversion-mgr": "^0.7.0",
