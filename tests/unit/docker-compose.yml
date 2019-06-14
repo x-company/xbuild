@@ -11,6 +11,8 @@ services:
 
   test:
     image: xcompany/xbuild:unit
+    depends_on:
+      - build
     volumes:
       # Map the current Source Folder
       - ../../tests/unit/:/workspace/tests/unit
