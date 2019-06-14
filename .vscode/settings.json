@@ -257,6 +257,7 @@
         "setvar",
         "sourcemap",
         "testarea",
+        "tmpl",
         "tslib",
         "uname",
         "xbuild",
