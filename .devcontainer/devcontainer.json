@@ -2,7 +2,7 @@
 {
 	"name": "xcompany/xbuild",
     "dockerComposeFile": "docker-compose.yml",
-    "service": "xbuild",
+    "service": "run",
     "workspaceFolder": "/workspace",
     "shutdownAction": "stopCompose",
 

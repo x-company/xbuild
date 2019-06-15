@@ -1,0 +1,8 @@
+FROM debian:stretch-slim
+
+# Copy xbuild Files to root
+COPY ./src/ /
+
+COPY ./.devcontainer/build.sh /build/
+
+RUN /build/build.sh
