@@ -55,8 +55,6 @@ function cleanup() {
     execute apt-get -qy autoremove
     execute apt-get clean
 
-    find /build/ -not -name 'build.sh' -delete
-
     log "Cleanup the Temp Folder"
     execute rm -rf /tmp/* /var/tmp/*
 
@@ -65,9 +63,4 @@ function cleanup() {
 
     log "Remove SSH Host keys"
     execute rm -f /etc/ssh/ssh_host_*
-
-    log "Remove Build Folder and Script"
-    if [ -d /build ]; then
-        rm -rf /build
-    fi
 }

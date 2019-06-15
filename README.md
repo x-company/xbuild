@@ -2,7 +2,7 @@
 
 [![xbuild-version](https://img.shields.io/badge/Version-0.1.13-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)
 [![xbuild-status](https://img.shields.io/badge/Status-development%201-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild/releases)
-[![xbuild-build](https://img.shields.io/badge/Builds-6-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)
+[![xbuild-build](https://img.shields.io/badge/Builds-7-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)
 [![](https://images.microbadger.com/badges/image/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own image badge on microbadger.com")
 [![](https://images.microbadger.com/badges/version/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own version badge on microbadger.com")
 [![Known Vulnerabilities](https://snyk.io//test/github/x-company/xbuild/badge.svg?targetFile=package.json)](https://snyk.io//test/github/x-company/xbuild?targetFile=package.json)

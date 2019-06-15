@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  build:
+    image: xcompany/xbuild:devcontainer
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
+
+  unit:
+    image: xcompany/xbuild:devcontainer
+    depends_on:
+      - build
+    volumes:
+      - ..:/workspace
+    command: /usr/bin/bats /workspace/tests/unit/

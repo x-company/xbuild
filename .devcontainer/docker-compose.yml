@@ -3,11 +3,9 @@ version: "3.7"
 services:
   build:
     image: xcompany/xbuild:devcontainer
-    build: ..
-    volumes:
-      # Map Build File
-      - ./build.sh:/build.sh:ro
-    command: build.sh
+    build:
+      context: ..
+      dockerfile: Dockerfile.dev
 
   run:
     image: xcompany/xbuild:devcontainer
