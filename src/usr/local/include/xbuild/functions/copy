@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-function copy()
-{
-	log "Copy File $1 to Destination $2"
+function copy() {
+    log "Copy File $1 to Destination $2"
 
     local file="$2/$(basename $1)"
 

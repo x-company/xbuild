@@ -17,7 +17,7 @@ adduser --shell /bin/sh --uid 1000 user
 sed -i -r 's/^user:!:/user:x:/' /etc/shadow
 
 # Be informative after successful login.
-echo -e "\\n\\nBase Image built on $(date)." > /etc/motd
+echo -e "\\n\\nBase Image built on $(date)." >/etc/motd
 
 # Remove existing crontabs, if any.
 rm -fr /var/spool/cron
@@ -33,11 +33,11 @@ chmod 1777 /tmp
 
 # Remove all but a handful of admin commands.
 find /sbin /usr/sbin -not -type d \
-  -and -not -name nologin \
-  -and -not -name setup-proxy \
-  -and -not -name runit \
-  -and -not -name runit-init \
-  -delete
+    -and -not -name nologin \
+    -and -not -name setup-proxy \
+    -and -not -name runit \
+    -and -not -name runit-init \
+    -delete
 
 # Remove unnecessary user accounts.
 sed -i -r '/^(user|root|_apt)/!d' /etc/group
@@ -62,22 +62,22 @@ find $sysdirs -xdev -type f -regex '.*-$' -exec rm -f {} +
 
 # Ensure system dirs are owned by root and not writable by anybody else.
 find $sysdirs -xdev -type d \
-  -exec chown root:root {} \; \
-  -exec chmod 0755 {} \;
+    -exec chown root:root {} \; \
+    -exec chmod 0755 {} \;
 
 # Remove all suid files.
 find $sysdirs -xdev -type f -and -perm /4000 -delete
 
 # Remove other programs that could be dangerous.
 find $sysdirs -xdev \( \
-  -name hexdump -or \
-  -name chgrp -or \
-  -name chown -or \
-  -name ln -or \
-  -name od -or \
-  -name strings -or \
-  -name su \
-  \) -delete
+    -name hexdump -or \
+    -name chgrp -or \
+    -name chown -or \
+    -name ln -or \
+    -name od -or \
+    -name strings -or \
+    -name su \
+    \) -delete
 
 # Remove init scripts since we do not use them.
 rm -fr /etc/init.d

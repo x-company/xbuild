@@ -29,8 +29,7 @@ function cleanup() {
 
     header "Cleanup Build"
 
-    if [ -f /usr/bin/aptitude ]
-    then
+    if [ -f /usr/bin/aptitude ]; then
         log "Remove non-critical packages"
         base_pattern="~i!~M!~prequired!~pimportant!~R~prequired!~R~R~prequired!~R~pimportant!~R~R~pimportant"
 

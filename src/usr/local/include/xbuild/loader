@@ -7,7 +7,6 @@ source /usr/local/include/xbuild/globals/logcolors
 # shellcheck source=globals/shelloptions
 source /usr/local/include/xbuild/globals/shelloptions
 
-
 # shellcheck source=functions/build
 source /usr/local/include/xbuild/functions/build
 

@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-function header()
-{
+function header() {
     local title="$1"
     echo ""
     echo "${FOREROUND_COLOR}${BOLD}${ITALIC}${title}${RESET}"

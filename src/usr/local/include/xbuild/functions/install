@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-function install()
-{
+function install() {
     # Installs an Package with minimal effort
 
     args=("$@")
@@ -12,35 +11,29 @@ function install()
     excludes=("apt-utils" "software-properties-common" "psmisc" "wget" "dirmngr")
 
     # shellcheck disable=SC2128
-    if [ -z "$args" ]
-    then
+    if [ -z "$args" ]; then
         log "No Packages given to install. Please call 'install --packages <package1> <package2> ... <packageN>'"
         return 1
     else
-        for arg in "${args[@]}"
-        do
-            if [ "$arg" != "-p" ] && [ "$arg" != "--packages" ]
-            then
+        for arg in "${args[@]}"; do
+            if [ "$arg" != "-p" ] && [ "$arg" != "--packages" ]; then
                 packages+="$arg "
                 should_saved="true"
 
-                for exclude in "${excludes[@]}"
-                do
-                    if [ "$exclude" = "$arg" ]
-                    then
+                for exclude in "${excludes[@]}"; do
+                    if [ "$exclude" = "$arg" ]; then
                         should_saved="false"
                         {
                             echo "$arg"
-                        } >> /var/local/xbuild/packages.remove
+                        } >>/var/local/xbuild/packages.remove
                     fi
                 done
 
-                if [ "$should_saved" = "true" ]
-                then
+                if [ "$should_saved" = "true" ]; then
                     # Save the Package to remind it
                     {
                         echo -n "!$arg"
-                    } >> /var/local/xbuild/packages.retain
+                    } >>/var/local/xbuild/packages.retain
                 fi
             fi
         done
