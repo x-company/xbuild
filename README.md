@@ -1,11 +1,24 @@
 # xbuild - A easy to use Framework for your Installation Needs of Docker Base Images
 
-| Type | Informations |
+| Type | States |
 |---|---|
-| [Source](https://github.com/x-company/xbuild "View Source") | [![xbuild-version](https://img.shields.io/badge/Version-0.1.13-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) [![xbuild-status](https://img.shields.io/badge/Status-development%201-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild/releases) [![xbuild-build](https://img.shields.io/badge/Builds-7-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) |
+| [Source](https://github.com/x-company/xbuild "View Source") | [![xbuild-version](https://img.shields.io/badge/Version-0.2.0-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) [![xbuild-status](https://img.shields.io/badge/Status-development%201-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild/releases) [![xbuild-build](https://img.shields.io/badge/Builds-7-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) |
 | [Docker Image](https://cloud.docker.com/u/xcompany/repository/docker/xcompany "Show Image on Docker Hub") | [![](https://images.microbadger.com/badges/image/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/commit/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own commit badge on microbadger.com") [![](https://images.microbadger.com/badges/license/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own license badge on microbadger.com") |
 | [Known Vulnerabilities](https://snyk.io//test/github/x-company/xbuild "View Security Status") |[![Known Vulnerabilities](https://snyk.io//test/github/x-company/xbuild/badge.svg?targetFile=package.json)](https://snyk.io//test/github/x-company/xbuild?targetFile=package.json) |
 | [Continuous Integration](https://circleci.com/gh/x-company/xbuild/tree/master "View Build Status") | [![CircleCI](https://circleci.com/gh/x-company/xbuild/tree/master.svg?style=svg)](https://circleci.com/gh/x-company/xbuild/tree/master) |
+
+## Development Dependencies
+
+We strongly suggest to use a Linux Distribution to develop for this Project. Windows is possible, but any features will not available for Development.
+
+- Docker 18.x
+- NodeJS 8.x or above
+- Yarn - `npm install -g yarn`
+- shellcheck - `apt install shellcheck`
+- bats - `apt install bats`
+- Visual Studio Code v1.34 to use the Dev Container and Code Snippets
+
+After you have installed this Tools open Visual Studio Code and install all recommended Extensions. Please notice also our [Contributing](CONTRIBUTING.md). Thanks.
 
 ## What is xBuild
 
@@ -13,7 +26,7 @@
 
 *xbuild* also initialize *xinit*. *xinit* is used to control your installed Services, like *mysql*, *nginx*, *httpd*, *redis* a.s.o.. *xinit* is a Node Cli App and can be found on <https://www.npmjs.com.>
 
-### Which Commands are currently in use
+### Which Commands/Tools are currently in use
 
 - *build* to build runit Services
 - *cleanup* to cleanup the Build Process
@@ -70,10 +83,9 @@ RUN /build.sh
 CMD [<Your Entry Point>]
 ```
 
-Now create a `build.sh` in the same Location as your Dockerfile and use the xBuild Commands in it. An Example could be found in `examples/default/build.sh`
+Now create a `build.sh` in the same Location as your Dockerfile and use the xBuild Commands in it. An Example could be found in `examples/default/build.sh`. If you use Visual Studio Code as Development Tool you can also use Code-Snippets with the Prefix `xb-...` to write easily further xbuild Commands.
 
-> [!NOTE]
-> Don't forget to add Execution Permission to the `build.sh`, e.g. `chmod +x build.sh`
+**NOTE:** Don't forget to add Execution Permission to the `build.sh`, e.g. `chmod +x build.sh`
 
 Last but not least build your Dockerfile with `docker build --tag <yourimage> .` That's it!
 
