@@ -7,19 +7,6 @@
 | [Known Vulnerabilities](https://snyk.io//test/github/x-company/xbuild "View Security Status") |[![Known Vulnerabilities](https://snyk.io//test/github/x-company/xbuild/badge.svg?targetFile=package.json)](https://snyk.io//test/github/x-company/xbuild?targetFile=package.json) |
 | [Continuous Integration](https://circleci.com/gh/x-company/xbuild/tree/master "View Build Status") | [![CircleCI](https://circleci.com/gh/x-company/xbuild/tree/master.svg?style=svg)](https://circleci.com/gh/x-company/xbuild/tree/master) |
 
-## Development Dependencies
-
-We strongly suggest to use a Linux Distribution to develop for this Project. Windows is possible, but any features will not available for Development.
-
-- Docker 18.x
-- NodeJS 8.x or above
-- Yarn - `npm install -g yarn`
-- shellcheck - `apt install shellcheck`
-- bats - `apt install bats`
-- Visual Studio Code v1.34 to use the Dev Container and Code Snippets
-
-After you have installed this Tools open Visual Studio Code and install all recommended Extensions. Please notice also our [Contributing](CONTRIBUTING.md). Thanks.
-
 ## What is xBuild
 
 *xbuild* brings Tools to easily build new Docker Base Images. The Main Goal of this Tools, is to build secure and small Docker Base Images, which can used as Base Image for your Application Containers.
@@ -88,6 +75,21 @@ Now create a `build.sh` in the same Location as your Dockerfile and use the xBui
 **NOTE:** Don't forget to add Execution Permission to the `build.sh`, e.g. `chmod +x build.sh`
 
 Last but not least build your Dockerfile with `docker build --tag <yourimage> .` That's it!
+
+## Development Dependencies
+
+We strongly suggest to use a Linux Distribution to develop for this Project.
+
+For Windows you have to use Visual Studio Code with the suggested Extensions. To start Development open this Project in a DevContainer (*F1 -> Remote Containers: Open Folder in Container*).
+
+- Docker 18.x
+- NodeJS 8.x or above
+- Yarn - `npm install -g yarn`
+- shellcheck - `apt install shellcheck`
+- bats - `apt install bats`
+- Visual Studio Code v1.34 to use the Dev Container and Code Snippets
+
+After you have installed this Tools open Visual Studio Code and install all recommended Extensions. Please notice also our [Contributing](CONTRIBUTING.md). Thanks.
 
 ## QandA - Questions and Answers
 

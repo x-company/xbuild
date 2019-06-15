@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-function mkfolders()
-{
+function mkfolders() {
     log "Create needed Folders"
     execute mkdir -p /etc/apt/sources.list.d
     execute mkdir -p /etc/apt/trusted.gpg.d
@@ -39,38 +38,35 @@ function mkfolders()
     execute chmod 755 /var/local/xinit/
 
     patterns=()
-    patterns+=( "/etc/apt/sources.list.d/" )
-    patterns+=( "/etc/apt/trusted.gpg.d/" )
-    patterns+=( "/etc/xinit/" )
-    patterns+=( "/etc/xinit/env.d/" )
-    patterns+=( "/etc/xinit/health.d/" )
-    patterns+=( "/etc/xinit/events.d/" )
-    patterns+=( "/usr/local/include/xbuild/" )
-    patterns+=( "/usr/local/include/xbuild/functions/" )
-    patterns+=( "/usr/local/include/xbuild/globals/" )
-    patterns+=( "/var/local/xbuild/" )
-    patterns+=( "/var/local/xinit/" )
+    patterns+=("/etc/apt/sources.list.d/")
+    patterns+=("/etc/apt/trusted.gpg.d/")
+    patterns+=("/etc/xinit/")
+    patterns+=("/etc/xinit/env.d/")
+    patterns+=("/etc/xinit/health.d/")
+    patterns+=("/etc/xinit/events.d/")
+    patterns+=("/usr/local/include/xbuild/")
+    patterns+=("/usr/local/include/xbuild/functions/")
+    patterns+=("/usr/local/include/xbuild/globals/")
+    patterns+=("/var/local/xbuild/")
+    patterns+=("/var/local/xinit/")
 
     log "Set Read/Write Permissions"
-    for pattern in "${patterns[@]}"
-    do
+    for pattern in "${patterns[@]}"; do
         [ -d "$pattern" ] || continue
 
         mapfile -t files < <(ls -1 "$pattern")
-        for file in "${files[@]}"
-        do
+        for file in "${files[@]}"; do
             execute chown root:root "${pattern}${file}"
             execute chmod 644 "${pattern}${file}"
         done
     done
 
     patterns=()
-    patterns+=( "/etc/xinit/xinit_profile.sh" )
-    patterns+=( "/usr/local/bin/healthcheck.sh" )
+    patterns+=("/etc/xinit/xinit_profile.sh")
+    patterns+=("/usr/local/bin/healthcheck.sh")
 
     log "Set Execute Permissions"
-    for pattern in "${patterns[@]}"
-    do
+    for pattern in "${patterns[@]}"; do
         [ -e "$pattern" ] || continue
 
         execute chown root:root "${pattern}"

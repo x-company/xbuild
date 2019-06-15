@@ -215,12 +215,12 @@ function prepare() {
             header "Install NodeJS '$nodever'"
             install --packages nodejs
 
-            log "Install yarn"
-            execute npm install -g yarn
+            log "Install xinit and yarn"
+            execute npm install -g xinit yarn
 
             if [ "$dev" = "true" ]; then
                 log "Install Node Dev Packages"
-                execute npm install -g typescript ts-node yarn mocha chai appversion-mgr
+                execute npm install -g typescript ts-node mocha chai appversion-mgr
             fi
         fi
 

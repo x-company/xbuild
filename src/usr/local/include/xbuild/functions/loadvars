@@ -1,19 +1,17 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-function loadvars()
-{
-	header "Load the Environment Variables"
+function loadvars() {
+    
+    header "Load the Environment Variables"
 
     log "Load persisted Environment Variables"
-    if [ -d /etc/xinit/env.d ]
-    then
-        for file in /etc/xinit/env.d/*
-        do
+    if [ -d /etc/xinit/env.d ]; then
+        for file in /etc/xinit/env.d/*; do
             [ -e "$file" ] || continue
 
             env_name=$(basename -- "$file")
-            env_value=$(< "$file")
+            env_value=$(<"$file")
 
             declare -x "$env_name=$env_value"
         done
@@ -32,39 +30,33 @@ function loadvars()
     setvar "XBUILD_DEBUG" "0"
 
     # Determine internal Mirror
-    isInternal=$(< /etc/resolv.conf sed '/fritz.box\|x-company.de/!d')
-    if [ ! -z "$isInternal" ]
-    then
+    isInternal=$(sed </etc/resolv.conf '/fritz.box\|x-company.de/!d')
+    if [ ! -z "$isInternal" ]; then
         setvar "XBUILD_MIRROR_IS_AVAIL" "true"
     else
         setvar "XBUILD_MIRROR_IS_AVAIL" "false"
     fi
 
     # Determine OS
-    osname=$(< /etc/os-release sed '/ID=ubuntu/!d')
-    if [ ! -z "$osname" ]
-    then
+    osname=$(sed </etc/os-release '/ID=ubuntu/!d')
+    if [ ! -z "$osname" ]; then
         setvar "XBUILD_OSNAME" "ubuntu"
     else
         setvar "XBUILD_OSNAME" "debian"
     fi
 
-
     # Determine OS Codename
     oscodenames=("buster" "jessie" "stretch" "bionic" "cosmic" "disco" "xenial")
-    for oscodename in "${oscodenames[@]}"
-    do
-        tmp=$(< /etc/os-release sed "/$oscodename/!d")
-        if [ ! -z "$tmp" ]
-        then
+    for oscodename in "${oscodenames[@]}"; do
+        tmp=$(sed </etc/os-release "/$oscodename/!d")
+        if [ ! -z "$tmp" ]; then
             setvar "XBUILD_OSCODENAME" "$oscodename"
             break
         fi
     done
 
-    osid=$(< /etc/os-release sed '/VERSION_ID=/!d' | sed 's/VERSION_ID=\|"//g')
-    if [ ! -z "$osid" ]
-    then
+    osid=$(sed </etc/os-release '/VERSION_ID=/!d' | sed 's/VERSION_ID=\|"//g')
+    if [ ! -z "$osid" ]; then
         setvar "XBUILD_OSRELEASE" "$osid"
     fi
 }

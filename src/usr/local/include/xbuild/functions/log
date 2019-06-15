@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
-function log()
-{
-	local msg="$1"
-	echo "${FOREROUND_COLOR}${msg}${RESET}"
+function log() {
+    local msg="$1"
+    echo "${FOREROUND_COLOR}${msg}${RESET}"
 }
