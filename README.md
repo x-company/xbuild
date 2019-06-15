@@ -1,11 +1,11 @@
 # xbuild - A easy to use Framework for your Installation Needs of Docker Base Images
 
-|  |  |
+| Type | Informations |
 |---|---|
-|Project| [![xbuild-version](https://img.shields.io/badge/Version-0.1.13-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) [![xbuild-status](https://img.shields.io/badge/Status-development%201-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild/releases) [![xbuild-build](https://img.shields.io/badge/Builds-7-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) |
-| Image | [![](https://images.microbadger.com/badges/image/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/commit/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own commit badge on microbadger.com") [![](https://images.microbadger.com/badges/license/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own license badge on microbadger.com") |
-| Security |[![Known Vulnerabilities](https://snyk.io//test/github/x-company/xbuild/badge.svg?targetFile=package.json)](https://snyk.io//test/github/x-company/xbuild?targetFile=package.json) |
-| Build | [![CircleCI](https://circleci.com/gh/x-company/xbuild/tree/master.svg?style=svg)](https://circleci.com/gh/x-company/xbuild/tree/master) |
+| [Source](https://github.com/x-company/xbuild "View Source") | [![xbuild-version](https://img.shields.io/badge/Version-0.1.13-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) [![xbuild-status](https://img.shields.io/badge/Status-development%201-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild/releases) [![xbuild-build](https://img.shields.io/badge/Builds-7-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) |
+| [Docker Image](https://cloud.docker.com/u/xcompany/repository/docker/xcompany "Show Image on Docker Hub") | [![](https://images.microbadger.com/badges/image/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/commit/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own commit badge on microbadger.com") [![](https://images.microbadger.com/badges/license/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own license badge on microbadger.com") |
+| [Known Vulnerabilities](https://snyk.io//test/github/x-company/xbuild "View Security Status") |[![Known Vulnerabilities](https://snyk.io//test/github/x-company/xbuild/badge.svg?targetFile=package.json)](https://snyk.io//test/github/x-company/xbuild?targetFile=package.json) |
+| [Continuous Integration](https://circleci.com/gh/x-company/xbuild/tree/master "View Build Status") | [![CircleCI](https://circleci.com/gh/x-company/xbuild/tree/master.svg?style=svg)](https://circleci.com/gh/x-company/xbuild/tree/master) |
 
 ## What is xBuild
 
