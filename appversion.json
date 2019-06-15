@@ -2,13 +2,13 @@
   "version": {
     "major": 0,
     "minor": 2,
-    "patch": 0,
+    "patch": 1,
     "badge": "[![xbuild-version](https://img.shields.io/badge/Version-${M.m.p}-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)"
   },
   "build": {
-    "date": "2019-06-15T09:34:00.419Z",
+    "date": "2019-06-15T12:30:31.633Z",
     "number": 1,
-    "total": 29,
+    "total": 30,
     "badge": "[![xbuild-build](https://img.shields.io/badge/Builds-${n}-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild)"
   },
   "status": {
