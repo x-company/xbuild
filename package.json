@@ -1,6 +1,6 @@
 {
   "name": "xbuild",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A Build System for Docker Images",
   "license": "MIT",
   "repository": {
@@ -35,7 +35,7 @@
     "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
     "test": "docker-compose -f ./.devcontainer/docker-compose.test.yml up --remove-orphans",
     "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all",
-    "debug" : "yarn build && docker run -it --entrypoint '/bin/bash' --rm $npm_package_config_image_name:latest"
+    "debug": "yarn build && docker run -it --entrypoint '/bin/bash' --rm $npm_package_config_image_name:latest"
   },
   "devDependencies": {
     "appversion-mgr": "^0.7.0",
