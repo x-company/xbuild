@@ -22,6 +22,9 @@ source /usr/local/include/xbuild/functions/debug
 # shellcheck source=functions/execute
 source /usr/local/include/xbuild/functions/execute
 
+# shellcheck source=functions/harden
+source /usr/local/include/xbuild/functions/harden
+
 # shellcheck source=functions/header
 source /usr/local/include/xbuild/functions/header
 
