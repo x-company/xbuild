@@ -3,6 +3,21 @@
 
 function build() {
 
+    services=$(find /build/services/* -type d)
+    for serviceDir in $services; do
+
+        service=$(basename "$serviceDir")
+        header "Build Service '$service'"
+
+        buildFile="/build/services/$service/$service.build"
+        if [ -f "$buildFile" ]; then
+            log "Execute Service Build File"
+            execute chmod 0755 "$buildFile"
+            execute chown -R root:root "$buildFile"
+            /bin/bash -l "$buildFile"
+        fi
+    done
+
     if [ -d "/build/fsroot" ]; then
         header "Copy File System Root Files"
         execute cp -rf /build/fsroot/* /
@@ -48,11 +63,10 @@ function build() {
         fi
     fi
 
-    services=$(find /build/services/* -type d)
     for serviceDir in $services; do
 
         service=$(basename "$serviceDir")
-        header "Build Service '$service'"
+        header "Configure Service '$service'"
 
         log "Prepare Service Home"
         local serviceHome="/etc/sv/$service"
@@ -88,12 +102,6 @@ function build() {
             copy "$healthFile" "/etc/xinit/health.d/"
         fi
 
-        buildFile="/build/services/$service/$service.build"
-        if [ -f "$buildFile" ]; then
-            log "Execute Service Build File"
-            execute chmod 0755 "$buildFile"
-            execute chown -R root:root "$buildFile"
-            /bin/bash -c "$buildFile"
-        fi
+        log "Service '$service' successful installed."
     done
 }
