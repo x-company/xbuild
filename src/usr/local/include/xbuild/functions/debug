@@ -8,6 +8,7 @@ function debug() {
     local debugmode="0"
     local devmode="0"
     local silent="0"
+    local reload="0"
 
     for arg in "${args[@]}"; do
         if [ "$arg" = "--on" ]; then
@@ -18,10 +19,20 @@ function debug() {
             devmode="1"
         fi
 
+        if [ "$arg" = "--reload" ]; then
+            reload="1"
+        fi
+
         if [ "$arg" = "--silent" ]; then
             silent="1"
         fi
     done
+
+    if [ "$reload" = "1" ]; then
+        if [ ! -z "$XBUILD_DEBUG" ]; then
+            debugmode="$XBUILD_DEBUG"
+        fi
+    fi
 
     if [ "$devmode" = "1" ]; then
         set -eux -o pipefail
