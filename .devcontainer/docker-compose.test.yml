@@ -12,5 +12,5 @@ services:
     depends_on:
       - build
     volumes:
-      - ..:/workspace
-    command: /usr/bin/bats -t /workspace/tests/unit/
+      - ../tests/unit/:/workspace/tests/unit/:ro
+    command: /usr/bin/bats /workspace/tests/unit/
