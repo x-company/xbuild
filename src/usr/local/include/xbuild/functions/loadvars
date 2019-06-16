@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 function loadvars() {
-    
+
     header "Load the Environment Variables"
 
     log "Load persisted Environment Variables"
