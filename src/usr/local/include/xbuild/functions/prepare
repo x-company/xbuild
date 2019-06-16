@@ -90,7 +90,7 @@ function prepare() {
         log "Update the Package Sources"
         execute apt-get -q update
         install --packages apt-utils
-        install --packages apt-transport-https gnupg ca-certificates software-properties-common psmisc
+        install --packages apt-transport-https
 
         if [ "$XBUILD_OSNAME" = "ubuntu" ]; then
             log "Fix some issues with APT packages."
@@ -186,7 +186,7 @@ function prepare() {
         execute apt-get -q update
 
         log "Install Install Packages and Tools"
-        install --packages wget curl less vim-tiny aptitude dirmngr command-not-found
+        install --packages software-properties-common psmisc gnupg ca-certificates wget curl less vim-tiny aptitude dirmngr command-not-found
 
         header "Execute System Upgrade"
         execute apt-get dist-upgrade -qy --no-install-recommends -o Dpkg::Options::="--force-confold"

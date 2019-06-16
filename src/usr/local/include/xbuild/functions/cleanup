@@ -50,6 +50,14 @@ function cleanup() {
         execute apt-get -qy purge "$package"
     done
 
+    log "Remove other System Packages"
+    # The following Packages cannot uninstalled automatically
+    execute apt-get -qy purge apt-transport-https
+    execute apt-get -qy purge gnupg
+    execute apt-get -qy purge vim-common
+    execute apt-get -qy purge python2.7
+    execute apt-get -qy purge python3
+    execute apt-get -qy purge python3.5-minimal
     execute apt-get -qy purge aptitude
     execute apt-get -qy autoremove
     execute apt-get clean

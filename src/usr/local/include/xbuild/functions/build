@@ -14,7 +14,7 @@ function build() {
             log "Execute Service Build File"
             execute chmod 0755 "$buildFile"
             execute chown -R root:root "$buildFile"
-            /bin/bash -l "$buildFile"
+            /bin/bash -l -c "$buildFile"
         fi
     done
 
