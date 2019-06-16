@@ -13,4 +13,4 @@ services:
       - build
     volumes:
       - ../tests/unit/:/workspace/tests/unit/:ro
-    command: /usr/bin/bats /workspace/tests/unit/
+    command: /usr/bin/bats -t /workspace/tests/unit/
