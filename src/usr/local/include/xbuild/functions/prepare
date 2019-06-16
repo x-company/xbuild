@@ -12,6 +12,23 @@ function prepare() {
     local dev="false"
     local nodever="12"
     local dotnetver="2.2"
+    local userconfigExists="false"
+    # If flag exists a prepare is already done
+    local flag_file=/var/local/xbuild/finished
+
+    header "Install Core Utils for Package Installations"
+
+    if [ -d /etc/xbuild/sources.list.d ]; then
+        userconfigExists="true"
+
+        log "Userdefined Sources Lists exists. Use this lists."
+        rm -f /etc/apt/sources.list
+        touch /etc/apt/sources.list
+
+        rm -rf /etc/apt/sources.list.d/*
+        cp -rf /etc/xbuild/sources.list.d/* /etc/apt/sources.list.d/
+        cp -rf /etc/xbuild/trusted.gpg.d/* /etc/apt/trusted.gpg.d/
+    fi
 
     if [ ! -z "$args" ]; then
         for arg in "${args[@]}"; do
@@ -68,16 +85,12 @@ function prepare() {
         done
     fi
 
-    # If flag exists a prepare is already done
-    flag_file=/var/local/xbuild/finished
-
-    header "Install Core Utils for Package Installations"
-
     if [ ! -f "$flag_file" ]; then
 
         log "Update the Package Sources"
         execute apt-get -q update
-        install --packages apt-transport-https gnupg ca-certificates apt-utils software-properties-common psmisc
+        install --packages apt-utils
+        install --packages apt-transport-https gnupg ca-certificates software-properties-common psmisc
 
         if [ "$XBUILD_OSNAME" = "ubuntu" ]; then
             log "Fix some issues with APT packages."
@@ -95,11 +108,6 @@ function prepare() {
 
         header "Prepare Package Source Lists"
         rm -f /etc/apt/sources.list
-
-        userconfigExists="false"
-        if [ -d /etc/xbuild/sources.list.d ]; then
-            userconfigExists="true"
-        fi
 
         if [ "$userconfigExists" = "false" ]; then
 
@@ -165,34 +173,26 @@ function prepare() {
                     } >/etc/apt/sources.list.d/powershell.list
                 fi
             fi
-        else
-            log "Userdefined Sources Lists exists. Use this lists."
-
-            touch /etc/apt/sources.list
-
-            rm -rf /etc/apt/sources.list.d/*
-            cp -rf /etc/xbuild/sources.list.d/* /etc/apt/sources.list.d/
-            cp -rf /etc/xbuild/trusted.gpg.d/* /etc/apt/trusted.gpg.d/
         fi
 
         header "Create Folders and set the Folder Security"
         mkfolders
 
         header "Prepare now the System with the configured Package Sources"
-        log "Cleanup Package Sources"
+        log "Reinitialze Package Sources"
         execute apt-get clean
         execute apt-get -qy autoremove
         execute rm -rf /var/lib/apt/lists/*
         execute apt-get -q update
 
         log "Install Install Packages and Tools"
-        install --packages wget curl less vim-tiny gpg-agent aptitude dirmngr
+        install --packages wget curl less vim-tiny aptitude dirmngr command-not-found
 
         header "Execute System Upgrade"
         execute apt-get dist-upgrade -qy --no-install-recommends -o Dpkg::Options::="--force-confold"
 
         header "Configure timezone"
-        echo "Europe/Berlin" >/etc/timezone
+        execute ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime
         dpkg-reconfigure -f noninteractive tzdata
 
         header "Configure locale"
@@ -209,8 +209,9 @@ function prepare() {
         locale-gen de_DE
         update-locale LANG=de_DE.UTF-8 LC_CTYPE=de_DE.UTF-8
 
-        setvar "LANG" "de_DE.UTF-8"
         setvar "LC_CTYPE" "de_DE.UTF-8"
+        setvar "LANG" "de_DE.UTF-8"
+        setvar "LANGUAGE" "de_DE:de"
 
         header "Link Profile Loader Script"
         execute ln -s /etc/xinit/xinit_profile.sh /etc/profile.d/
