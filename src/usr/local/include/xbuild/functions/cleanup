@@ -63,7 +63,18 @@ function cleanup() {
     log "Remove SSH Host keys"
     execute rm -f /etc/ssh/ssh_host_*
 
-    Log "Remove python bytecode"
-    find / -mount -name "*.pyc" -delete
-    find / -mount -name "*__pycache__*" -delete
+    log "Remove python bytecode"
+    execute find / -mount -name "*.pyc" -delete
+    execute find / -mount -name "*__pycache__*" -delete
+
+    header "Update Environment Variables"
+
+    log "Set Environment Variables for the Image Runtime"
+    setvar "DEBIAN_FRONTEND" "teletype" --silent
+    setvar "LC_ALL" "C" --silent
+    setvar "LC_CTYPE" "de_DE.UTF-8" --silent
+    setvar "LANG" "de_DE.UTF-8" --silent
+    setvar "LANGUAGE" "de_DE:de" --silent
+
+    savevars
 }
