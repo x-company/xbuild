@@ -7,6 +7,7 @@ function debug() {
     args=("$@")
     local debugmode="0"
     local devmode="0"
+    local silent="0"
 
     for arg in "${args[@]}"; do
         if [ "$arg" = "--on" ]; then
@@ -16,6 +17,10 @@ function debug() {
         if [ "$arg" = "--dev" ]; then
             devmode="1"
         fi
+
+        if [ "$arg" = "--silent" ]; then
+            silent="1"
+        fi
     done
 
     if [ "$devmode" = "1" ]; then
@@ -24,5 +29,9 @@ function debug() {
         set -eu -o pipefail
     fi
 
-    setvar "XBUILD_DEBUG" "$debugmode"
+    if [ "$silent" = "1" ]; then
+        setvar "XBUILD_DEBUG" "$debugmode" --silent
+    else
+        setvar "XBUILD_DEBUG" "$debugmode"
+    fi
 }
