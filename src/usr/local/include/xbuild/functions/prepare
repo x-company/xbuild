@@ -251,7 +251,7 @@ function prepare() {
 
         if [ "$dev" = "true" ]; then
             header "Install Development Tools"
-            install --packages bats shellcheck git
+            install --packages bats shellcheck git openssh-client
         fi
 
         execute touch $flag_file
