@@ -5,7 +5,7 @@ services:
     image: xcompany/xbuild:devcontainer
     build:
       context: ..
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.devcontainer
 
   unit:
     image: xcompany/xbuild:devcontainer
@@ -13,4 +13,4 @@ services:
       - build
     volumes:
       - ..:/workspace
-    command: /usr/bin/bats /workspace/tests/unit/
+    command: /usr/bin/bats -t /workspace/tests/unit/

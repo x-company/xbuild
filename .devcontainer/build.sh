@@ -10,9 +10,6 @@ loadvars
 # Prepare the Image in Development Mode
 prepare --dev
 
-# Persist Environment Variables
-savevars
-
 # Cleanup the Build and the Image. It should called when you finished your Work
 cleanup
 
