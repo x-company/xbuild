@@ -11,7 +11,7 @@
 
 *xbuild* brings Tools to easily build new Docker Base Images. The Main Goal of this Tools, is to build secure and small Docker Base Images, which can used as Base Image for your Application Containers.
 
-*xbuild* also initialize *xinit*. *xinit* is used to control your installed Services, like *mysql*, *nginx*, *httpd*, *redis* a.s.o.. *xinit* is a Node Cli App and can be found on <https://www.npmjs.com.>
+*xbuild* also initialize *xinit*. *xinit* is used to control your installed Services, like *mysql*, *nginx*, *httpd*, *redis* a.s.o.. *xinit* is a Node Cli App and can be found [here](https://www.npmjs.com/package/xinit).
 
 ### Which Commands/Tools are currently in use
 
