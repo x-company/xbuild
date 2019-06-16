@@ -8,9 +8,12 @@ source /usr/local/include/xbuild/loader
 loadvars
 
 # Prepare the Image in Development Mode
-prepare --dev
+#prepare --dev
 
 # Cleanup the Build and the Image. It should called when you finished your Work
-cleanup
+#cleanup
+
+# Hardening the Image
+hardening
 
 header "That's it. xBuild has finished his work. Have a nice Day"

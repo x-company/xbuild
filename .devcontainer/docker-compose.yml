@@ -4,7 +4,7 @@ services:
   build:
     image: xcompany/xbuild:devcontainer
     build:
-      context: ..
+      context: ../
       dockerfile: Dockerfile.devcontainer
 
   run:
@@ -13,7 +13,15 @@ services:
       - build
     volumes:
       # Map the current Source Folder
-      - ..:/workspace
+      - ../:/workspace/
+      - ./build.sh:/build/build.sh
+      - ../src/etc/apt/apt.conf:/etc/apt/apt.conf
+      - ../src/etc/apt/sources.list.d/:/etc/apt/sources.list.d/
+      - ../src/etc/xinit/:/etc/xinit/
+      - ../src/usr/local/bin/healthcheck.sh:/usr/local/bin/healthcheck.sh
+      - ../src/usr/local/include/xbuild:/usr/local/include/xbuild
+      - ../src/var/local/xbuild:/var/local/xbuild
+      - ../src/var/local/xinit:/var/local/xinit
       # Configure Git with the current local Settings
       - ~/.gitconfig:/root/.gitconfig
       # Persists Extensions and VSCode Server

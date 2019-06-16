@@ -3,7 +3,7 @@
 	"name": "xcompany/xbuild",
     "dockerComposeFile": "docker-compose.yml",
     "service": "run",
-    "workspaceFolder": "/workspace",
+    "workspaceFolder": "/workspace/",
     "shutdownAction": "stopCompose",
 
 
