@@ -8,7 +8,7 @@ function install() {
     local packages=""
 
     # This Packages will not saved. So it could later removed by cleanup
-    excludes=("apt-utils" "software-properties-common" "psmisc" "wget" "curl" "less" "vim-tiny" "gpg-agent" "dirmngr")
+    excludes=("apt-utils" "software-properties-common" "psmisc" "wget" "curl" "less" "vim-tiny" "dirmngr" "command-not-found")
 
     # shellcheck disable=SC2128
     if [ -z "$args" ]; then
