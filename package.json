@@ -33,7 +33,7 @@
     "prebuild": "appvmgr update build && yarn dockerfile:build",
     "build": "yarn docker:build",
     "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
-    "test": "docker-compose -f ./.devcontainer/docker-compose.unit.yml up --remove-orphans",
+    "test": "docker-compose -f ./.devcontainer/docker-compose.test.yml up --remove-orphans",
     "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all"
   },
   "devDependencies": {
