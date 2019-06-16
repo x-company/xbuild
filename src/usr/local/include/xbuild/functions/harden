@@ -5,8 +5,22 @@ function hardening() {
 
     header "Hardening the Image"
 
+    log "Remove Packages which could not automatically uninstalled"
+    execute apt-get -qy purge gnupg
+    execute apt-get -qy purge vim-common
+    execute apt-get -qy purge readline-common
+    execute apt-get -qy purge python3
+    execute apt-get -qy purge python3.5-minimal
+    execute apt-get -qy purge python2.7-minimal
+    execute apt-get -qy purge python
+    execute apt-get -qy purge apt-transport-https
+    execute apt-get -qy purge aptitude
+
+    execute apt-get -qy autoremove
+    execute apt-get clean
+
     log "Remove existing crontabs, if any."
-    exeucte rm -rf /var/spool/cron
+    execute rm -rf /var/spool/cron
     execute rm -rf /etc/crontabs
     execute rm -rf /etc/periodic
 
@@ -62,7 +76,7 @@ function hardening() {
     execute rm -rf /etc/acpi
 
     log "Remove root homedir since we do not need it"
-    execute rm -fr /root
+    # execute rm -fr /root
 
     log "Remove fstab since we do not need it."
     execute rm -f /etc/fstab
