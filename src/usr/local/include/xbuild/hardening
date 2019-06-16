@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
-set -x
 
 #
 # Docker build calls this script to harden the image during build.
