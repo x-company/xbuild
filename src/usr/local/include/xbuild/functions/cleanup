@@ -62,4 +62,8 @@ function cleanup() {
 
     log "Remove SSH Host keys"
     execute rm -f /etc/ssh/ssh_host_*
+
+    Log "Remove python bytecode"
+    find / -mount -name "*.pyc" -delete
+    find / -mount -name "*__pycache__*" -delete
 }
