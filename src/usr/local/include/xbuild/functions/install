@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 # -*- coding: utf-8 -*-
 
+# Installs an Package with minimal effort
 function install() {
-    # Installs an Package with minimal effort
 
     args=("$@")
     local packages=""
 
     # This Packages will not saved. So it could later removed by cleanup
-    excludes=("apt-utils" "software-properties-common" "psmisc" "wget" "dirmngr")
+    excludes=("apt-utils" "software-properties-common" "psmisc" "wget" "curl" "less" "vim-tiny" "gpg-agent" "dirmngr")
 
     # shellcheck disable=SC2128
     if [ -z "$args" ]; then
