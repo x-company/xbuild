@@ -35,7 +35,9 @@
     "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
     "test": "docker-compose -f ./.devcontainer/docker-compose.test.yml up --remove-orphans",
     "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all",
-    "debug": "yarn build && docker run -it --entrypoint '/bin/bash' --rm $npm_package_config_image_name:latest"
+    "debug": "yarn build && docker run -it --entrypoint '/bin/bash' --rm $npm_package_config_image_name:latest",
+    "update" : "./install-s6-overlay.sh"
+
   },
   "devDependencies": {
     "appversion-mgr": "^0.7.0",
