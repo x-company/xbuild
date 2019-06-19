@@ -33,8 +33,14 @@ function build() {
             execute chown root:root "$event"
             execute chmod 0755 "$event"
 
-            execute cp -rf "$event" /etc/xinit/events.d
+            ext=${event##*\.}
+            if [ "$ext" = "run" ]; then
+                execute cp -rf "$event" /etc/cont-init.d
+            fi
 
+            if [ "$ext" = "finish" ]; then
+                execute cp -rf "$event" /etc/cont-finish.d
+            fi
         done
     fi
 
