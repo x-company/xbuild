@@ -216,9 +216,6 @@ function prepare() {
         header "Link Profile Loader Script"
         execute ln -s /etc/xinit/xinit_profile.sh /etc/profile.d/
 
-        header "Install runit daemon"
-        install --packages runit-systemd
-
         if [ "$withnode" = "true" ]; then
             header "Install NodeJS '$nodever'"
             install --packages nodejs

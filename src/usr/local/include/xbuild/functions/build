@@ -20,7 +20,7 @@ function build() {
 
     if [ -d "/build/fsroot" ]; then
         header "Copy File System Root Files"
-        execute cp -rf /build/fsroot/* /
+        execute cp -rf /build/rootfs/* /
         execute rm -rf /build/README.md
     fi
 
@@ -28,39 +28,14 @@ function build() {
 
         for event in /build/events/*; do
 
-            if [ "$event" != "/build/events/post" ] && [ "$event" != "/build/events/prev" ]; then
-                header "Copy Events ..."
+            header "Copy Events ..."
 
-                execute chown root:root "$event"
-                execute chmod 0755 "$event"
+            execute chown root:root "$event"
+            execute chmod 0755 "$event"
 
-                execute cp -rf "$event" /etc/xinit/events.d
-            fi
+            execute cp -rf "$event" /etc/xinit/events.d
+
         done
-
-        if [ -d "/build/events/post" ]; then
-
-            for event in /build/events/post/*; do
-                header "Copy Post Events ..."
-
-                execute chown root:root "$event"
-                execute chmod 0755 "$event"
-
-                execute cp -rf "$event" /etc/xinit/events.d/post.d
-            done
-        fi
-
-        if [ -d "/build/events/prev" ]; then
-
-            for event in /build/events/prev/*; do
-                header "Copy Prev Events ..."
-
-                execute chown root:root "$event"
-                execute chmod 0755 "$event"
-
-                execute cp -rf "$event" /etc/xinit/events.d/prev.d
-            done
-        fi
     fi
 
     for serviceDir in $services; do
@@ -69,15 +44,10 @@ function build() {
         header "Configure Service '$service'"
 
         log "Prepare Service Home"
-        local serviceHome="/etc/sv/$service"
-        local activeServiceHome="/etc/service/$service"
+        local serviceHome="/etc/service.d/$service"
 
         if [ -d "$serviceHome" ]; then
             execute rm -rf "$serviceHome"
-        fi
-
-        if [ -d "$activeServiceHome" ]; then
-            execute rm -rf "$activeServiceHome"
         fi
 
         execute mkdir -p "$serviceHome"
@@ -93,8 +63,6 @@ function build() {
             execute chmod 0755 "$serviceHome/finish"
             execute chown root:root "$serviceHome/finish"
         fi
-
-        execute ln -s "$serviceHome" "$activeServiceHome"
 
         healthFile="/build/services/$service/$service.health"
         if [ -f "$healthFile" ]; then
