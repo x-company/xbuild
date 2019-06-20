@@ -20,7 +20,7 @@
     "image_name": "xcompany/xbuild"
   },
   "scripts": {
-    "dockerfile:XBUILD_BUILD_DATE": "echo \"$(sed -e \"s/__XBUILD_BUILD_DATE__/$(date -u +'%Y-%m-%dT%H:%M:%SZ')/g\" ./Dockerfile.tmpl)\" > ./Dockerfile",
+    "dockerfile:XBUILD_BUILD_DATE": "echo \"$(sed -e \"s/__XBUILD_BUILD_DATE__/$(date -u +'%Y-%m-%dT%H:%M:%SZ')/g\" ./src/xcompany/xbuild/Dockerfile.tmpl)\" > ./Dockerfile",
     "dockerfile:XBUILD_VCS_REF": "echo \"$(sed -e \"s/__XBUILD_VCS_REF__/$(git rev-parse --short HEAD)/g\" ./Dockerfile)\" > ./Dockerfile",
     "dockerfile:XBUILD_VERSION": "echo \"$(sed -e \"s/__XBUILD_VERSION__/$npm_package_version/g\" ./Dockerfile)\" > ./Dockerfile",
     "dockerfile:build": "yarn dockerfile:XBUILD_BUILD_DATE && yarn dockerfile:XBUILD_VCS_REF && yarn dockerfile:XBUILD_VERSION",
