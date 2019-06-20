@@ -18,6 +18,8 @@ services:
       - ../src/xcompany/xbuild/build/rootfs/apt/apt.conf:/etc/apt/apt.conf
       - ../src/xcompany/xbuild/build/rootfs/apt/sources.list.d:/etc/apt/sources.list.d/
       - ../src/xcompany/xbuild/build/rootfs/etc/xbuild/:/etc/xbuild/
+      - ../src/xcompany/xbuild/build/rootfs/usr/local/bin/:/usr/local/bin/
+      - ../src/xcompany/xbuild/build/rootfs/usr/local/include/:/usr/local/include/
       - ../src/xcompany/xbuild/build/rootfs/var/local/xbuild:/var/local/xbuild
       # Configure Git with the current local Settings
       - ~/.gitconfig:/root/.gitconfig

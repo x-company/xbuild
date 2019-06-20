@@ -1,11 +1,18 @@
-#!/usr/bin/execlineb -P
+#!/bin/execlineb -P
 
 define envdir /etc/xbuild/env.d
-if { s6-mkdir -p ${envdir} }
-
-if { s6-echo "[xbuild] create default environment" }
 
 foreground {
-        apt-get -q update
+    if -n { s6-test -d ${envdir} }
+    s6-mkdir -p ${envdir}
 }
+
+if { s6-echo "[xbuild] Update the Package Sources" }
+foreground {
+    apt-get -q update
+    apt-get install -qy --no-install-recommends apt-utils
+    apt-get install -qy --no-install-recommends apt-transport-https
+}
+
+
 exit 0
