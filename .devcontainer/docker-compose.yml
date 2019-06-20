@@ -5,7 +5,7 @@ services:
     image: xcompany/xbuild:devcontainer
     build:
       context: ../
-      dockerfile: Dockerfile.devcontainer
+      dockerfile: Dockerfile
 
   run:
     image: xcompany/xbuild:devcontainer
