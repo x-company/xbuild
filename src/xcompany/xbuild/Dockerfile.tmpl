@@ -1,10 +1,11 @@
+
 FROM debian:stretch-slim
 
 ARG XBUILD_BUILD_DATE="__XBUILD_BUILD_DATE__"
 ARG XBUILD_VCS_REF="__XBUILD_VCS_REF__"
 ARG XBUILD_VERSION="__XBUILD_VERSION__"
 ARG XBUILD_IMAGE_NAME="xcompany/xbuild"
-ARG XBUILD_IMAGE_DESCRIPTION="A easy to use Framework for your Installation Needs of Docker Base Images"
+ARG XBUILD_IMAGE_DESCRIPTION="Your Image Description"
 ARG XBUILD_VENDOR="IT Solutions Roland Breitschaft"
 ARG XBUILD_VENDOR_URL="https://www.x-company.de"
 ARG XBUILD_VENDOR_MAIL="info@x-company.de"
@@ -24,5 +25,6 @@ LABEL  de.x-company.build-date=$XBUILD_BUILD_DATE \
        description=$XBUILD_IMAGE_DESCRIPTION \
        version=$XBUILD_VERSION
 
-# Copy xbuild Files to root
-COPY ./src/ /
+COPY   ./src/xcompany/xbuild/build/ /build/
+
+WORKDIR /
