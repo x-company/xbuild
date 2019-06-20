@@ -1,0 +1,11 @@
+#!/usr/bin/execlineb -P
+
+define envdir /etc/xbuild/env.d
+if { s6-mkdir -p ${envdir} }
+
+if { s6-echo "[xbuild] create default environment" }
+
+foreground {
+        apt-get -q update
+}
+exit 0
