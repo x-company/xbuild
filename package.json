@@ -29,14 +29,14 @@
     "docker:clean:latest": "docker image rm -f $npm_package_config_image_name:latest",
     "docker:build": "docker build --tag $npm_package_config_image_name:$npm_package_version --force-rm .",
     "docker:tag": "docker image tag $npm_package_config_image_name:$npm_package_version $npm_package_config_image_name:latest",
+    "s6:update": "./.devcontainer/install-s6-overlay.sh",
     "clean": "docker system prune -f && docker container prune -f  && yarn docker:clean:image && yarn docker:clean:latest && yarn docker:clean:dev",
-    "prebuild": "appvmgr update build && yarn dockerfile:build",
+    "prebuild": "appvmgr update build && yarn dockerfile:build && yarn s6:update",
     "build": "yarn docker:build",
     "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
     "test": "docker-compose -f ./.devcontainer/docker-compose.test.yml up --remove-orphans",
     "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all",
-    "debug": "yarn build && docker run -it --entrypoint '/bin/bash' --rm $npm_package_config_image_name:latest",
-    "update": "./install-s6-overlay.sh"
+    "debug": "yarn build && docker run -it --entrypoint '/bin/bash' --rm $npm_package_config_image_name:latest"
   },
   "devDependencies": {
     "appversion-mgr": "^0.7.0",
