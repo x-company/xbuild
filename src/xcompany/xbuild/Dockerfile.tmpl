@@ -25,6 +25,7 @@ LABEL  de.x-company.build-date=$XBUILD_BUILD_DATE \
        description=$XBUILD_IMAGE_DESCRIPTION \
        version=$XBUILD_VERSION
 
+COPY   ./src/xcompany/xbuild/rootfs/ /
 COPY   ./src/xcompany/xbuild/build/ /build/
 
 WORKDIR /
