@@ -1,8 +1,8 @@
 
 FROM debian:stretch-slim
 
-ARG XBUILD_BUILD_DATE="2019-06-20T21:51:38Z"
-ARG XBUILD_VCS_REF="daef6db"
+ARG XBUILD_BUILD_DATE="2019-06-21T07:26:00Z"
+ARG XBUILD_VCS_REF="9cf11c2"
 ARG XBUILD_VERSION="0.3.0"
 ARG XBUILD_IMAGE_NAME="xcompany/xbuild"
 ARG XBUILD_IMAGE_DESCRIPTION="Your Image Description"
@@ -25,6 +25,7 @@ LABEL  de.x-company.build-date=$XBUILD_BUILD_DATE \
        description=$XBUILD_IMAGE_DESCRIPTION \
        version=$XBUILD_VERSION
 
+COPY   ./src/xcompany/xbuild/rootfs/ /
 COPY   ./src/xcompany/xbuild/build/ /build/
 
 WORKDIR /
