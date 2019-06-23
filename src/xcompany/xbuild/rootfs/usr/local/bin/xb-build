@@ -23,9 +23,11 @@ foreground {
 
 foreground {
 
-    if { xb-header "Execute global Build File" }
+    if { xb-header "Execute custom Build File" }
 
     if { s6-test -f /build/build }
+
+    if { xb-log "Build" }
     s6-chmod 0755 /build/build
     /build/build
 }
