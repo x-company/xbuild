@@ -14,6 +14,7 @@ services:
     volumes:
       # Map the current Source Folder
       - ../:/workspace/
+      - ../tests/unit/:/tests/
       - ../src/xcompany/xbuild/build/:/build/
       - ../src/xcompany/xbuild/rootfs/etc/xbuild/:/etc/xbuild/
       - ../src/xcompany/xbuild/rootfs/etc/cont-finish.d/:/etc/cont-finish.d/
