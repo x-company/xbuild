@@ -1,0 +1,25 @@
+#!/usr/bin/execlineb
+
+if { xb-env }
+s6-envdir /etc/xbuild/env.d/
+
+foreground {
+
+    elgetpositionals -P0
+
+    if -n { s6-test -z "$1" }
+
+    forx folder { ${@} }
+    importas -u folder folder
+
+    if { xb-log "Remove Files in ${folder}" }
+
+    foreground {
+        pipeline { s6-ls -0 -- ${folder} }
+        forstdin -0 -o 0 -- item
+        importas -u item item
+
+        if { xb-log "Remove File ${folder}/${item}" }
+        s6-rmrf ${folder}/${item}
+    }
+}
