@@ -53,6 +53,5 @@ foreground {
 }
 
 if { xb-header "Execute Tests" }
-if { ls -l /workspace/ }
-if { s6-test -d /workspace/tests/unit }
-cd /workspace/tests/unit /usr/bin/bats .
+if { s6-test -d /tests }
+cd /tests /usr/bin/bats .
