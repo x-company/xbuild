@@ -6,7 +6,7 @@ yarn-error.log
 3rdParty/phusion/passenger-docker-master
 update
 src/xcompany/xbuild/rootfs/etc/services.d/*
+src/xcompany/xbuild/rootfs/etc/cont-init.d/99-socklog.init
 src/xcompany/xbuild/rootfs/etc/xbuild/apt/sources.list
 src/xcompany/xbuild/rootfs/etc/xbuild/env.d/*
 src/xcompany/xbuild/rootfs/var/local/xbuild
-src/xcompany/xbuild/rootfs/etc/cont-init.d/99-socklog.init
