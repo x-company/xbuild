@@ -2,7 +2,7 @@
 
 | Type | States |
 |---|---|
-| [Source](https://github.com/x-company/xbuild "View Source") | [![xbuild-version](https://img.shields.io/badge/Version-0.4.0-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) [![xbuild-status](https://img.shields.io/badge/Status-development%201-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild/releases) [![xbuild-build](https://img.shields.io/badge/Builds-27-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) |
+| [Source](https://github.com/x-company/xbuild "View Source") | [![xbuild-version](https://img.shields.io/badge/Version-0.4.0-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) [![xbuild-status](https://img.shields.io/badge/Status-development%201-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild/releases) [![xbuild-build](https://img.shields.io/badge/Builds-14-brightgreen.svg?style=flat)](https://github.com/x-company/xbuild) |
 | [Docker Image](https://cloud.docker.com/u/xcompany/repository/docker/xcompany/xbuild "Show Image on Docker Hub") | [![](https://images.microbadger.com/badges/image/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own image badge on microbadger.com") [![](https://images.microbadger.com/badges/version/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/commit/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own commit badge on microbadger.com") [![](https://images.microbadger.com/badges/license/xcompany/xbuild.svg)](https://microbadger.com/images/xcompany/xbuild "Get your own license badge on microbadger.com") |
 | [Known Vulnerabilities](https://snyk.io//test/github/x-company/xbuild "View Security Status") |[![Known Vulnerabilities](https://snyk.io//test/github/x-company/xbuild/badge.svg?targetFile=package.json)](https://snyk.io//test/github/x-company/xbuild?targetFile=package.json) |
 | [Continuous Integration](https://circleci.com/gh/x-company/xbuild/tree/master "View Build Status") | [![CircleCI](https://circleci.com/gh/x-company/xbuild/tree/master.svg?style=svg)](https://circleci.com/gh/x-company/xbuild/tree/master) |
@@ -55,7 +55,7 @@ Normally a Service, e.g. *nginx*, *mysql* a.s.o will installed by the Docker *Ru
 
 ## How to use it
 
-For your Development Needs we create a CLI Tool called *xbuild-mgr*. This tool helps you to create easily Services for your own Docker Images. *xbuild-mgr* is a NodeJS Tool which can installed with `npm install -g xbuild-mgr`. To create a Basic Layout call `xbuild layout create`. To add an Service call `xbuild service create <servicename>`
+For your Development Needs we create a CLI Tool called *xbuild-mgr*. This tool helps you to create easily Services for your own Docker Images. *xbuild-mgr* is a NodeJS Tool which can installed with `npm install -g xbuild-mgr`. To create a Basic Layout call `xbuild layout create <imagename>`. To add an Service call `xbuild service create <servicename>`
 
 ## Development Dependencies
 
