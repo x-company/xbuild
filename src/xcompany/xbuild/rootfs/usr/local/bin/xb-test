@@ -53,6 +53,17 @@ foreground {
 }
 
 if { xb-header "Execute Tests" }
-if { s6-test -d /tests }
-if { xb-log "Execute Unit Tests" }
-/usr/bin/bats /tests/
+ifelse { s6-test -d /tests }
+{
+    if {
+        ifelse { /usr/bin/bats /tests/ }
+        {
+            if { xb-log "Unit Tests successful executed." }
+            exit 0
+        }
+        if { xb-log "Unit Tests was not successful" }
+        exit 1
+    }
+}
+if { xb-log "Unit Tests could not found" }
+exit 1
