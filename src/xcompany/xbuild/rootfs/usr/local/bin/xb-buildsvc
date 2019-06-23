@@ -1,0 +1,89 @@
+#!/usr/bin/execlineb -P
+
+
+pipeline { s6-ls -0 -- /build/services }
+forstdin -o 0 -0 -- service
+importas -u service service
+
+foreground {
+    if -n { s6-test -d /etc/services.d/${service} }
+    if { xb-log "Create Service Home" }
+    s6-mkdir -p /etc/services.d/${service}
+}
+
+foreground {
+    if { s6-test -f /build/services/${service}/${service}.run }
+    if { xb-log "Copy Service '${service}' Run File" }
+    s6-hiercopy /build/services/${service}/${service}.run /etc/services.d/${service}/run
+}
+
+foreground {
+    if { s6-test -f /build/services/${service}/${service}.finish }
+    if { xb-log "Copy Service '${service}' Finish File" }
+    s6-hiercopy /build/services/${service}/${service}.finish /etc/services.d/${service}/finish
+}
+
+foreground {
+    if { s6-test -d /build/services/${service}/log }
+    if { xb-log "Copy Service '${service}' Log File" }
+
+    foreground {
+        if -n { s6-test -d /etc/services.d/${service}/log }
+        s6-mkdir -p /etc/services.d/${service}/log
+    }
+    s6-hiercopy /build/services/${service}/log/${service}.run /etc/services.d/${service}/log/run
+}
+
+foreground {
+    if { s6-test -f /build/services/${service}/${service}.health }
+    if { xb-log "Copy Service '${service}' Health File" }
+
+    foreground {
+        if -n { s6-test -d /etc/xbuild/health.d }
+        s6-mkdir -p /etc/xbuild/health.d
+    }
+
+    s6-hiercopy /build/services/${service}/${service}.health /etc/xbuild/health.d/
+}
+
+foreground {
+    pipeline { s6-ls -0 -- /build/services/${service} }
+    forstdin -o 0 -0 -- item
+    importas -u item item
+
+    pipeline { s6-echo -n ${item} }
+    pipeline { s6-cut -d . -f2 -s }
+    forstdin -- ext
+    importas -u ext ext
+
+    foreground {
+        if { s6-test "${ext}" = "init" }
+        if { xb-log "Copy Service '${service}' Container Init File" }
+        s6-hiercopy /build/services/${service}/${item} /etc/cont-init.d/${item}
+    }
+
+    foreground {
+        if { s6-test "${ext}" = "shutdown" }
+        if { xb-log "Copy Service '${service}' Container Finish File" }
+        s6-hiercopy /build/services/${service}/${item} /etc/cont-finish.d/${item}
+    }
+
+    foreground {
+        if { s6-test "${ext}" = "attrs" }
+        if { xb-log "Copy Service '${service}' Attribute Fix" }
+        s6-hiercopy /build/services/${service}/${item} /etc/fix-attrs.d/${item}
+    }
+
+    foreground {
+        if { s6-test "${ext}" = "logrules" }
+        if { xb-log "Copy Service '${service}' Log Rules" }
+        s6-hiercopy /build/services/${service}/${item} /etc/socklog.rules/${item}
+    }
+}
+
+foreground {
+    if { xb-log "Execute Build for Service '${service}'" }
+    if { s6-test -f /build/services/${service}/${service}.build }
+    s6-chmod 0755 /build/services/${service}/${service}.build
+    /build/services/${service}/${service}.build
+}
