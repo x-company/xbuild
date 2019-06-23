@@ -91,10 +91,7 @@ foreground {
     if { xb-log "Cleanup Package Lists and Temp Folder" }
     foreground { xb-rmrf /tmp /var/lib/apt/lists }
 
-    if { xb-log "Remove SSH Host keys" }
-    if { rm -rf /etc/ssh/ssh_host_* }
-
-    if { xb-log "Remove python bytecode" }
+    if { xb-log "Remove python bytecode (if exists)" }
     if { find / -mount -name "*.pyc" -delete }
     if { find / -mount -name "*__pycache__*" -delete }
 }
