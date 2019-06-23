@@ -1,0 +1,80 @@
+#!/usr/bin/execlineb -P
+
+if { xb-env }
+s6-envdir /etc/xbuild/env.d/
+
+# Import Environment Vars
+importas -u logfile XBUILD_LOG
+
+foreground {
+    if { xb-header "Update the Package Sources" }
+
+    foreground {
+        redirfd -a 1 ${logfile}
+        apt-get -q update
+    }
+    xb-install apt-utils apt-transport-https lsb-release
+}
+
+
+foreground {
+
+    if { xb-header "Prepare now the System with the configured Package Sources" }
+
+    if { s6-rmrf /etc/apt/sources.list }
+
+    foreground {
+        if { s6-test -f /etc/xbuild/apt/sources.list }
+
+        if { xb-log "Link Custom Package Sources" }
+        s6-ln -s /etc/xbuild/apt/sources.list /etc/apt/sources.list
+    }
+
+    foreground {
+        if -n { s6-test -f /etc/xbuild/apt/sources.list }
+
+        if { xb-log "No custom Package Sources given. Link default Sources." }
+
+        backtick osid { lsb_release -si }
+        backtick oscodename { lsb_release -sc }
+
+        importas -u -n osid osid
+        importas -u -n oscodename oscodename
+
+        s6-ln -s /etc/xbuild/apt/sources.list.d/${osid}.${oscodename}.list /etc/apt/sources.list
+    }
+
+    foreground {
+        if { xb-log "Import Keys for Microsoft and Nodesource Mirrors" }
+        s6-hiercopy /etc/xbuild/apt/trusted.gpg.d/ /etc/apt/trusted.gpg.d/
+    }
+
+    foreground {
+        if { xb-log "Reinitialize Package Sources" }
+
+        redirfd -a 1 ${logfile}
+
+        if { apt-get -q clean }
+        if { apt-get -qy autoremove }
+        if { xb-rmrf /var/lib/apt/lists/ }
+        if { apt-get -q update }
+    }
+}
+
+foreground {
+    if { xb-header "Install Packages and Tools" }
+
+    xb-install software-properties-common psmisc gnupg ca-certificates wget curl less vim-tiny aptitude dirmngr command-not-found
+}
+
+foreground {
+
+    if { xb-header "Execute System Upgrade" }
+
+    foreground {
+        if { xb-log "Upgrade the Distribution" }
+
+        redirfd -a 1 ${logfile}
+        apt-get dist-upgrade -qy --no-install-recommends -o Dpkg::Options::="--force-confold"
+    }
+}
