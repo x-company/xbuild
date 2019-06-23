@@ -7,6 +7,12 @@ define -s sysdirs "/bin /etc /lib /sbin /usr"
 
 foreground {
 
+    if { xb-log "Remove SSH Host keys (if exists)" }
+    if { rm -rf /etc/ssh/ssh_host_* }
+}
+
+foreground {
+
     if { xb-log "Remove existing crontabs, if any." }
     if { s6-rmrf /var/spool/cron }
     if { s6-rmrf /etc/crontabs }
@@ -29,8 +35,8 @@ foreground {
 foreground {
 
     if { xb-log "Remove unnecessary user accounts" }
-    if { sed -i -r "/^(user|root|_apt)/!d" /etc/group }
-    if { sed -i -r "/^(user|root|_apt)/!d" /etc/passwd }
+    if { sed -i -r "/^(root|nobody|_apt)/!d" /etc/group }
+    if { sed -i -r "/^(root|nobody|_apt)/!d" /etc/passwd }
 }
 
 foreground {
@@ -51,7 +57,7 @@ foreground {
 
     foreground {
 
-        if { xb-log "Ensure sysdir is owned by root and not writable by anybody else" }
+        if { xb-log "Ensure Sysdir is owned by root and not writable by anybody else" }
         if { find ${sysdir} -xdev -type d -exec chown root:root {} \; -exec chmod 0755 {} \; }
     }
 
@@ -61,6 +67,8 @@ foreground {
         if { find ${sysdir} -xdev -type f -and -perm /4000 -delete }
     }
 }
+
+if { xb-header "Remove Files and Folders" }
 
 foreground {
 
@@ -84,20 +92,17 @@ foreground {
 }
 
 foreground {
-    if { xb-log "Remove root homedir since we do not need it" }
-    # if { s6-rmrf /root }
-}
-
-foreground {
     if { xb-log "Remove fstab since we do not need it." }
     if { s6-rmrf /etc/fstab }
 }
+
+if { xb-header "Remove broken Symlinks" }
 
 foreground {
 
     forx sysdir { ${sysdirs} }
     importas -u sysdir sysdir
 
-    if { xb-log "Remove broken symlinks (because we removed the targets above)" }
+    if { xb-log "Remove symlink for Sysdir '${sysdir}' (because we removed the targets above)" }
     if { find ${sysdir} -xdev -type l -exec test ! -e {} \; -delete }
 }
