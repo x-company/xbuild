@@ -15,12 +15,15 @@ services:
       # Map the current Source Folder
       - ../:/workspace/
       - ../src/xcompany/xbuild/build/:/build/
-      - ../src/xcompany/xbuild/build/rootfs/apt/apt.conf:/etc/apt/apt.conf
-      - ../src/xcompany/xbuild/build/rootfs/apt/sources.list.d:/etc/apt/sources.list.d/
-      - ../src/xcompany/xbuild/build/rootfs/etc/xbuild/:/etc/xbuild/
-      - ../src/xcompany/xbuild/build/rootfs/usr/local/bin/:/usr/local/bin/
-      - ../src/xcompany/xbuild/build/rootfs/usr/local/include/:/usr/local/include/
-      - ../src/xcompany/xbuild/build/rootfs/var/local/xbuild:/var/local/xbuild
+      - ../src/xcompany/xbuild/rootfs/etc/xbuild/:/etc/xbuild/
+      - ../src/xcompany/xbuild/rootfs/etc/cont-finish.d/:/etc/cont-finish.d/
+      - ../src/xcompany/xbuild/rootfs/etc/cont-init.d/:/etc/cont-init.d/
+      - ../src/xcompany/xbuild/rootfs/etc/fix-attrs.d/:/etc/fix-attrs.d/
+      - ../src/xcompany/xbuild/rootfs/etc/services.d/:/etc/services.d/
+      - ../src/xcompany/xbuild/rootfs/etc/socklog.rules/:/etc/socklog.rules/
+      - ../src/xcompany/xbuild/rootfs/usr/local/bin/:/usr/local/bin/
+      - ../src/xcompany/xbuild/rootfs/usr/local/include/:/usr/local/include/
+      - ../src/xcompany/xbuild/rootfs/var/local/xbuild:/var/local/xbuild
       # Configure Git with the current local Settings
       - ~/.gitconfig:/root/.gitconfig
       # Persists Extensions and VSCode Server
