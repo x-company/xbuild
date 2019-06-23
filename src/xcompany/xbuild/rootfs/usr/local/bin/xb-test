@@ -52,8 +52,5 @@ foreground {
     /build/build
 }
 
-foreground {
-
-    if { xb-header "Execute Tests" }
-    if { /usr/bin/bats -t /workspace/tests/unit/ }
-}
+if { xb-header "Execute Tests" }
+if { /usr/bin/bats /workspace/tests/unit/ }
