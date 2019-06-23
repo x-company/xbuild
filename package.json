@@ -34,7 +34,7 @@
     "prebuild": "appvmgr update build && yarn dockerfile:build && yarn s6:update",
     "build": "yarn docker:build",
     "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
-    "test": "yarn prebuild && docker-compose -f ./.devcontainer/docker-compose.test.yml up --remove-orphans",
+    "test": "yarn prebuild && docker-compose -f ./.devcontainer/docker-compose.test.yml up",
     "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all",
     "debug": "yarn build && docker run -it --entrypoint '/bin/bash' --rm $npm_package_config_image_name:latest"
   },
