@@ -1,0 +1,19 @@
+# OS Mirror
+deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu disco main restricted universe multiverse
+deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu disco-updates main restricted universe multiverse
+deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu disco-security main restricted universe multiverse
+deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu disco-backports main restricted universe multiverse
+# deb [arch=amd64] http://archive.canonical.com/ubuntu disco partner
+
+# NodeJS Mirror
+deb [arch=amd64] https://deb.nodesource.com/node_12.x disco main
+# deb [arch=amd64] https://deb.nodesource.com/node_11.x disco main
+# deb [arch=amd64] https://deb.nodesource.com/node_10.x disco main
+# deb [arch=amd64] https://deb.nodesource.com/node_9.x disco main
+# deb [arch=amd64] https://deb.nodesource.com/node_8.x disco main
+
+# DotNet Core Mirror
+deb [arch=amd64] https://packages.microsoft.com/ubuntu/19.04/prod disco main
+
+# PowerShell Core Mirror
+deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubunutu-disco-prod disco main
