@@ -1,0 +1,108 @@
+#!/usr/bin/execlineb -P
+
+if { xb-env }
+s6-envdir /etc/xbuild/env.d/
+
+# Import Environment Vars
+importas -u logfile XBUILD_LOG
+
+foreground {
+
+    if { s6-test -f /usr/bin/aptitude }
+
+    # Base Pattern
+    define base_pattern "~i!~M!~prequired!~pimportant!~R~prequired!~R~R~prequired!~R~pimportant!~R~R~pimportant"
+
+    # Keep System Packages
+    define system_packages "${base_pattern}!busybox!grub!initramfs-tools!ca-certificates"
+
+    foreground {
+
+        if { xb-log "Prepare Packages for remove" }
+        foreground {
+            if { s6-test /tmp/cleanup }
+            s6-rmrf /tmp/cleanup
+        }
+
+        pipeline { s6-ls -0 -- /var/local/xbuild/installed_packages }
+        forstdin -0 -o 0 -- package
+        importas -u package package
+
+        foreground {
+            redirfd -a 1 /tmp/cleanup
+            s6-echo -n -- "!${package}"
+        }
+    }
+
+    foreground {
+        backtick excludes { cat /tmp/cleanup }
+        importas -u excludes excludes
+
+        foreground {
+            pipeline { aptitude search "${system_packages}${excludes}" --display-format "%p" }
+            forstdin -- package
+            importas -u package package
+
+            foreground {
+
+                if { xb-log "Remove Package '${package}'" }
+                redirfd -a 1 ${logfile}
+                if { apt-get purge -qy ${package} }
+            }
+        }
+    }
+}
+
+foreground {
+
+    # Remove Packges which will installed by xb-prepare
+    define excludes "apt-utils lsb-release software-properties-common psmisc wget curl less vim-tiny dirmngr command-not-found"
+
+    # This Packages could not automatically removed
+    define additional "mime-support apt-file gnupg vim-common readline-common python3 python3.5-minimal python2.7-minimal python apt-transport-https aptitude"
+
+    define -s packages "${excludes} ${additional}"
+
+    foreground {
+        forx package { ${packages} }
+        importas -u package package
+
+        foreground {
+            if { xb-log "Remove Package '${package}'" }
+
+            redirfd -a 1 ${logfile}
+            fdmove -c 2 1
+            if { apt-get purge -qy ${package} }
+        }
+    }
+}
+
+foreground {
+
+    if { xb-log "Remove Packages which have no Dependencies" }
+
+    redirfd -a 1 ${logfile}
+    if { apt-get -qy autoremove }
+    if { apt-get clean }
+}
+
+foreground {
+
+    if { xb-log "Cleanup Package Lists and Temp Folder" }
+    foreground { xb-rmrf /tmp /var/lib/apt/lists }
+
+    if { xb-log "Remove SSH Host keys" }
+    if { rm -rf /etc/ssh/ssh_host_* }
+
+    if { xb-log "Remove python bytecode" }
+    if { find / -mount -name "*.pyc" -delete }
+    if { find / -mount -name "*__pycache__*" -delete }
+}
+
+foreground {
+
+    if { xb-log "Set Environment Variables for the Image Runtime" }
+
+    redirfd -w 1 /etc/xbuild/env.d/DEBIAN_FRONTEND
+    s6-echo -n -- "teletype"
+}

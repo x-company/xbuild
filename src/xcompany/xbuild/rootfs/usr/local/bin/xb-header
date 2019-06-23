@@ -1,0 +1,42 @@
+#!/usr/bin/execlineb
+
+if { xb-env }
+s6-envdir /etc/xbuild/env.d/
+
+# Import Environment Vars
+importas -u logfile XBUILD_LOG
+
+foreground {
+
+    # For Colors see https://misc.flogisoft.com/bash/tip_colors_and_formatting
+    define FOREGROUND_COLOR "\\e[34m"
+    define BACKGROUND_COLOR "\\e[47m"
+    define BOLD "\\e[1m"
+    define ITALIC "\\e[3m"
+    define RESET "\\e[0m"
+
+    importas -u FOREGROUND_COLOR FOREGROUND_COLOR
+    importas -u BACKGROUND_COLOR BACKGROUND_COLOR
+    importas -u BOLD BOLD
+    importas -u ITALIC ITALIC
+    importas -u RESET RESET
+
+    elgetpositionals -P0
+
+    define logmessage "${FOREGROUND_COLOR}${BOLD}${ITALIC}[xbuild] $1${RESET}"
+
+    # Write to Logfile
+    foreground {
+        redirfd -a 1 ${logfile}
+
+        if { echo -e "${logmessage}" }
+        if { echo -e "--------------------------------------------------------------------" }
+    }
+
+    # Write to Console
+    foreground {
+        if { echo -e "" }
+        if { echo -e "${logmessage}" }
+        if { echo -e "--------------------------------------------------------------------" }
+    }
+}
