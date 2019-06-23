@@ -1,0 +1,49 @@
+#!/usr/bin/execlineb
+
+if { xb-env }
+s6-envdir /etc/xbuild/env.d/
+
+# Import Environment Vars
+importas -u logfile XBUILD_LOG
+
+foreground {
+
+    elgetpositionals -P0
+
+    if -n { s6-test -z "$1" }
+
+    # Define Excludes. This packages will automatically uninstalled when Image will finished
+    define -s excludes "apt-utils lsb-release software-properties-common psmisc wget curl less vim-tiny dirmngr command-not-found"
+
+    # Iterate offer the Packages
+    forx package { ${@} }
+    importas -u package package
+
+    if { xb-log "Install Package ${package}" }
+
+    # Persist Package to install
+    foreground {
+        if -n { s6-test -d /var/local/xbuild/installed_packages }
+        s6-mkdir -p /var/local/xbuild/installed_packages/
+    }
+
+    if { s6-touch /var/local/xbuild/installed_packages/${package} }
+
+    # Check is File excluded
+    foreground {
+        forx exclude { ${excludes} }
+        importas -u exclude exclude
+
+        foreground {
+            if { s6-test "${package}" = "${exclude}" }
+            s6-rmrf /var/local/xbuild/installed_packages/${package}
+        }
+    }
+
+    # Exeute Install
+    foreground {
+        redirfd -a 1 ${logfile}
+
+        apt-get install -q -y --no-install-recommends ${package}
+    }
+}
