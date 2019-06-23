@@ -1,5 +1,0 @@
-#!/usr/bin/execlineb -P
-
-define F00 blah
-
-echo \\\\${F00}
