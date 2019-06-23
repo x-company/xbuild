@@ -43,3 +43,6 @@ foreground {
     if { xb-header "Harden the Image" }
     if { xb-harden }
 }
+
+if { xb-header "Image is created" }
+if { xb-log "Your Image was created and secured. Have fun." }
