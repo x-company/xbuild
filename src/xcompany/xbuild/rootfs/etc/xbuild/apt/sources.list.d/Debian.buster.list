@@ -1,0 +1,16 @@
+# OS Mirror
+deb [arch=amd64] http://deb.debian.org/debian buster main contrib non-free
+deb [arch=amd64] http://deb.debian.org/debian-security/ buster/updates main contrib non-free
+deb [arch=amd64] http://deb.debian.org/debian buster-updates main contrib non-free
+deb [arch=amd64] http://deb.debian.org/debian buster-backports main contrib non-free
+
+# NodeJS Mirror
+deb [arch=amd64] https://deb.nodesource.com/node_12.x buster main
+# deb [arch=amd64] https://deb.nodesource.com/node_11.x buster main
+# deb [arch=amd64] https://deb.nodesource.com/node_10.x buster main
+# deb [arch=amd64] https://deb.nodesource.com/node_9.x buster main
+# deb [arch=amd64] https://deb.nodesource.com/node_8.x buster main
+
+# DotNet Core Mirror (current not available)
+
+# PowerShell Core Mirror (current not available)
