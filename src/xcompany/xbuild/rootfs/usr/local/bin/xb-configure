@@ -1,14 +1,14 @@
 #!/usr/bin/execlineb -P
 
 foreground {
-    if { xb-header "Configure timezone" }
+    if { xb-log "Configure timezone" }
     if { s6-ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime }
     dpkg-reconfigure -f noninteractive tzdata
 }
 
 foreground {
 
-    if { xb-header "Configure locale" }
+    if { xb-log "Configure locale" }
 
     backtick osname { lsb_release -si }
     importas -u -n osname osname
