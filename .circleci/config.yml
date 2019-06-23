@@ -5,11 +5,9 @@ jobs:
     docker:
       - image: node:latest
 
-    working_directory: /workspace
+    working_directory: /
 
     steps:
-      - checkout
-
       - setup_remote_docker
 
       - run:
@@ -25,6 +23,9 @@ jobs:
           command: |
             curl -L https://github.com/docker/compose/releases/download/1.24.0/docker-compose-`uname -s`-`uname -m` > /usr/local/bin/docker-compose
             chmod +x /usr/local/bin/docker-compose
+
+      - checkout:
+          path: /workspace
 
       - restore_cache:
           keys:
