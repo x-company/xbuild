@@ -9,72 +9,52 @@
 
 ## What is xBuild
 
-*xbuild* brings Tools to easily build new Docker Base Images. The Main Goal of this Tools, is to build secure and small Docker Base Images, which can used as Base Image for your Application Containers.
+*xbuild* brings Tools to easily build new Docker Base Images. The Main Goal of this Tools, is to build secure and small Docker Base Images, which can used as Base Image for your Application Containers. The Main Idea comes from the great [Phusion Base Image](http://phusion.github.io/baseimage-docker) which will shows how to init in a secure Way Services in a Docker Container.
 
-*xbuild* also initialize *xinit*. *xinit* is used to control your installed Services, like *mysql*, *nginx*, *httpd*, *redis* a.s.o.. *xinit* is a Node Cli App and can be found [here](https://www.npmjs.com/package/xinit).
+The *Phusion Base Image* will use *runit* as supervisor. But *runit* is for us not so secure and have a lot of CVEs. So we decide to use *s6 supervisor*. *s6* is a great replacement for *systemd*. *s6* will control your installed Services, like *mysql*, *nginx*, *httpd*, *redis* a.s.o.. Further Informations for *s6* can be found [here](https://skarnet.org/software/).
+
+Normally a Service, e.g. *nginx*, *mysql* a.s.o will installed by the Docker *Run* Command. This Services will for example later run as root. Which will be a main cause of further Problems in Docker Application Containers. Also needs a Service like *mysql* other Services like *cron*, *logrotate* a.s.o.. This Services will be started by Systems *init-v*. But this is not available in an Docker Container.
+
+*xbuild* will support you to build your Image as *s6* Service.
 
 ### Which Commands/Tools are currently in use
 
-- *build* to build runit Services
-- *cleanup* to cleanup the Build Process
-- *copy* to copy Files to your Docker Image
-- *debug* to enable or disable the Debug Mode
-- *execute* to execute Commands in your Docker Image
-- *header* to print an Group Header in to the Output of the Build Process
-- *install* to install new Software and Packages with apt
-- *loadvars* to load all persisted Environment Variables
-- *log* to log Informations to the Build Process
-- *mkfolders* to create needed Folders and ensures the Folder Security
-- *prepare* to prepare the Build Process
-- *printvars* to print the persisted Environment Vars
-- *savevars* to save all Environment Vars
-- *setvar* to set a Environment Var
+#### Commands and Subcommands
+
+- *xb-build* Main Command to build the Image and Services. This command calls other Subcommands
+- *xb-buildsvc* Build your Services and prepares it for *s6*
+- *xb-cleanup* Cleanup the Image. Removes all Packages which was installed by *xb-prepare* and deletes temporary Files
+- *xb-configure* Configure the Image, like Timezone, locals a.s.o.
+- *xb-harden* Hardening the Image
+- *xb-healthcheck* Peform all Healthchecks
+- *xb-prepare* Prepare the Mirrors/Packagesource and installs needed Packages, which will removed later by *xb-cleanup*
+
+#### Tools
+
+- *xb-env* Saves/Load Environment Variables
+- *xb-header* Writes an Log Header
+- *xb-install* Install Packages
+- *xb-log* Log a Message
+- *xb-rmrf* Removes recursivley Files
 
 ### Which Folder Structure will created
 
 ``` bash
-/etc/xinit                  # Main Folder for the xinit System
-/etc/xinit/env.d            # Home of persisted Variables
-/etc/xinit/health.d         # Home for Healthcare Scripts for Services
-/etc/xinit/events.d         # Home of Event Scripts for xinit
-/etc/xinit/events.d/prev.d/ # Home of Pre Event Scripts for xinit
-/etc/xinit/events.d/post.d/ # Home of Post Event Scripts for xinit
-/usr/local/include/xbuild   # Home of the xbuild Framework
-/var/local/xbuild           # Home for dynamic Data of xbuild Framework
-/var/local/xinit            # Home for dynamic Data of xinit System
+/etc/cont-finish.d        # Scripts which will called when Container is shutting down
+/etc/cont-init.d          # Scripts which will called  when Container is started
+/etc/fix-attrs.d          # Script to fix Folder and File Permissions
+/etc/services.d           # Home of your Services
+/etc/socklog.rules        # Define here specific Log Rules
+/etc/xbuild               # Main Folder for the xbuild System
+/etc/xbuild/apt           # Place here a custom sources.list to use custom Repositories
+/etc/xbuild/env.d         # xb-env save/load Environment Variables from this location
+/etc/xbuild/health.d      # Home for Healthcare Scripts of Services
+/var/local/xbuild         # Home for dynamic Data of xbuild Framework
 ```
-
-## What is xinit
-
-*xinit* is a fork of the great [Phusion Base Image](http://phusion.github.io/baseimage-docker) to init in a secure Way Services in Docker Container.
-
-### What is a *xinit* Service
-
-Normally a Service, e.g. *nginx*, *mysql* a.s.o will installed by the Docker *Run* Command. This Services will for example later run as root. Which will be a main cause of further Problems in Docker Application Containers. Also needs a Service like *mysql* other Services like *cron*, *logrotate* a.s.o.. This Services will be started by Systems *init-v*. But this is not available in an Docker Container.
-
-*xinit* will take care to run your Service as a specific User and that other Services which will your Service depends on also be started.
-
-*xinit* in combination with *xbuild* delievers the needed Tools to configure correct *xinit* Services.
 
 ## How to use it
 
-Create a new Dockerfile with follow Content
-
-```dockerfile
-FROM xcompany/xbuild:latest
-
-COPY ./build.sh /
-
-RUN /build.sh
-
-CMD [<Your Entry Point>]
-```
-
-Now create a `build.sh` in the same Location as your Dockerfile and use the xBuild Commands in it. An Example could be found in `examples/default/build.sh`. If you use Visual Studio Code as Development Tool you can also use Code-Snippets with the Prefix `xb-...` to write easily further xbuild Commands.
-
-**NOTE:** Don't forget to add Execution Permission to the `build.sh`, e.g. `chmod +x build.sh`
-
-Last but not least build your Dockerfile with `docker build --tag <yourimage> .` That's it!
+For your Development Needs we create a CLI Tool called *xbuild-mgr*. This tool helps you to create easily Services for your own Docker Images. *xbuild-mgr* is a NodeJS Tool which can installed with `npm install -g xbuild-mgr`. To create a Basic Layout call `xbuild layout create`. To add an Service call `xbuild service create <servicename>`
 
 ## Development Dependencies
 
@@ -85,7 +65,6 @@ For Windows you have to use Visual Studio Code with the suggested Extensions. To
 - Docker 18.x
 - NodeJS 8.x or above
 - Yarn - `npm install -g yarn`
-- shellcheck - `apt install shellcheck`
 - bats - `apt install bats`
 - Visual Studio Code v1.34 to use the Dev Container and Code Snippets
 
