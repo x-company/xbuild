@@ -1,0 +1,18 @@
+# OS Mirror
+deb [arch=amd64] http://deb.debian.org/debian stretch main contrib non-free
+deb [arch=amd64] http://deb.debian.org/debian-security/ stretch/updates main contrib non-free
+deb [arch=amd64] http://deb.debian.org/debian stretch-updates main contrib non-free
+deb [arch=amd64] http://deb.debian.org/debian stretch-backports main contrib non-free
+
+# NodeJS Mirror
+deb [arch=amd64] https://deb.nodesource.com/node_12.x stretch main
+# deb [arch=amd64] https://deb.nodesource.com/node_11.x stretch main
+# deb [arch=amd64] https://deb.nodesource.com/node_10.x stretch main
+# deb [arch=amd64] https://deb.nodesource.com/node_9.x stretch main
+# deb [arch=amd64] https://deb.nodesource.com/node_8.x stretch main
+
+# DotNet Core Mirror
+deb [arch=amd64] https://packages.microsoft.com/debian/9/prod stretch main
+
+# PowerShell Core Mirror
+deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-debian-stretch-prod stretch main
