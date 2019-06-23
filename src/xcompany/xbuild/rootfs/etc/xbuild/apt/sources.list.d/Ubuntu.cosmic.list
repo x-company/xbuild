@@ -1,0 +1,19 @@
+# OS Mirror
+deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu cosmic main restricted universe multiverse
+deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu cosmic-updates main restricted universe multiverse
+deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu cosmic-security main restricted universe multiverse
+deb [arch=amd64] http://de.archive.ubuntu.com/ubuntu cosmic-backports main restricted universe multiverse
+# deb [arch=amd64] http://archive.canonical.com/ubuntu cosmic partner
+
+# NodeJS Mirror
+deb [arch=amd64] https://deb.nodesource.com/node_12.x cosmic main
+# deb [arch=amd64] https://deb.nodesource.com/node_11.x cosmic main
+# deb [arch=amd64] https://deb.nodesource.com/node_10.x cosmic main
+# deb [arch=amd64] https://deb.nodesource.com/node_9.x cosmic main
+# deb [arch=amd64] https://deb.nodesource.com/node_8.x cosmic main
+
+# DotNet Core Mirror
+deb [arch=amd64] https://packages.microsoft.com/ubuntu/18.10/prod cosmic main
+
+# PowerShell Core Mirror
+deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-ubunutu-cosmic-prod cosmic main
