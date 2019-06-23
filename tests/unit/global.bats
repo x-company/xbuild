@@ -7,8 +7,9 @@ load init
 
     # Arrange
 
+    # Act
+
     # Assert
-    # Exists xbuild Commands
     [ -f "/usr/local/bin/xb-build" ]
     [ -f "/usr/local/bin/xb-buildsvc" ]
     [ -f "/usr/local/bin/xb-cleanup" ]
@@ -28,8 +29,9 @@ load init
 
     # Arrange
 
+    # Act
+
     # Assert
-    # Exists xbuild Commands
     [ -d "/etc/xbuild" ]
     [ -d "/etc/xbuild/env.d" ]
     [ -d "/etc/xbuild/apt" ]
@@ -50,24 +52,24 @@ load init
 
     # Arrange
 
+    # Act
+
     # Assert
-    # Exists xbuild Commands
     [ -d "/etc/cont-finish.d" ]
     [ -d "/etc/cont-init.d" ]
     [ -d "/etc/fix-attrs.d" ]
     [ -d "/etc/s6" ]
     [ -d "/etc/services.d" ]
     [ -d "/libexec" ]
-
 }
 
 @test "Exists socklog Folders" {
 
     # Arrange
 
+    # Act
+
     # Assert
-    # Exists xbuild Commands
     [ -d "/etc/socklog.rules" ]
     [ -d "/var/log/socklog" ]
-
 }
