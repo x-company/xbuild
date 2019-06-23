@@ -36,6 +36,7 @@ Normally a Service, e.g. *nginx*, *mysql* a.s.o will installed by the Docker *Ru
 - *xb-install* Install Packages
 - *xb-log* Log a Message
 - *xb-rmrf* Removes recursivley Files
+- *xb-test* A Helper to execute Unit Tests. Unit Tests must be located in Folder `/workspace/tests/unit`
 
 ### Which Folder Structure will created
 
