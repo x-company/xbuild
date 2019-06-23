@@ -1,0 +1,59 @@
+#!/usr/bin/execlineb -P
+
+if { xb-env }
+s6-envdir /etc/xbuild/env.d/
+
+define checkpoint /var/local/xbuild/checkpoints
+
+foreground {
+    if -n { s6-test -d ${checkpoint} }
+    s6-mkdir -p ${checkpoint}
+}
+
+if { xb-header "Prepare the Image for Unit Tests" }
+
+foreground {
+
+    if -n { s6-test -f ${checkpoint}/prepare }
+    if { xb-prepare }
+    if { s6-touch ${checkpoint}/prepare }
+}
+
+foreground {
+
+    if -n { s6-test -f ${checkpoint}/configure }
+    if { xb-header "Configure the Image" }
+    if { xb-configure }
+    if { s6-touch ${checkpoint}/configure }
+}
+
+foreground {
+
+    if -n { s6-test -f ${checkpoint}/tools }
+    if { xb-header "Install Unit Test Tools" }
+    if { xb-install bats }
+    if { s6-touch ${checkpoint}/tools }
+}
+
+foreground {
+
+    if { xb-header "Build configured Services" }
+    if { xb-buildsvc }
+}
+
+foreground {
+
+    if { xb-header "Execute custom Build File" }
+
+    if { s6-test -f /build/build }
+
+    if { xb-log "Build" }
+    s6-chmod 0755 /build/build
+    /build/build
+}
+
+foreground {
+
+    if { xb-header "Execute Tests" }
+    if { /usr/bin/bats -t /workspace/tests/unit/ }
+}
