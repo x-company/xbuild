@@ -1,0 +1,103 @@
+#!/usr/bin/execlineb -P
+
+if { xb-env }
+s6-envdir /etc/xbuild/env.d/
+
+define -s sysdirs "/bin /etc /lib /sbin /usr"
+
+foreground {
+
+    if { xb-log "Remove existing crontabs, if any." }
+    if { s6-rmrf /var/spool/cron }
+    if { s6-rmrf /etc/crontabs }
+    if { s6-rmrf /etc/periodic }
+}
+
+foreground {
+
+    if { xb-log "Remove world-writable permissions." }
+    if { find / -xdev -type d -perm /0002 -exec chmod o-w {} + }
+    if { find / -xdev -type f -perm /0002 -exec chmod o-w {} + }
+}
+
+foreground {
+
+    if { xb-log "Assign write Access for all to tmp" }
+    s6-chmod 1777 /tmp
+}
+
+foreground {
+
+    if { xb-log "Remove unnecessary user accounts" }
+    if { sed -i -r "/^(user|root|_apt)/!d" /etc/group }
+    if { sed -i -r "/^(user|root|_apt)/!d" /etc/passwd }
+}
+
+foreground {
+
+    forx sysdir { ${sysdirs} }
+    importas -u sysdir sysdir
+
+    if { xb-header "Harden Sysdir '${sysdir}'" }
+
+    foreground {
+
+        if { xb-log "Remove crufties" }
+        # #   /etc/shadow-
+        # #   /etc/passwd-
+        # #   /etc/group-
+        if { find ${sysdir} -xdev -type f -regex '.*-$' -exec rm -f {} + }
+    }
+
+    foreground {
+
+        if { xb-log "Ensure sysdir is owned by root and not writable by anybody else" }
+        if { find ${sysdir} -xdev -type d -exec chown root:root {} \; -exec chmod 0755 {} \; }
+    }
+
+    foreground {
+
+        if { xb-log "Remove all suid files" }
+        if { find ${sysdir} -xdev -type f -and -perm /4000 -delete }
+    }
+}
+
+foreground {
+
+    if { xb-log "Remove init scripts since we do not use them" }
+    if { s6-rmrf /etc/init.d }
+    if { s6-rmrf /lib/rc }
+    if { s6-rmrf /etc/conf.d }
+    if { s6-rmrf /etc/inittab }
+    if { s6-rmrf /etc/runlevels }
+    if { s6-rmrf /etc/rc.conf }
+}
+
+foreground {
+
+    if { xb-log "Remove kernel tunables since we do not need them" }
+    if { rm -rf /etc/sysctl* }
+    if { s6-rmrf  /etc/modprobe.d }
+    if { s6-rmrf  /etc/modules }
+    if { s6-rmrf  /etc/mdev.conf }
+    if { s6-rmrf  /etc/acpi }
+}
+
+foreground {
+    if { xb-log "Remove root homedir since we do not need it" }
+    # if { s6-rmrf /root }
+}
+
+foreground {
+    if { xb-log "Remove fstab since we do not need it." }
+    if { s6-rmrf /etc/fstab }
+}
+
+foreground {
+
+    forx sysdir { ${sysdirs} }
+    importas -u sysdir sysdir
+
+    if { xb-log "Remove broken symlinks (because we removed the targets above)" }
+    if { find ${sysdir} -xdev -type l -exec test ! -e {} \; -delete }
+}
