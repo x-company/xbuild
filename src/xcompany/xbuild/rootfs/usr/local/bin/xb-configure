@@ -1,0 +1,36 @@
+#!/usr/bin/execlineb -P
+
+foreground {
+    if { xb-header "Configure timezone" }
+    if { s6-ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime }
+    dpkg-reconfigure -f noninteractive tzdata
+}
+
+foreground {
+
+    if { xb-header "Configure locale" }
+
+    backtick osname { lsb_release -si }
+    importas -u -n osname osname
+
+    foreground {
+        ifelse { s6-test "${osname}" = "Debian" }
+        {
+            xb-install locales locales-all
+        }
+
+        ifelse { s6-test "${osname}" = "Ubuntu" }
+        {
+            xb-install language-pack-en language-pack-de
+        }
+    }
+
+
+    if { xb-log "Enable locales" }
+    if { sed -i -e "s/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen }
+    if { sed -i -e "s/# de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/" /etc/locale.gen }
+
+    if { xb-log "Regenerate Locales" }
+    if { update-locale LANG=de_DE.UTF-8 LC_CTYPE=de_DE.UTF-8 }
+    if { locale-gen de_DE }
+}
