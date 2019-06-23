@@ -1,0 +1,37 @@
+#!/usr/bin/execlineb -P
+
+define envdir /etc/xbuild/env.d
+foreground {
+    if -n { s6-test -d ${envdir} }
+    s6-mkdir -p ${envdir}
+}
+
+# Logdate with Time
+#backtick DATE { date +%d%m%Y-%H%M%S }
+
+# Logdate without Time
+backtick DATE { date +%d%m%Y }
+
+importas -u -n date DATE
+define logdir /var/log/xbuild
+define -s logfile "${logdir}/xbuild-prepare-${date}.log"
+
+foreground {
+    if -n { s6-test -d ${logdir} }
+    s6-mkdir -p ${logdir}
+}
+
+foreground { redirfd -w 1 ${envdir}/XBUILD_LOG s6-echo -n -- "${logfile}" }
+foreground { redirfd -w 1 ${envdir}/XBUILD_ENV s6-echo -n -- "${logfile}" }
+foreground { redirfd -w 1 ${envdir}/LC_ALL s6-echo -n -- "C" }
+foreground { redirfd -w 1 ${envdir}/DEBIAN_FRONTEND s6-echo -n -- "noninteractive" }
+foreground { redirfd -w 1 ${envdir}/SHELL s6-echo -n -- "/bin/bash" }
+
+# Prevent initramfs updates from trying to run grub and lilo.
+# https://journal.paul.querna.org/articles/2013/10/15/docker-ubuntu-on-rackspace/
+# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=594189
+foreground { redirfd -w 1 ${envdir}/INITRD s6-echo -n -- "no" }
+
+foreground { redirfd -w 1 ${envdir}/LC_CTYPE s6-echo -n -- "de_DE.UTF-8" }
+foreground { redirfd -w 1 ${envdir}/LANG s6-echo -n -- "de_DE.UTF-8" }
+foreground { redirfd -w 1 ${envdir}/LANGUAGE s6-echo -n -- "de_DE.UTF-8" }
