@@ -39,7 +39,7 @@ tar xzf ./socklog-overlay-amd64.tar.gz -C ${rootfs:?}
 
 mv "${rootfs:?}/etc/services.d/socklog/run" "${servicedir}/socklog/socklog.run"
 mv "${rootfs:?}/etc/services.d/socklog/log/run" "${servicedir}/socklog/log/socklog.run"
-mv "${rootfs:?}/etc/cont-init.d/~-socklog" "${servicedir}/socklog/socklog.init"
+mv "${rootfs:?}/etc/cont-init.d/~-socklog" "${servicedir}/socklog/99-socklog.init"
 rm -rf "${rootfs:?}/etc/cont-init.d/~-socklog"
 rm -rf "${rootfs:?}/etc/services.d/socklog"
 
