@@ -13,4 +13,5 @@ services:
       - build
     volumes:
       - ../:/workspace/
+      - ../tests/unit:/tests
     command: /usr/local/bin/xb-test
