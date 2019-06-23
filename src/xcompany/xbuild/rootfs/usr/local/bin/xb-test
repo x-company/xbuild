@@ -54,4 +54,5 @@ foreground {
 
 if { xb-header "Execute Tests" }
 if { s6-test -d /tests }
-cd /tests /usr/bin/bats .
+if { xb-log "Execute Unit Tests" }
+/usr/bin/bats /tests/
