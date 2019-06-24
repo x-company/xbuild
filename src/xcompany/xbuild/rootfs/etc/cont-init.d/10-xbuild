@@ -1,0 +1,7 @@
+#!/usr/bin/execlineb -P
+
+background {
+    if { xb-log "Remove Build Folder (if exists)" }
+    if { s6-test -d /build }
+    s6-rmrf /build
+}
