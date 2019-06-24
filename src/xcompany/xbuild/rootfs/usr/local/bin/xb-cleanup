@@ -48,6 +48,7 @@ foreground {
                 if { xb-log "Remove Package '${package}'" }
                 redirfd -a 1 ${logfile}
                 if { apt-get purge -qy ${package} }
+                if { apt-get autoremove -qy }
             }
         }
     }
@@ -73,6 +74,7 @@ foreground {
             redirfd -a 1 ${logfile}
             fdmove -c 2 1
             if { apt-get purge -qy ${package} }
+            if { apt-get autoremove -qy }
         }
     }
 }
