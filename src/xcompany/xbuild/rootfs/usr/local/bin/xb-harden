@@ -35,7 +35,7 @@ foreground {
 foreground {
 
     if { xb-log "Remove unnecessary user accounts" }
-    if { sed -i -r "/^(root|nobody|_apt)/!d" /etc/group }
+    if { sed -i -r "/^(root|nobody|nogroup|_apt)/!d" /etc/group }
     if { sed -i -r "/^(root|nobody|_apt)/!d" /etc/passwd }
 }
 
