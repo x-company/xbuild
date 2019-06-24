@@ -1,0 +1,4 @@
+# Fixing ownership & permissions
+#
+# path              recurse account fmode   dmode
+/var/log/xbuild     true    root    0644    0755
