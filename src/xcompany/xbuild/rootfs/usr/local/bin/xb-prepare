@@ -13,7 +13,7 @@ foreground {
         redirfd -a 1 ${logfile}
         apt-get -q update
     }
-    xb-install apt-utils apt-transport-https lsb-release gnupg
+    xb-install apt-utils apt-transport-https lsb-release ca-certificates
 }
 
 foreground {
@@ -63,7 +63,7 @@ foreground {
 foreground {
     if { xb-header "Install Packages and Tools" }
 
-    xb-install software-properties-common psmisc ca-certificates wget curl less vim-tiny aptitude dirmngr command-not-found
+    xb-install software-properties-common gnupg psmisc wget curl less vim-tiny aptitude dirmngr command-not-found
 }
 
 foreground {
