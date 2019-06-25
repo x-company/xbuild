@@ -67,7 +67,7 @@ foreground {
     # This are essential Packages which will really not neaded. We know what we do ;-)
     define essential "libsystemd0 mount ncurses-bin login"
 
-    define -s packages "${excludes} ${additional} ${essential} ${libaries}"
+    define -s packages "${excludes} ${additional} ${essential} ${libraries}"
 
     foreground {
         forx package { ${packages} }
