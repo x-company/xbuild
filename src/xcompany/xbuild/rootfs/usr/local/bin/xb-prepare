@@ -7,6 +7,21 @@ s6-envdir /etc/xbuild/env.d/
 importas -u logfile XBUILD_LOG
 
 foreground {
+
+    if { xb-header "Create Folders" }
+
+    if { s6-mkdir -p /etc/cont-finish.d }
+    if { s6-mkdir -p /etc/cont-init.d }
+    if { s6-mkdir -p /etc/fix-attrs.d }
+    if { s6-mkdir -p /etc/services.d }
+
+    if { s6-mkdir -p /var/local/xbuild }
+    if { s6-mkdir -p /var/log/xbuild }
+
+    if { s6-mkdir -p /var/log/xbuild }
+}
+
+foreground {
     if { xb-header "Update the Package Sources" }
 
     foreground {
