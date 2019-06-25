@@ -13,7 +13,7 @@ foreground {
 
 foreground {
 
-    if { xb-log "Remove existing crontabs, if any." }
+    if { xb-log "Remove existing crontabs, (if exists)" }
     if { s6-rmrf /var/spool/cron }
     if { s6-rmrf /etc/crontabs }
     if { s6-rmrf /etc/periodic }
