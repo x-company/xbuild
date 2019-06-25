@@ -10,3 +10,4 @@ src/xcompany/xbuild/rootfs/etc/cont-init.d/99-socklog.init
 src/xcompany/xbuild/rootfs/etc/xbuild/apt/sources.list
 src/xcompany/xbuild/rootfs/etc/xbuild/env.d/*
 src/xcompany/xbuild/rootfs/var/local/xbuild
+3rdParty/xbuild.prev
