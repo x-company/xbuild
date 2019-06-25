@@ -48,7 +48,6 @@ foreground {
                 if { xb-log "Remove Package '${package}'" }
                 redirfd -a 1 ${logfile}
                 if { apt-get purge -qy ${package} }
-                if { apt-get autoremove -qy }
             }
         }
     }
@@ -60,9 +59,15 @@ foreground {
     define excludes "apt-utils lsb-release software-properties-common psmisc wget curl less vim-tiny dirmngr command-not-found"
 
     # This Packages could not automatically removed
-    define additional "mime-support apt-file gnupg vim-common readline-common python3 python3.5-minimal python2.7-minimal python apt-transport-https aptitude"
+    define additional "mime-support apt-file gnupg vim-common readline-common python3 python3.5-minimal python2.7-minimal python gnupg-agent apt-transport-https aptitude"
 
-    define -s packages "${excludes} ${additional}"
+    # Libraries to remove
+    define libraries "libpython2.7-minimal libpython3.5-minimal libgssapi-krb5-2 libldap-common libglib2.0-0"
+
+    # This are essential Packages which will really not neaded. We know what we do ;-)
+    define essential "libsystemd0 mount ncurses-bin login"
+
+    define -s packages "${excludes} ${additional} ${essential} ${libaries}"
 
     foreground {
         forx package { ${packages} }
@@ -73,8 +78,7 @@ foreground {
 
             redirfd -a 1 ${logfile}
             fdmove -c 2 1
-            if { apt-get purge -qy ${package} }
-            if { apt-get autoremove -qy }
+            if { apt-get purge -qy --allow-remove-essential ${package} }
         }
     }
 }
