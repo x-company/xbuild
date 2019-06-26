@@ -56,16 +56,16 @@ foreground {
 foreground {
 
     # Remove Packges which will installed by xb-prepare
-    define excludes "apt-utils lsb-release software-properties-common psmisc wget curl less vim-tiny dirmngr command-not-found"
+    define excludes "apt-utils lsb-release ca-certificates software-properties-common psmisc wget curl less vim-tiny dirmngr command-not-found"
 
     # This Packages could not automatically removed
-    define additional "mime-support apt-file gnupg vim-common readline-common python3 python3.5-minimal python2.7-minimal python gnupg-agent apt-transport-https aptitude"
+    define additional "mime-support apt-file gnupg vim-common readline-common python3 python3.5-minimal python2.7-minimal python gnupg-agent apt-transport-https aptitude lsb-base openssl"
 
     # Libraries to remove
-    define libraries "libpython2.7-minimal libpython3.5-minimal libgssapi-krb5-2 libldap-common libglib2.0-0"
+    define libraries "libpython2.7-minimal libpython3.5-minimal libgssapi-krb5-2 libldap-common libglib2.0-0 libsystemd0 libsmartcols1 libuuid1 libssl1.1"
 
     # This are essential Packages which will really not neaded. We know what we do ;-)
-    define essential "libsystemd0 mount ncurses-bin login"
+    define essential "mount ncurses-base ncurses-bin login e2fslibs"
 
     define -s packages "${excludes} ${additional} ${essential} ${libraries}"
 
