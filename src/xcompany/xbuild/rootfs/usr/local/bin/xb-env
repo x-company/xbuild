@@ -3,18 +3,14 @@
 define envdir /etc/xbuild/env.d
 define logdir /var/log/xbuild
 define rundir /var/run/xbuild
-define runfile ${rundir}/xb-env
+define -s runfile ${rundir}/xb-env
 
-if -n { s6-test -f ${runfile} }
 foreground {
+    if -n { s6-test -d ${envdir} }
+    s6-mkdir -p ${envdir}
+}
 
-    # Create Runfile
-    if { s6-touch ${runfile} }
-
-    foreground {
-        if -n { s6-test -d ${envdir} }
-        s6-mkdir -p ${envdir}
-    }
+foreground {
 
     foreground {
         if -n { s6-test -d ${logdir} }
@@ -29,7 +25,22 @@ foreground {
 
     define -s logfile "${logdir}/xbuild-prepare-${date}.log"
 
-    foreground { redirfd -w 1 ${envdir}/XBUILD_LOG s6-echo -n -- "${logfile}" }
+    foreground {
+        if -n { s6-test -f ${logfile} }
+        s6-touch ${logfile}
+    }
+
+    foreground {
+        redirfd -w 1 ${envdir}/XBUILD_LOG
+        s6-echo -n -- "${logfile}"
+    }
+}
+
+ifelse -n { s6-test -f ${runfile} }
+{
+    # Create Runfile
+    if { s6-touch ${runfile} }
+
     foreground { redirfd -w 1 ${envdir}/LC_ALL s6-echo -n -- "C" }
     foreground { redirfd -w 1 ${envdir}/DEBIAN_FRONTEND s6-echo -n -- "noninteractive" }
     foreground { redirfd -w 1 ${envdir}/SHELL s6-echo -n -- "/bin/bash" }
@@ -167,3 +178,4 @@ foreground {
         }
     }
 }
+exit 0
