@@ -5,6 +5,27 @@ s6-envdir /etc/xbuild/env.d/
 
 define -s sysdirs "/bin /etc /lib /sbin /usr"
 
+importas -u harden_packages XBUILD_CONF_HARDEN_PACKAGES
+importas -u harden_libraries XBUILD_CONF_HARDEN_LIBRARIES
+importas -u harden_essential XBUILD_CONF_HARDEN_ESSENTIAL
+
+foreground {
+    define -s packages "${harden_packages} ${harden_libraries} ${harden_essential}"
+
+    foreground {
+        forx package { ${packages} }
+        importas -u package package
+
+        foreground {
+            if { xb-log "Remove Package '${package}'" }
+
+            redirfd -a 1 ${logfile}
+            fdmove -c 2 1
+            if { apt-get purge -qy --allow-remove-essential ${package} }
+        }
+    }
+}
+
 foreground {
 
     if { xb-log "Remove SSH Host keys (if exists)" }
