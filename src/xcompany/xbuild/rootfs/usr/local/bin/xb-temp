@@ -1,0 +1,19 @@
+#!/usr/bin/execlineb -P
+
+# if { xb-env }
+# s6-envdir /etc/xbuild/env.d/
+
+# importas -u packages XBUILD_CONF_CORE
+
+# foreground {
+#     pipeline { s6-echo -n ${packages} }
+#     forstdin -- package
+#     importas -u package package
+
+#     s6-echo ${package}
+# }
+
+elglob -0 -- files /etc/**/*.sh
+forx -p -- file { ${files} }
+importas -u file file
+s6-echo ${file}
