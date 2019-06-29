@@ -1,8 +1,8 @@
 
 FROM debian:stretch-slim
 
-ARG XBUILD_BUILD_DATE="2019-06-26T00:08:22Z"
-ARG XBUILD_VCS_REF="3091656"
+ARG XBUILD_BUILD_DATE="2019-06-29T08:46:54Z"
+ARG XBUILD_VCS_REF="45c5627"
 ARG XBUILD_VERSION="0.5.2"
 ARG XBUILD_IMAGE_NAME="xcompany/xbuild"
 ARG XBUILD_IMAGE_DESCRIPTION="A easy to use Framework for your Installation Needs of Docker Base Images"
@@ -27,3 +27,6 @@ LABEL  de.x-company.build-date=$XBUILD_BUILD_DATE \
 
 COPY   ./src/xcompany/xbuild/rootfs/ /
 COPY   ./src/xcompany/xbuild/build/ /build/
+
+RUN apt-get update \
+    && apt-get install -q -y --no-install-recommends apt-utils apt-transport-https lsb-release ca-certificates
