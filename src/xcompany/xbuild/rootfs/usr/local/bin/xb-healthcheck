@@ -1,13 +1,10 @@
 #!/usr/bin/execlineb -P
 
-# Load the xBuild System
-source /usr/local/include/xbuild/loader
 
-# Enable Debug Mode
-# debug --on
+background {
 
-# Load the Environment Variables to the current Session
-loadvars
+    if { s6-test -d /etc/xbuild/health.d }
+}
 
 if [ -d /etc/xinit/health.d ]
 then
