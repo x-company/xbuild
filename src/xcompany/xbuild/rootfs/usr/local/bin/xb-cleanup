@@ -50,11 +50,13 @@ foreground {
             foreground {
 
                 if { xb-log "Remove Package '${package}'" }
-                foreground {
-                    if { s6-test "${core_log_disabled}" = "N" }
+
+                ifelse { s6-test "${core_log_disabled}" = "N" }
+                {
                     redirfd -a 1 ${logfile}
+                    apt-get purge -qy ${package}
                 }
-                if { apt-get purge -qy ${package} }
+                apt-get purge -qy ${package}
             }
         }
     }
@@ -71,13 +73,13 @@ foreground {
         foreground {
             if { xb-log "Remove Package '${package}'" }
 
-            foreground {
-                if { s6-test "${core_log_disabled}" = "N" }
-                redirfd -a 1 ${logfile}
-            }
-
             fdmove -c 2 1
-            if { apt-get purge -qy --allow-remove-essential ${package} }
+            ifelse { s6-test "${core_log_disabled}" = "N" }
+            {
+                redirfd -a 1 ${logfile}
+                apt-get purge -qy --allow-remove-essential ${package}
+            }
+            apt-get purge -qy --allow-remove-essential ${package}
         }
     }
 }
@@ -86,13 +88,15 @@ foreground {
 
     if { xb-log "Remove Packages which have no Dependencies" }
 
-    foreground {
-        if { s6-test "${core_log_disabled}" = "N" }
+    ifelse { s6-test "${core_log_disabled}" = "N" }
+    {
         redirfd -a 1 ${logfile}
+        if { apt-get -qy autoremove }
+        apt-get clean
     }
 
     if { apt-get -qy autoremove }
-    if { apt-get clean }
+    apt-get clean
 }
 
 foreground {
