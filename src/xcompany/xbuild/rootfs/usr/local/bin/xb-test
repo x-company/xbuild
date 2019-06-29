@@ -3,36 +3,36 @@
 if { xb-env }
 s6-envdir /etc/xbuild/env.d/
 
-define checkpoint /var/local/xbuild/checkpoints
+define run_dir /var/run/xbuild
 
 foreground {
-    if -n { s6-test -d ${checkpoint} }
-    s6-mkdir -p ${checkpoint}
+    if -n { s6-test -d ${run_dir} }
+    s6-mkdir -p ${run_dir}
 }
 
 if { xb-header "Prepare the Image for Unit Tests" }
 
 foreground {
 
-    if -n { s6-test -f ${checkpoint}/prepare }
+    if -n { s6-test -f ${run_dir}/xb-prepare }
     if { xb-prepare }
-    if { s6-touch ${checkpoint}/prepare }
+    if { s6-touch ${run_dir}/xb-prepare }
 }
 
 foreground {
 
-    if -n { s6-test -f ${checkpoint}/configure }
+    if -n { s6-test -f ${run_dir}/xb-configure }
     if { xb-header "Configure the Image" }
     if { xb-configure }
-    if { s6-touch ${checkpoint}/configure }
+    if { s6-touch ${run_dir}/xb-configure }
 }
 
 foreground {
 
-    if -n { s6-test -f ${checkpoint}/tools }
+    if -n { s6-test -f ${run_dir}/xb-install }
     if { xb-header "Install Unit Test Tools" }
     if { xb-install bats }
-    if { s6-touch ${checkpoint}/tools }
+    if { s6-touch ${run_dir}/xb-install }
 }
 
 foreground {
