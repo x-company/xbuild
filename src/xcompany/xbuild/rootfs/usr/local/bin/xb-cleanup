@@ -5,6 +5,8 @@ s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
+importas -u core_packages XBUILD_CONF_CORE_PACKAGES
+importas -u cleanup_packages XBUILD_CONF_CLEANUP_PACKAGES
 
 foreground {
 
@@ -14,7 +16,7 @@ foreground {
     define base_pattern "~i!~M!~prequired!~pimportant!~R~prequired!~R~R~prequired!~R~pimportant!~R~R~pimportant"
 
     # Keep System Packages
-    define system_packages "${base_pattern}!busybox!grub!initramfs-tools!ca-certificates"
+    define system_packages "${base_pattern}!busybox!grub!initramfs-tools"
 
     foreground {
 
@@ -24,7 +26,7 @@ foreground {
             s6-rmrf /tmp/cleanup
         }
 
-        pipeline { s6-ls -0 -- /var/local/xbuild/installed_packages }
+        pipeline { s6-ls -0 -- /var/cache/xbuild/packages }
         forstdin -0 -o 0 -- package
         importas -u package package
 
@@ -55,19 +57,7 @@ foreground {
 
 foreground {
 
-    # Remove Packges which will installed by xb-prepare
-    define excludes "apt-utils lsb-release ca-certificates software-properties-common psmisc wget curl less vim-tiny dirmngr command-not-found"
-
-    # This Packages could not automatically removed
-    define additional "mime-support apt-file gnupg vim-common readline-common python3 python3.5-minimal python2.7-minimal python gnupg-agent apt-transport-https aptitude lsb-base openssl"
-
-    # Libraries to remove
-    define libraries "libpython2.7-minimal libpython3.5-minimal libgssapi-krb5-2 libldap-common libglib2.0-0 libsystemd0 libsmartcols1 libuuid1 libssl1.1"
-
-    # This are essential Packages which will really not neaded. We know what we do ;-)
-    define essential "mount ncurses-base ncurses-bin login e2fslibs"
-
-    define -s packages "${excludes} ${additional} ${essential} ${libraries}"
+    define -s packages "${core_packages} ${cleanup_packages}"
 
     foreground {
         forx package { ${packages} }
@@ -100,6 +90,20 @@ foreground {
     if { xb-log "Remove python bytecode (if exists)" }
     if { find / -mount -name "*.pyc" -delete }
     if { find / -mount -name "*__pycache__*" -delete }
+
+    if { xb-log "Cleanup Cache" }
+    background {
+        if { s6-test -d /var/run/xbuild }
+        elglob -0 -- runfiles /var/run/xbuild/*
+        forx -p -- runfile { ${runfiles} }
+        importas -u runfile runfile
+        s6-rmrf /var/run/xbuild/${runfile}
+    }
+
+    background {
+        if { s6-test -d /var/cache/xbuild/packages }
+        s6-rmrf /var/cache/xbuild/packages
+    }
 }
 
 foreground {
