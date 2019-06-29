@@ -1,6 +1,6 @@
 {
   "name": "xbuild",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "A Build System for Docker Images",
   "license": "MIT",
   "repository": {
@@ -30,7 +30,7 @@
     "docker:build": "docker build --tag $npm_package_config_image_name:$npm_package_version --force-rm .",
     "docker:tag": "docker image tag $npm_package_config_image_name:$npm_package_version $npm_package_config_image_name:latest",
     "source:update": "./.devcontainer/install-s6-overlay.sh",
-    "source:clean" : "./.devcontainer/cleanup-source.sh",
+    "source:clean": "./.devcontainer/cleanup-source.sh",
     "clean": "docker system prune -f && docker container prune -f  && yarn docker:clean:image && yarn docker:clean:latest && yarn docker:clean:dev && yarn source:clean",
     "prebuild": "appvmgr update build && yarn dockerfile:build && yarn source:update",
     "build": "yarn docker:build",
