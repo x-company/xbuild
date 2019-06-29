@@ -1,11 +1,12 @@
 #!/usr/bin/execlineb
 
-if { xb-env }
 s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
 importas -u core_packages XBUILD_CONF_CORE_PACKAGES
+importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
+
 importas -u cleanup_packages XBUILD_CONF_CLEANUP_PACKAGES
 importas -u harden_packages XBUILD_CONF_HARDEN_PACKAGES
 
@@ -65,9 +66,13 @@ foreground {
         }
     }
 
-    # Exeute Install
+    # Execute Install
     foreground {
-        redirfd -a 1 ${logfile}
+
+        foreground {
+            if { s6-test "${core_log_disabled}" = "N" }
+            redirfd -a 1 ${logfile}
+        }
 
         apt-get install -q -y --no-install-recommends ${package}
         s6-echo "Test"
