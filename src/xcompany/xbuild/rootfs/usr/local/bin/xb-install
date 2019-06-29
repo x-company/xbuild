@@ -5,15 +5,15 @@ s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
+importas -u core_packages XBUILD_CONF_CORE_PACKAGES
+importas -u cleanup_packages XBUILD_CONF_CLEANUP_PACKAGES
+importas -u harden_packages XBUILD_CONF_HARDEN_PACKAGES
 
 foreground {
 
     elgetpositionals -P0
 
     if -n { s6-test -z "$1" }
-
-    # Define Excludes. This packages will automatically uninstalled when Image will finished
-    define -s excludes "apt-utils lsb-release software-properties-common psmisc wget curl less vim-tiny dirmngr command-not-found"
 
     # Iterate offer the Packages
     forx package { ${@} }
@@ -23,20 +23,45 @@ foreground {
 
     # Persist Package to install
     foreground {
-        if -n { s6-test -d /var/local/xbuild/installed_packages }
-        s6-mkdir -p /var/local/xbuild/installed_packages/
+        if -n { s6-test -d /var/cache/xbuild/packages }
+        s6-mkdir -p /var/cache/xbuild/packages/
     }
 
-    if { s6-touch /var/local/xbuild/installed_packages/${package} }
+    if { s6-touch /var/cache/xbuild/packages/${package} }
 
     # Check is File excluded
     foreground {
-        forx exclude { ${excludes} }
+        pipeline { s6-echo -n ${core_packages} }
+        forstdin -- exclude
         importas -u exclude exclude
 
         foreground {
             if { s6-test "${package}" = "${exclude}" }
-            s6-rmrf /var/local/xbuild/installed_packages/${package}
+            s6-rmrf /var/cache/xbuild/packages/${package}
+        }
+    }
+
+    # Check is File excluded
+    foreground {
+        pipeline { s6-echo -n ${cleanup_packages} }
+        forstdin -- exclude
+        importas -u exclude exclude
+
+        foreground {
+            if { s6-test "${package}" = "${exclude}" }
+            s6-rmrf /var/cache/xbuild/packages/${package}
+        }
+    }
+
+    # Check is File excluded
+    foreground {
+        pipeline { s6-echo -n ${harden_packages} }
+        forstdin -- exclude
+        importas -u exclude exclude
+
+        foreground {
+            if { s6-test "${package}" = "${exclude}" }
+            s6-rmrf /var/cache/xbuild/packages/${package}
         }
     }
 
@@ -45,5 +70,6 @@ foreground {
         redirfd -a 1 ${logfile}
 
         apt-get install -q -y --no-install-recommends ${package}
+        s6-echo "Test"
     }
 }
