@@ -20,24 +20,6 @@ backtick oscodename { lsb_release -sc }
 backtick oscodever { lsb_release -sr }
 
 foreground {
-
-    if { xb-header "Create Folders" }
-
-    if { s6-mkdir -p /etc/cont-finish.d }
-    if { s6-mkdir -p /etc/cont-init.d }
-    if { s6-mkdir -p /etc/fix-attrs.d }
-    if { s6-mkdir -p /etc/services.d }
-    if { s6-mkdir -p /etc/xbuild/env.d }
-
-    if { s6-mkdir -p /var/cache/xbuild }
-    if { s6-mkdir -p /var/local/xbuild/packages }
-    if { s6-mkdir -p /var/log/xbuild }
-    if { s6-mkdir -p /var/run/xbuild }
-
-    if { xb-log "Folders created" }
-}
-
-foreground {
     if { s6-test "${core_custom_mirror}" = "Y" }
 
     if { xb-header "Configure Mirror" }
