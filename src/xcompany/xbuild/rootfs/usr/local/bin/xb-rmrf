@@ -6,7 +6,7 @@ foreground {
 
     elgetpositionals -P0
 
-    if -n { s6-test -z "$1" }
+    if -n { test -z "$1" }
 
     forx folder { ${@} }
     importas -u folder folder
