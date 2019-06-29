@@ -22,7 +22,6 @@ foreground {
 }
 
 foreground { redirfd -w 1 ${envdir}/XBUILD_LOG s6-echo -n -- "${logfile}" }
-foreground { redirfd -w 1 ${envdir}/XBUILD_ENV s6-echo -n -- "${logfile}" }
 foreground { redirfd -w 1 ${envdir}/LC_ALL s6-echo -n -- "C" }
 foreground { redirfd -w 1 ${envdir}/DEBIAN_FRONTEND s6-echo -n -- "noninteractive" }
 foreground { redirfd -w 1 ${envdir}/SHELL s6-echo -n -- "/bin/bash" }
@@ -35,3 +34,121 @@ foreground { redirfd -w 1 ${envdir}/INITRD s6-echo -n -- "no" }
 foreground { redirfd -w 1 ${envdir}/LC_CTYPE s6-echo -n -- "de_DE.UTF-8" }
 foreground { redirfd -w 1 ${envdir}/LANG s6-echo -n -- "de_DE.UTF-8" }
 foreground { redirfd -w 1 ${envdir}/LANGUAGE s6-echo -n -- "de_DE.UTF-8" }
+
+# Load Settings
+foreground {
+    if { s6-test -f /etc/xbuild/xbuild.conf }
+
+    # Read first each line
+    pipeline { cat -s /etc/xbuild/xbuild.conf }
+    forstdin -d"\n" -- line
+    importas -u line line
+
+    foreground {
+
+        # Extract Key
+        pipeline { s6-echo -n ${line} }
+        backtick key { s6-cut -d = -f1 }
+
+        # Extract Value
+        pipeline { s6-echo -n ${line} }
+        backtick value { s6-cut -d = -f2 }
+
+        importas -u key key
+        importas -u value value
+
+        # Base Configuration
+        foreground {
+            if { s6-test "${key}" = "core" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_CORE
+            s6-echo -n -- ${value}
+        }
+
+        foreground {
+            if { s6-test "${key}" = "packages" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_CORE_PACKAGES
+            s6-echo -n -- ${value}
+        }
+
+        foreground {
+            if { s6-test "${key}" = "custom_mirror" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_CORE_CUSTOM_MIRROR
+            s6-echo -n -- ${value}
+        }
+
+        # Runtime Configuration
+        foreground {
+            if { s6-test "${key}" = "activate_dotnet" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_DOTNET
+            s6-echo -n -- ${value}
+        }
+
+        foreground {
+            if { s6-test "${key}" = "dotnet_version" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_DOTNET_VERSION
+            s6-echo -n -- ${value}
+        }
+
+        foreground {
+            if { s6-test "${key}" = "activate_pwsh" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_PWSH
+            s6-echo -n -- ${value}
+        }
+
+        foreground {
+            if { s6-test "${key}" = "activate_node" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_NODE
+            s6-echo -n -- ${value}
+        }
+
+        foreground {
+            if { s6-test "${key}" = "node_version" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_NODE_VERSION
+            s6-echo -n -- ${value}
+        }
+
+        foreground {
+            if { s6-test "${key}" = "activate_dev" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_DEV
+            s6-echo -n -- ${value}
+        }
+
+        # Cleanup Configuration
+        foreground {
+            if { s6-test "${key}" = "cleanup_build" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_CLEANUP
+            s6-echo -n -- ${value}
+        }
+
+        foreground {
+            if { s6-test "${key}" = "cleanup_packages" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_CLEANUP_PACKAGES
+            s6-echo -n -- ${value}
+        }
+
+        # Hardening Configuration
+        foreground {
+            if { s6-test "${key}" = "harden_image" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_HARDEN
+            s6-echo -n -- ${value}
+        }
+
+        foreground {
+            if { s6-test "${key}" = "harden_packages" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_HARDEN_PACKAGES
+            s6-echo -n -- ${value}
+        }
+
+        foreground {
+            if { s6-test "${key}" = "harden_libraries" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_HARDEN_LIBRARIES
+            s6-echo -n -- ${value}
+        }
+
+        foreground {
+            if { s6-test "${key}" = "harden_essential" }
+            redirfd -w 1 ${envdir}/XBUILD_CONF_HARDEN_ESSENTIAL
+            s6-echo -n -- ${value}
+        }
+    }
+}
