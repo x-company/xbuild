@@ -3,6 +3,10 @@
 if { xb-env }
 s6-envdir /etc/xbuild/env.d/
 
+importas -u packages XBUILD_CONF_CORE_PACKAGES
+importas -u cleanup XBUILD_CONF_CLEANUP
+importas -u harden XBUILD_CONF_HARDEN
+
 foreground {
 
     if { xb-header "Prepare the Image" }
@@ -17,28 +21,27 @@ foreground {
 
 foreground {
 
+    if { s6-test -z ${packages} }
+    if { xb-header "Install user defined Packages" }
+    if { xb-install ${packages} }
+}
+
+foreground {
+
     if { xb-header "Build configured Services" }
     if { xb-buildsvc }
 }
 
 foreground {
 
-    if { xb-header "Execute custom Build File" }
-
-    if { s6-test -f /build/build }
-    if { xb-log "Build" }
-    if { s6-chmod 0755 /build/build }
-    if { /build/build }
-}
-
-foreground {
-
+    if { s6-test "${cleanup}" = "Y" }
     if { xb-header "Cleanup the Image" }
     if { xb-cleanup }
 }
 
 foreground {
 
+    if { s6-test "${harden}" = "Y" }
     if { xb-header "Harden the Image" }
     if { xb-harden }
 }
