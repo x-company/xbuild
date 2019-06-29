@@ -14,16 +14,19 @@ services:
     volumes:
       - ../:/workspace/
       - ../src/xcompany/xbuild/build/:/build/
-      - ../src/xcompany/xbuild/rootfs/etc/xbuild/:/etc/xbuild/
       - ../src/xcompany/xbuild/rootfs/etc/cont-finish.d/:/etc/cont-finish.d/
       - ../src/xcompany/xbuild/rootfs/etc/cont-init.d/:/etc/cont-init.d/
       - ../src/xcompany/xbuild/rootfs/etc/fix-attrs.d/:/etc/fix-attrs.d/
       - ../src/xcompany/xbuild/rootfs/etc/services.d/:/etc/services.d/
       - ../src/xcompany/xbuild/rootfs/etc/socklog.rules/:/etc/socklog.rules/
-      - ./sources.list:/etc/xbuild/apt/sources.list
+      - ../src/xcompany/xbuild/rootfs/etc/xbuild/:/etc/xbuild/
+      - ./sources.list:/etc/xbuild/sources.list
+      - ./xbuild.conf:/etc/xbuild/xbuild.conf
       - ../src/xcompany/xbuild/rootfs/usr/local/bin/:/usr/local/bin/
-      - ../src/xcompany/xbuild/rootfs/usr/local/include/:/usr/local/include/
+      - ../src/xcompany/xbuild/rootfs/var/cache/xbuild:/var/cache/xbuild
       - ../src/xcompany/xbuild/rootfs/var/local/xbuild:/var/local/xbuild
+      - ../src/xcompany/xbuild/rootfs/var/log/xbuild:/var/log/xbuild
+      - ../src/xcompany/xbuild/rootfs/var/run/xbuild:/var/run/xbuild
       # Configure Git with the current local Settings
       - ~/.gitconfig:/root/.gitconfig
       # Persists Extensions and VSCode Server
