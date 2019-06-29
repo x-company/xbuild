@@ -1,12 +1,12 @@
 #!/usr/bin/execlineb -P
 
-if { xb-env }
 s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
 importas -u core_packages XBUILD_CONF_CORE_PACKAGES
-importas -u custom_mirror XBUILD_CONF_CORE_CUSTOM_MIRROR
+importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
+importas -u core_custom_mirror XBUILD_CONF_CORE_CUSTOM_MIRROR
 
 importas -u runtime_dotnet XBUILD_CONF_RUNTIME_DOTNET
 importas -u runtime_pwsh XBUILD_CONF_RUNTIME_PWSH
@@ -31,24 +31,26 @@ foreground {
     if { s6-mkdir -p /var/local/xbuild/packages }
     if { s6-mkdir -p /var/log/xbuild }
     if { s6-mkdir -p /var/run/xbuild }
+
+    if { xb-log "Folders created" }
 }
 
 foreground {
-    if { s6-test "${custom_mirror}" = "Y" }
+    if { s6-test "${core_custom_mirror}" = "Y" }
 
     if { xb-header "Configure Mirror" }
-    ifelse { s6-test -f /etc/xbuild/apt/sources.list }
+    ifelse { s6-test -f /etc/xbuild/sources.list }
     {
         if { xb-log "Custom Mirror is given. Initialize this Mirror" }
         if { s6-rmrf /etc/apt/sources.list }
-        s6-ln -s /etc/xbuild/apt/sources.list /etc/apt/sources.list
+        s6-ln -s /etc/xbuild/sources.list /etc/apt/sources.list
     }
     if { xb-log "Custom Mirror configuration could not found." }
 }
 
 foreground {
 
-    if { s6-test "${custom_mirror}" = "N" }
+    if { s6-test "${core_custom_mirror}" = "N" }
 
     if { xb-header "Configure Mirror" }
     if { xb-log "Enable default Sources." }
@@ -66,7 +68,7 @@ foreground {
 
 foreground {
 
-    if { s6-test "${custom_mirror}" = "N" }
+    if { s6-test "${core_custom_mirror}" = "N" }
     if { xb-header "Configure Mirrors for activated Runtimes" }
 
     importas -u -n osid osid
@@ -98,14 +100,12 @@ foreground {
 foreground {
 
     foreground {
-        if { xb-log "Import Keys for Microsoft and Nodesource Mirrors" }
-        s6-hiercopy /etc/xbuild/apt/trusted.gpg.d/ /etc/apt/trusted.gpg.d/
-    }
-
-    foreground {
         if { xb-log "Reinitialize Package Sources" }
 
-        redirfd -a 1 ${logfile}
+        foreground {
+            if { s6-test "${core_log_disabled}" = "N" }
+            redirfd -a 1 ${logfile}
+        }
 
         if { apt-get -q clean }
         if { apt-get -qy autoremove }
@@ -127,7 +127,7 @@ foreground {
     forx -p -- custom_package { ${custom_packages} }
     importas -u custom_package custom_package
 
-    if { dpkg --install ${custom_package}}
+    if { dpkg --install ${custom_package} }
     if { s6-touch /var/cache/xbuild/packages/${custom_package} }
 }
 
@@ -138,7 +138,11 @@ foreground {
     foreground {
         if { xb-log "Upgrade the Distribution" }
 
-        redirfd -a 1 ${logfile}
+        foreground {
+            if { s6-test "${core_log_disabled}" = "N" }
+            redirfd -a 1 ${logfile}
+        }
+
         apt-get dist-upgrade -qy --no-install-recommends -o Dpkg::Options::="--force-confold"
     }
 }
