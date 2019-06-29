@@ -3,40 +3,49 @@
 s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
-importas -u logfile XBUILD_LOG
-importas -u packages XBUILD_CONF_CORE_PACKAGES
+importas -u runtime_dotnet XBUILD_CONF_RUNTIME_DOTNET
+importas -u runtime_dotnet_version XBUILD_CONF_RUNTIME_DOTNET_VERSION
+importas -u runtime_pwsh XBUILD_CONF_RUNTIME_PWSH
+importas -u runtime_node XBUILD_CONF_RUNTIME_NODE
+importas -u runtime_dev XBUILD_CONF_RUNTIME_DEV
 
 foreground {
-    if { xb-log "Configure timezone" }
-    if { s6-ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime }
-    dpkg-reconfigure -f noninteractive tzdata
+    if { s6-test "${runtime_dotnet}" = "Y" }
+    if { xb-header "Install DotNet Core Runtime ${runtime_dotnet_version}" }
+
+    foreground { redirfd -w 1 /etc/xbuild/env.d/DOTNET_CLI_TELEMETRY_OPTOUT s6-echo -n -- "1" }
+    if { xb-install "aspnetcore-runtime-${runtime_dotnet_version}" }
+
+    if { s6-test "${runtime_dev}" = "Y" }
+    if { xb-log "Install DotNet Core SDK ${runtime_dotnet_version}" }
+    xb-install "dotnet-sdk-${runtime_dotnet_version}"
+}
+
+foreground {
+    if { s6-test "${runtime_pwsh}" = "Y" }
+    if { xb-header "Install Powershell" }
+
+    xb-install powershell
+}
+
+foreground {
+    if { s6-test "${runtime_node}" = "Y" }
+    if { xb-log "Configure NodeJS Mirror" }
+
+    if { xb-header "Install NodeJS '$nodever'" }
+    if { xb-install nodejs }
+
+    if { xb-log "Install xinit and yarn" }
+    if { npm install -g yarn }
+
+    if { s6-test "${runtime_dev}" = "Y" }
+    if { xb-log "Install Node Dev Tools" }
+    if { npm install -g typescript ts-node mocha chai appversion-mgr }
 }
 
 foreground {
 
-    if { xb-log "Configure locale" }
-
-    backtick osname { lsb_release -si }
-    importas -u -n osname osname
-
-    foreground {
-        ifelse { s6-test "${osname}" = "Debian" }
-        {
-            xb-install locales locales-all
-        }
-
-        ifelse { s6-test "${osname}" = "Ubuntu" }
-        {
-            xb-install language-pack-en language-pack-de
-        }
-    }
-
-
-    if { xb-log "Enable locales" }
-    if { sed -i -e "s/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/" /etc/locale.gen }
-    if { sed -i -e "s/# de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/" /etc/locale.gen }
-
-    if { xb-log "Regenerate Locales" }
-    if { update-locale LANG=de_DE.UTF-8 LC_CTYPE=de_DE.UTF-8 }
-    if { locale-gen de_DE }
+    if { s6-test "${runtime_dev}" = "Y" }
+    if { xb-header "Install Development Tools" }
+    xb-install bats shellcheck git openssh-client
 }
