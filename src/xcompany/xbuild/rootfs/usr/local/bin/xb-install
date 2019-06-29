@@ -4,7 +4,7 @@ s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
-importas -u core_packages XBUILD_CONF_CORE_PACKAGES
+importas -u core_packages XBUILD_CONF_CORE
 importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
 
 importas -u cleanup_packages XBUILD_CONF_CLEANUP_PACKAGES
@@ -14,7 +14,7 @@ foreground {
 
     elgetpositionals -P0
 
-    if -n { s6-test -z "$1" }
+    if -n { test -z "$1" }
 
     # Iterate offer the Packages
     forx package { ${@} }
@@ -30,7 +30,7 @@ foreground {
 
     if { s6-touch /var/cache/xbuild/packages/${package} }
 
-    # Check is File excluded
+    # Check is Package excluded
     foreground {
         pipeline { s6-echo -n ${core_packages} }
         forstdin -- exclude
@@ -42,7 +42,7 @@ foreground {
         }
     }
 
-    # Check is File excluded
+    # Check is Package excluded
     foreground {
         pipeline { s6-echo -n ${cleanup_packages} }
         forstdin -- exclude
@@ -54,7 +54,7 @@ foreground {
         }
     }
 
-    # Check is File excluded
+    # Check is Package excluded
     foreground {
         pipeline { s6-echo -n ${harden_packages} }
         forstdin -- exclude
@@ -68,13 +68,11 @@ foreground {
 
     # Execute Install
     foreground {
-
-        foreground {
-            if { s6-test "${core_log_disabled}" = "N" }
+        ifelse { s6-test "${core_log_disabled}" = "N" }
+        {
             redirfd -a 1 ${logfile}
+            apt-get install -q -y --no-install-recommends ${package}
         }
-
         apt-get install -q -y --no-install-recommends ${package}
-        s6-echo "Test"
     }
 }
