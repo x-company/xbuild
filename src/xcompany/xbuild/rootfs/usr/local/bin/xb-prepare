@@ -4,7 +4,8 @@ s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
-importas -u core_packages XBUILD_CONF_CORE_PACKAGES
+importas -u core_packages XBUILD_CONF_CORE
+importas -u core_custom_packages XBUILD_CONF_CORE_PACKAGES
 importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
 importas -u core_custom_mirror XBUILD_CONF_CORE_CUSTOM_MIRROR
 
@@ -102,11 +103,14 @@ foreground {
     foreground {
         if { xb-log "Reinitialize Package Sources" }
 
-        foreground {
-            if { s6-test "${core_log_disabled}" = "N" }
+        ifelse { s6-test "${core_log_disabled}" = "N" }
+        {
             redirfd -a 1 ${logfile}
+            if { apt-get -q clean }
+            if { apt-get -qy autoremove }
+            if { xb-rmrf /var/lib/apt/lists/ }
+            if { apt-get -q update }
         }
-
         if { apt-get -q clean }
         if { apt-get -qy autoremove }
         if { xb-rmrf /var/lib/apt/lists/ }
@@ -115,20 +119,33 @@ foreground {
 }
 
 foreground {
-    if { xb-header "Install Packages and Tools" }
-    if { xb-install ${core_packages} }
+
+    if -n { test -z "${core_packages}" }
+    if { xb-header "Install Core Packages and Tools" }
+    define -s tmp ${core_packages}
+    if { xb-install ${tmp} }
 }
 
 foreground {
-    if { xb-header "Install custom Packages and Tools" }
 
-    if { s6-test -d /var/local/xbuild/packages }
-    elglob -0 -- custom_packages /var/local/xbuild/packages/**/*.deb
-    forx -p -- custom_package { ${custom_packages} }
-    importas -u custom_package custom_package
+    if -n { test -z "${core_custom_packages}" }
+    if { xb-header "Install User Packages and Tools" }
+    define -s tmp ${core_custom_packages}
+    if { xb-install ${tmp} }
+}
 
-    if { dpkg --install ${custom_package} }
-    if { s6-touch /var/cache/xbuild/packages/${custom_package} }
+foreground {
+
+    if { s6-test -d /var/local/xbuild/packages/ }
+
+    if { xb-header "Install Packages and Tools without Mirror" }
+    elglob -0 -- deb_packages /var/local/xbuild/packages/**/*.deb
+    forx -p -- deb_package { ${deb_packages} }
+    importas -u deb_package deb_package
+
+    if { xb-log "Install Deb Package '${deb_package}'" }
+    if { dpkg --install ${deb_package} }
+    if { s6-touch /var/cache/xbuild/packages/${deb_package} }
 }
 
 foreground {
@@ -138,11 +155,11 @@ foreground {
     foreground {
         if { xb-log "Upgrade the Distribution" }
 
-        foreground {
-            if { s6-test "${core_log_disabled}" = "N" }
+        ifelse { s6-test "${core_log_disabled}" = "N" }
+        {
             redirfd -a 1 ${logfile}
+            apt-get dist-upgrade -qy --no-install-recommends -o Dpkg::Options::="--force-confold"
         }
-
         apt-get dist-upgrade -qy --no-install-recommends -o Dpkg::Options::="--force-confold"
     }
 }
