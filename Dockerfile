@@ -1,9 +1,9 @@
 
 FROM debian:stretch-slim
 
-ARG XBUILD_BUILD_DATE="2019-06-29T09:08:31Z"
-ARG XBUILD_VCS_REF="d2fa093"
-ARG XBUILD_VERSION="0.5.2"
+ARG XBUILD_BUILD_DATE="2019-06-29T16:00:59Z"
+ARG XBUILD_VCS_REF="706c924"
+ARG XBUILD_VERSION="0.6.0"
 ARG XBUILD_IMAGE_NAME="xcompany/xbuild"
 ARG XBUILD_IMAGE_DESCRIPTION="A easy to use Framework for your Installation Needs of Docker Base Images"
 ARG XBUILD_VENDOR="IT Solutions Roland Breitschaft"
@@ -25,8 +25,12 @@ LABEL  de.x-company.build-date=$XBUILD_BUILD_DATE \
        description=$XBUILD_IMAGE_DESCRIPTION \
        version=$XBUILD_VERSION
 
+# Copy rootfs to root
 COPY   ./src/xcompany/xbuild/rootfs/ /
+
+# Copy Services and other Build Files to build Folder
 COPY   ./src/xcompany/xbuild/build/ /build/
 
-RUN apt-get update && \
-    apt-get install -q -y --no-install-recommends apt-utils apt-transport-https lsb-release ca-certificates
+# Install Base Packages
+RUN     apt-get update && \
+        apt-get install -q -y --no-install-recommends apt-utils apt-transport-https lsb-release ca-certificates
