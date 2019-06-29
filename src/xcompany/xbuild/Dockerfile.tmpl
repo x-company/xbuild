@@ -28,5 +28,5 @@ LABEL  de.x-company.build-date=$XBUILD_BUILD_DATE \
 COPY   ./src/xcompany/xbuild/rootfs/ /
 COPY   ./src/xcompany/xbuild/build/ /build/
 
-RUN apt-get -qy update \
-    apt-get install -q -y --no-install-recommends apt-utils apt-transport-https lsb-release ca-certificates
+RUN apt-get update \
+    && apt-get install -q -y --no-install-recommends apt-utils apt-transport-https lsb-release ca-certificates
