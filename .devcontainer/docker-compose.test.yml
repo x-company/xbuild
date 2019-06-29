@@ -20,7 +20,7 @@ services:
       - ../src/xcompany/xbuild/rootfs/etc/services.d/:/etc/services.d/
       - ../src/xcompany/xbuild/rootfs/etc/socklog.rules/:/etc/socklog.rules/
       - ../src/xcompany/xbuild/rootfs/etc/xbuild/:/etc/xbuild/
-      - ./sources.list:/etc/xbuild/apt/sources.list
+      - ./sources.list:/etc/xbuild/sources.list
+      - ./xbuild.conf:/etc/xbuild/xbuild.conf
       - ../src/xcompany/xbuild/rootfs/usr/local/bin/:/usr/local/bin/
-      - ../src/xcompany/xbuild/rootfs/var/local/xbuild:/var/local/xbuild
     command: xb-test
