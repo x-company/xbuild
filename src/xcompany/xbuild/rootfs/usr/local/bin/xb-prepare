@@ -27,6 +27,7 @@ foreground {
     if { s6-mkdir -p /etc/cont-init.d }
     if { s6-mkdir -p /etc/fix-attrs.d }
     if { s6-mkdir -p /etc/services.d }
+    if { s6-mkdir -p /etc/xbuild/env.d }
 
     if { s6-mkdir -p /var/cache/xbuild }
     if { s6-mkdir -p /var/local/xbuild/packages }
