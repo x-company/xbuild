@@ -25,8 +25,12 @@ LABEL  de.x-company.build-date=$XBUILD_BUILD_DATE \
        description=$XBUILD_IMAGE_DESCRIPTION \
        version=$XBUILD_VERSION
 
+# Copy rootfs to root
 COPY   ./src/xcompany/xbuild/rootfs/ /
+
+# Copy Services and other Build Files to build Folder
 COPY   ./src/xcompany/xbuild/build/ /build/
 
-RUN apt-get update && \
-    apt-get install -q -y --no-install-recommends apt-utils apt-transport-https lsb-release ca-certificates
+# Install Base Packages
+RUN     apt-get update && \
+        apt-get install -q -y --no-install-recommends apt-utils apt-transport-https lsb-release ca-certificates
