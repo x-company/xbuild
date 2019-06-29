@@ -3,36 +3,33 @@
 if { xb-env }
 s6-envdir /etc/xbuild/env.d/
 
-define run_dir /var/run/xbuild
-
-foreground {
-    if -n { s6-test -d ${run_dir} }
-    s6-mkdir -p ${run_dir}
-}
+define rundir /var/run/xbuild
 
 if { xb-header "Prepare the Image for Unit Tests" }
-
 foreground {
 
-    if -n { s6-test -f ${run_dir}/xb-prepare }
+    if -n { s6-test -f ${rundir}/xb-prepare }
+    if { s6-touch ${rundir}/xb-prepare }
+
     if { xb-prepare }
-    if { s6-touch ${run_dir}/xb-prepare }
 }
 
 foreground {
 
-    if -n { s6-test -f ${run_dir}/xb-configure }
+    if -n { s6-test -f ${rundir}/xb-configure }
+    if { s6-touch ${rundir}/xb-configure }
+
     if { xb-header "Configure the Image" }
     if { xb-configure }
-    if { s6-touch ${run_dir}/xb-configure }
 }
 
 foreground {
 
-    if -n { s6-test -f ${run_dir}/xb-install }
+    if -n { s6-test -f ${rundir}/xb-install }
+    if { s6-touch ${rundir}/xb-install }
+
     if { xb-header "Install Unit Test Tools" }
     if { xb-install bats }
-    if { s6-touch ${run_dir}/xb-install }
 }
 
 foreground {
