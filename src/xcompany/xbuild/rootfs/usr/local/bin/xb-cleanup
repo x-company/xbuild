@@ -1,11 +1,13 @@
 #!/usr/bin/execlineb -P
 
-if { xb-env }
 s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
+
 importas -u core_packages XBUILD_CONF_CORE_PACKAGES
+importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
+
 importas -u cleanup_packages XBUILD_CONF_CLEANUP_PACKAGES
 
 foreground {
@@ -48,7 +50,10 @@ foreground {
             foreground {
 
                 if { xb-log "Remove Package '${package}'" }
-                redirfd -a 1 ${logfile}
+                foreground {
+                    if { s6-test "${core_log_disabled}" = "N" }
+                    redirfd -a 1 ${logfile}
+                }
                 if { apt-get purge -qy ${package} }
             }
         }
@@ -66,7 +71,11 @@ foreground {
         foreground {
             if { xb-log "Remove Package '${package}'" }
 
-            redirfd -a 1 ${logfile}
+            foreground {
+                if { s6-test "${core_log_disabled}" = "N" }
+                redirfd -a 1 ${logfile}
+            }
+
             fdmove -c 2 1
             if { apt-get purge -qy --allow-remove-essential ${package} }
         }
@@ -77,7 +86,11 @@ foreground {
 
     if { xb-log "Remove Packages which have no Dependencies" }
 
-    redirfd -a 1 ${logfile}
+    foreground {
+        if { s6-test "${core_log_disabled}" = "N" }
+        redirfd -a 1 ${logfile}
+    }
+
     if { apt-get -qy autoremove }
     if { apt-get clean }
 }
