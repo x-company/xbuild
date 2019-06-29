@@ -23,10 +23,6 @@ services:
       - ./sources.list:/etc/xbuild/sources.list
       - ./xbuild.conf:/etc/xbuild/xbuild.conf
       - ../src/xcompany/xbuild/rootfs/usr/local/bin/:/usr/local/bin/
-      - ../src/xcompany/xbuild/rootfs/var/cache/xbuild:/var/cache/xbuild/
-      - ../src/xcompany/xbuild/rootfs/var/local/xbuild:/var/local/xbuild/
-      - ../src/xcompany/xbuild/rootfs/var/log/xbuild:/var/log/xbuild/
-      - ../src/xcompany/xbuild/rootfs/var/run/xbuild:/var/run/xbuild/
       # Configure Git with the current local Settings
       - ~/.gitconfig:/root/.gitconfig
       # Persists Extensions and VSCode Server

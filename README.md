@@ -47,7 +47,6 @@ Normally a Service, e.g. *nginx*, *mysql* a.s.o will installed by the Docker *Ru
 /etc/services.d           # Home of your Services
 /etc/socklog.rules        # Define here specific Log Rules
 /etc/xbuild               # Main Folder for the xbuild System
-/etc/xbuild/apt           # Place here a custom sources.list to use custom Repositories
 /etc/xbuild/env.d         # xb-env save/load Environment Variables from this location
 /etc/xbuild/health.d      # Home for Healthcare Scripts of Services
 /var/local/xbuild         # Home for dynamic Data of xbuild Framework
