@@ -5,6 +5,18 @@ s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
+importas -u core_packages XBUILD_CONF_CORE_PACKAGES
+importas -u custom_mirror XBUILD_CONF_CORE_CUSTOM_MIRROR
+
+importas -u runtime_dotnet XBUILD_CONF_RUNTIME_DOTNET
+importas -u runtime_pwsh XBUILD_CONF_RUNTIME_PWSH
+importas -u runtime_node XBUILD_CONF_RUNTIME_NODE
+importas -u runtime_node_version XBUILD_CONF_RUNTIME_NODE_VERSION
+
+# Load System Informations
+backtick osid { lsb_release -si }
+backtick oscodename { lsb_release -sc }
+backtick oscodever { lsb_release -sr }
 
 foreground {
 
@@ -15,48 +27,75 @@ foreground {
     if { s6-mkdir -p /etc/fix-attrs.d }
     if { s6-mkdir -p /etc/services.d }
 
-    if { s6-mkdir -p /var/local/xbuild }
+    if { s6-mkdir -p /var/cache/xbuild }
+    if { s6-mkdir -p /var/local/xbuild/packages }
     if { s6-mkdir -p /var/log/xbuild }
-
-    if { s6-mkdir -p /var/log/xbuild }
+    if { s6-mkdir -p /var/run/xbuild }
 }
 
 foreground {
-    if { xb-header "Update the Package Sources" }
+    if { s6-test "${custom_mirror}" = "Y" }
 
-    foreground {
-        redirfd -a 1 ${logfile}
-        apt-get -q update
+    if { xb-header "Configure Mirror" }
+    ifelse { s6-test -f /etc/xbuild/apt/sources.list }
+    {
+        if { xb-log "Custom Mirror is given. Initialize this Mirror" }
+        if { s6-rmrf /etc/apt/sources.list }
+        s6-ln -s /etc/xbuild/apt/sources.list /etc/apt/sources.list
     }
-    xb-install apt-utils apt-transport-https lsb-release ca-certificates
+    if { xb-log "Custom Mirror configuration could not found." }
 }
 
 foreground {
 
-    if { xb-header "Prepare now the System with the configured Package Sources" }
+    if { s6-test "${custom_mirror}" = "N" }
+
+    if { xb-header "Configure Mirror" }
+    if { xb-log "Enable default Sources." }
 
     if { s6-rmrf /etc/apt/sources.list }
 
     foreground {
-        if { s6-test -f /etc/xbuild/apt/sources.list }
-
-        if { xb-log "Link Custom Package Sources" }
-        s6-ln -s /etc/xbuild/apt/sources.list /etc/apt/sources.list
-    }
-
-    foreground {
-        if -n { s6-test -f /etc/xbuild/apt/sources.list }
-
-        if { xb-log "No custom Package Sources given. Link default Sources." }
-
-        backtick osid { lsb_release -si }
-        backtick oscodename { lsb_release -sc }
 
         importas -u -n osid osid
         importas -u -n oscodename oscodename
 
-        s6-ln -s /etc/xbuild/apt/sources.list.d/${osid}.${oscodename}.list /etc/apt/sources.list
+        s6-rename /etc/apt/sources.list.d/${osid}.${oscodename}.disabled /etc/apt/sources.list.d/${osid}.${oscodename}.list
     }
+}
+
+foreground {
+
+    if { s6-test "${custom_mirror}" = "N" }
+    if { xb-header "Configure Mirrors for activated Runtimes" }
+
+    importas -u -n osid osid
+    importas -u -n oscodename oscodename
+    importas -u -n oscodever oscodever
+
+    foreground {
+        if { s6-test "${runtime_dotnet}" = "Y" }
+        if { xb-log "Configure DotNet Core Mirror" }
+        redirfd -w 1 /etc/apt/sources.list.d/dotnet.list
+        s6-echo -n -- "deb [arch=amd64] https://packages.microsoft.com/${osid}/${oscodever}/prod ${oscodename} main"
+    }
+
+    foreground {
+        if { s6-test "${runtime_pwsh}" = "Y" }
+        if { xb-log "Configure PowerShell Mirror" }
+        redirfd -w 1 /etc/apt/sources.list.d/pwsh.list
+        s6-echo -n -- "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-${osid}-${oscodename}-prod ${oscodename} main"
+    }
+
+    foreground {
+        if { s6-test "${runtime_node}" = "Y" }
+        if { xb-log "Configure NodeJS Mirror" }
+        redirfd -w 1 /etc/apt/sources.list.d/node.list
+        s6-echo -n -- "deb [arch=amd64] https://deb.nodesource.com/node_${runtime_node_version}.x ${oscodename} main"
+    }
+}
+
+foreground {
 
     foreground {
         if { xb-log "Import Keys for Microsoft and Nodesource Mirrors" }
@@ -77,8 +116,19 @@ foreground {
 
 foreground {
     if { xb-header "Install Packages and Tools" }
+    if { xb-install ${core_packages} }
+}
 
-    xb-install software-properties-common gnupg psmisc wget curl less vim-tiny aptitude dirmngr command-not-found
+foreground {
+    if { xb-header "Install custom Packages and Tools" }
+
+    if { s6-test -d /var/local/xbuild/packages }
+    elglob -0 -- custom_packages /var/local/xbuild/packages/**/*.deb
+    forx -p -- custom_package { ${custom_packages} }
+    importas -u custom_package custom_package
+
+    if { dpkg --install ${custom_package}}
+    if { s6-touch /var/cache/xbuild/packages/${custom_package} }
 }
 
 foreground {
