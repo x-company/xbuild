@@ -1,10 +1,11 @@
 #!/usr/bin/execlineb
 
-if { xb-env }
 s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
+
+importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
 
 foreground {
 
@@ -27,9 +28,11 @@ foreground {
 
     # Write to Logfile
     foreground {
+
+        if { s6-test "${core_log_disabled}" = "N" }
         redirfd -a 1 ${logfile}
 
-        if { echo -e "${logmessage}" }
+        if { echo -e "[xbuild] $1" }
         if { echo -e "--------------------------------------------------------------------" }
     }
 
