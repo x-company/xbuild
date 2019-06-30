@@ -145,7 +145,7 @@ ifelse -n { s6-test -f ${runfile} }
 
             # Cleanup Configuration
             foreground {
-                if { s6-test "${key}" = "cleanup_build" }
+                if { s6-test "${key}" = "cleanup_image" }
                 redirfd -w 1 ${envdir}/XBUILD_CONF_CLEANUP
                 s6-echo -n -- ${value}
             }
