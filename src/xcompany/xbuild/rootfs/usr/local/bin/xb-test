@@ -41,6 +41,7 @@ foreground {
     if -n { s6-test -f ${rundir}/xb-runtime }
     if { s6-touch ${rundir}/xb-runtime }
 
+    if { xb-header "Install Runtimes (if configured)" }
     if { xb-runtime }
 }
 
