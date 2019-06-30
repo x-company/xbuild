@@ -14,5 +14,5 @@ services:
     volumes:
       - ../tests/unit/:/tests/
       - ../src/xcompany/xbuild/build/:/build/
-      - ./xbuild.conf:/etc/xbuild/xbuild.conf
+      - ./xbuild.travis.conf:/etc/xbuild/xbuild.conf
     command: /usr/local/bin/xb-test
