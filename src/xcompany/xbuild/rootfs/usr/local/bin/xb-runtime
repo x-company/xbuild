@@ -10,6 +10,7 @@ importas -u runtime_dotnet XBUILD_CONF_RUNTIME_DOTNET
 importas -u runtime_dotnet_version XBUILD_CONF_RUNTIME_DOTNET_VERSION
 importas -u runtime_pwsh XBUILD_CONF_RUNTIME_PWSH
 importas -u runtime_node XBUILD_CONF_RUNTIME_NODE
+importas -u runtime_node_version XBUILD_CONF_RUNTIME_NODE_VERSION
 importas -u runtime_dev XBUILD_CONF_RUNTIME_DEV
 
 foreground {
@@ -35,11 +36,11 @@ foreground {
     if { s6-test "${runtime_node}" = "Y" }
     if { xb-log "Configure NodeJS Mirror" }
 
-    if { xb-header "Install NodeJS '${nodever}'" }
+    if { xb-header "Install NodeJS '${runtime_node_version}'" }
     if { xb-install nodejs }
 
     foreground {
-        if { xb-log "Install yarn" }
+        if { xb-log "Install yarn Package Manager" }
         ifelse { s6-test "${core_log_disabled}" = "N" }
         {
             redirfd -a 1 ${logfile}
@@ -63,6 +64,6 @@ foreground {
 foreground {
 
     if { s6-test "${runtime_dev}" = "Y" }
-    if { xb-header "Install Development Tools" }
+    if { xb-header "Install Default Development Tools" }
     xb-install bats shellcheck git openssh-client
 }
