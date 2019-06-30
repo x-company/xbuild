@@ -149,9 +149,22 @@ ifelse -n { s6-test -f ${runfile} }
                 s6-echo -n -- ${value}
             }
 
+            # Development Settings
             foreground {
                 if { s6-test "${key}" = "activate_dev" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_DEV
+                redirfd -w 1 ${envdir}/XBUILD_CONF_DEV
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "dev_packages" }
+                redirfd -w 1 ${envdir}/XBUILD_CONF_DEV_PACKAGES
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "dev_node_packages" }
+                redirfd -w 1 ${envdir}/XBUILD_CONF_DEV_PACKAGES_NODE
                 s6-echo -n -- ${value}
             }
 
