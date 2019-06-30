@@ -55,12 +55,14 @@ foreground {
     foreground {
         if { s6-test "${dev_enabled}" = "Y" }
         if { xb-log "Install Node Dev Tools" }
+
+        define -s tmp ${dev_packages_node}
         ifelse { s6-test "${core_log_disabled}" = "N" }
         {
             redirfd -a 1 ${logfile}
-            npm install -g ${dev_packages_node}
+            npm install -g ${tmp}
         }
-        npm install -g ${dev_packages_node}
+        npm install -g ${tmp}
     }
 }
 
