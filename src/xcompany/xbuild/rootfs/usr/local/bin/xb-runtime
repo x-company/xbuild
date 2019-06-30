@@ -3,6 +3,9 @@
 s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
+importas -u logfile XBUILD_LOG
+importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
+
 importas -u runtime_dotnet XBUILD_CONF_RUNTIME_DOTNET
 importas -u runtime_dotnet_version XBUILD_CONF_RUNTIME_DOTNET_VERSION
 importas -u runtime_pwsh XBUILD_CONF_RUNTIME_PWSH
@@ -35,12 +38,26 @@ foreground {
     if { xb-header "Install NodeJS '${nodever}'" }
     if { xb-install nodejs }
 
-    if { xb-log "Install xinit and yarn" }
-    if { npm install -g yarn }
+    foreground {
+        if { xb-log "Install yarn" }
+        ifelse { s6-test "${core_log_disabled}" = "N" }
+        {
+            redirfd -a 1 ${logfile}
+            npm install -g yarn
+        }
+        npm install -g yarn
+    }
 
-    if { s6-test "${runtime_dev}" = "Y" }
-    if { xb-log "Install Node Dev Tools" }
-    if { npm install -g typescript ts-node mocha chai appversion-mgr }
+    foreground {
+        if { s6-test "${runtime_dev}" = "Y" }
+        if { xb-log "Install Node Dev Tools" }
+        ifelse { s6-test "${core_log_disabled}" = "N" }
+        {
+            redirfd -a 1 ${logfile}
+            npm install -g typescript ts-node mocha chai appversion-mgr
+        }
+        npm install -g typescript ts-node mocha chai appversion-mgr
+    }
 }
 
 foreground {
