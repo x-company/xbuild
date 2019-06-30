@@ -20,7 +20,7 @@ foreground {
 
 foreground {
 
-
+    # Prepare Logging
 
     # Logdate with Time
     # backtick DATE { date +%d%m%Y-%H%M%S }
@@ -45,6 +45,18 @@ ifelse -n { s6-test -f ${runfile} }
 {
     # Create Runfile
     if { s6-touch ${runfile} }
+
+    foreground {
+        # Copy Configuration if exists
+        if { s6-test -f /build/xbuild.conf }
+        mv -f /build/xbuild.conf /etc/xbuild/xbuild.conf
+    }
+
+    foreground {
+        # Copy sources.list if exists
+        if { s6-test -f /build/sources.list }
+        mv -f /build/sources.list /etc/xbuild/sources.list
+    }
 
     foreground { redirfd -w 1 ${envdir}/LC_ALL s6-echo -n -- "C" }
     foreground { redirfd -w 1 ${envdir}/DEBIAN_FRONTEND s6-echo -n -- "noninteractive" }
