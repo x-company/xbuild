@@ -123,6 +123,7 @@ foreground {
     if { s6-test -d /var/local/xbuild/packages/ }
 
     if { xb-header "Install Packages and Tools without Mirror" }
+    if { xb-log "Look for Packages in /var/local/xbuild/packages" }
     elglob -0 -- deb_packages /var/local/xbuild/packages/**/*.deb
     forx -p -- deb_package { ${deb_packages} }
     importas -u deb_package deb_package
