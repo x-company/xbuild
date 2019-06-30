@@ -13,6 +13,8 @@ importas -u runtime_node XBUILD_CONF_RUNTIME_NODE
 importas -u runtime_node_version XBUILD_CONF_RUNTIME_NODE_VERSION
 importas -u runtime_dev XBUILD_CONF_RUNTIME_DEV
 
+if { xb-log "Execute Runtime Install Script" }
+
 foreground {
     if { s6-test "${runtime_dotnet}" = "Y" }
     if { xb-header "Install DotNet Core Runtime ${runtime_dotnet_version}" }
@@ -34,8 +36,6 @@ foreground {
 
 foreground {
     if { s6-test "${runtime_node}" = "Y" }
-    if { xb-log "Configure NodeJS Mirror" }
-
     if { xb-header "Install NodeJS '${runtime_node_version}'" }
     if { xb-install nodejs }
 
