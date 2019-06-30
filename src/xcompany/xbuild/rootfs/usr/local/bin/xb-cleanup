@@ -102,8 +102,15 @@ foreground {
 
 foreground {
 
-    if { xb-log "Cleanup Package Lists and Temp Folder" }
-    foreground { xb-rmrf /tmp /var/lib/apt/lists }
+    if { xb-header "Cleanup Package Lists and Temp Folder" }
+    foreground {
+        xb-rmrf /tmp /var/lib/apt/lists
+    }
+}
+
+foreground {
+
+    if { xb-header "Cleanup Cache" }
 
     if { xb-log "Remove python bytecode (if exists)" }
     if { find / -mount -name "*.pyc" -delete }
