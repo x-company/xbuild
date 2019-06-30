@@ -11,7 +11,10 @@ importas -u runtime_dotnet_version XBUILD_CONF_RUNTIME_DOTNET_VERSION
 importas -u runtime_pwsh XBUILD_CONF_RUNTIME_PWSH
 importas -u runtime_node XBUILD_CONF_RUNTIME_NODE
 importas -u runtime_node_version XBUILD_CONF_RUNTIME_NODE_VERSION
-importas -u runtime_dev XBUILD_CONF_RUNTIME_DEV
+
+importas -u dev_enabled XBUILD_CONF_DEV
+importas -u dev_packages XBUILD_CONF_DEV_PACKAGES
+importas -u dev_packages_node XBUILD_CONF_DEV_PACKAGES_NODE
 
 if { xb-log "Execute Runtime Install Script" }
 
@@ -22,7 +25,7 @@ foreground {
     foreground { redirfd -w 1 /etc/xbuild/env.d/DOTNET_CLI_TELEMETRY_OPTOUT s6-echo -n -- "1" }
     if { xb-install "aspnetcore-runtime-${runtime_dotnet_version}" }
 
-    if { s6-test "${runtime_dev}" = "Y" }
+    if { s6-test "${dev_enabled}" = "Y" }
     if { xb-log "Install DotNet Core SDK ${runtime_dotnet_version}" }
     xb-install "dotnet-sdk-${runtime_dotnet_version}"
 }
@@ -50,20 +53,21 @@ foreground {
     }
 
     foreground {
-        if { s6-test "${runtime_dev}" = "Y" }
+        if { s6-test "${dev_enabled}" = "Y" }
         if { xb-log "Install Node Dev Tools" }
         ifelse { s6-test "${core_log_disabled}" = "N" }
         {
             redirfd -a 1 ${logfile}
-            npm install -g typescript ts-node mocha chai appversion-mgr
+            npm install -g ${dev_packages_node}
         }
-        npm install -g typescript ts-node mocha chai appversion-mgr
+        npm install -g ${dev_packages_node}
     }
 }
 
 foreground {
 
-    if { s6-test "${runtime_dev}" = "Y" }
+    if { s6-test "${dev_enabled}" = "Y" }
     if { xb-header "Install Default Development Tools" }
-    xb-install bats shellcheck git openssh-client
+    define -s tmp ${dev_packages}
+    xb-install ${tmp}
 }
