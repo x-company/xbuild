@@ -4,11 +4,14 @@ s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
-
 importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
 
 importas -u core_packages XBUILD_CONF_CORE
 importas -u cleanup_packages XBUILD_CONF_CLEANUP_PACKAGES
+
+importas -u dev_enabled XBUILD_CONF_DEV
+importas -u dev_packages XBUILD_CONF_DEV_PACKAGES
+importas -u dev_packages_node XBUILD_CONF_DEV_PACKAGES_NODE
 
 foreground {
 
@@ -65,7 +68,7 @@ foreground {
 
 foreground {
 
-    define -s packages "${core_packages} ${cleanup_packages}"
+    define -s packages "${core_packages} ${cleanup_packages} ${dev_packages}"
 
     foreground {
         forx package { ${packages} }
@@ -83,6 +86,19 @@ foreground {
             apt-get purge -qy --allow-remove-essential ${package}
         }
     }
+}
+
+foreground {
+
+    if { xb-log "Remove Node Packages '${dev_packages_node}'" }
+
+    fdmove -c 2 1
+    ifelse { s6-test "${core_log_disabled}" = "N" }
+    {
+        redirfd -a 1 ${logfile}
+        npm uninstall -g ${dev_packages_node}
+    }
+    npm uninstall -g ${dev_packages_node}
 }
 
 foreground {
