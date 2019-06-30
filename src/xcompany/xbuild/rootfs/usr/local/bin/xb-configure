@@ -1,8 +1,19 @@
 #!/usr/bin/execlineb -P
 
+s6-envdir /etc/xbuild/env.d/
+
+importas -u logfile XBUILD_LOG
+importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
+
 foreground {
     if { xb-log "Configure timezone" }
     if { s6-ln -fs /usr/share/zoneinfo/Europe/Berlin /etc/localtime }
+
+    ifelse { s6-test "${core_log_disabled}" = "N" }
+    {
+        redirfd -a 1 ${logfile}
+        dpkg-reconfigure -f noninteractive tzdata
+    }
     dpkg-reconfigure -f noninteractive tzdata
 }
 
@@ -31,6 +42,13 @@ foreground {
     if { sed -i -e "s/# de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/" /etc/locale.gen }
 
     if { xb-log "Regenerate Locales" }
+
+    ifelse { s6-test "${core_log_disabled}" = "N" }
+    {
+        redirfd -a 1 ${logfile}
+        if { update-locale LANG=de_DE.UTF-8 LC_CTYPE=de_DE.UTF-8 }
+        locale-gen de_DE
+    }
     if { update-locale LANG=de_DE.UTF-8 LC_CTYPE=de_DE.UTF-8 }
-    if { locale-gen de_DE }
+    locale-gen de_DE
 }
