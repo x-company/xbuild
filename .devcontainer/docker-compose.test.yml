@@ -14,13 +14,6 @@ services:
     volumes:
       - ../tests/unit:/tests
       - ../src/xcompany/xbuild/build/:/build/
-      - ../src/xcompany/xbuild/rootfs/etc/cont-finish.d/:/etc/cont-finish.d/
-      - ../src/xcompany/xbuild/rootfs/etc/cont-init.d/:/etc/cont-init.d/
-      - ../src/xcompany/xbuild/rootfs/etc/fix-attrs.d/:/etc/fix-attrs.d/
-      - ../src/xcompany/xbuild/rootfs/etc/services.d/:/etc/services.d/
-      - ../src/xcompany/xbuild/rootfs/etc/socklog.rules/:/etc/socklog.rules/
-      - ../src/xcompany/xbuild/rootfs/etc/xbuild/:/etc/xbuild/
       - ./sources.list:/etc/xbuild/sources.list
       - ./xbuild.conf:/etc/xbuild/xbuild.conf
-      - ../src/xcompany/xbuild/rootfs/usr/local/bin/:/usr/local/bin/
-    command: xb-test
+    command: /usr/local/bin/xb-test
