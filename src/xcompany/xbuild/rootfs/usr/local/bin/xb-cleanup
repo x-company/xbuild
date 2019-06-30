@@ -92,13 +92,15 @@ foreground {
 
     if { xb-log "Remove Node Packages '${dev_packages_node}'" }
 
+    define -s tmp ${dev_packages_node}
+
     fdmove -c 2 1
     ifelse { s6-test "${core_log_disabled}" = "N" }
     {
         redirfd -a 1 ${logfile}
-        npm uninstall -g ${dev_packages_node}
+        npm uninstall -g ${tmp}
     }
-    npm uninstall -g ${dev_packages_node}
+    npm uninstall -g ${tmp}
 }
 
 foreground {
