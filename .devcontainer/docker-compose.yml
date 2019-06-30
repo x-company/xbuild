@@ -13,6 +13,7 @@ services:
       - build
     volumes:
       - ../:/workspace/
+      - ../tests/unit:/tests
       - ../src/xcompany/xbuild/build/:/build/
       - ../src/xcompany/xbuild/rootfs/etc/cont-finish.d/:/etc/cont-finish.d/
       - ../src/xcompany/xbuild/rootfs/etc/cont-init.d/:/etc/cont-init.d/
