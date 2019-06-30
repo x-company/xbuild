@@ -1,9 +1,9 @@
 
 FROM debian:stretch-slim
 
-ARG XBUILD_BUILD_DATE="2019-06-30T18:23:33Z"
-ARG XBUILD_VCS_REF="aff8dca"
-ARG XBUILD_VERSION="0.6.6"
+ARG XBUILD_BUILD_DATE="2019-06-30T18:35:15Z"
+ARG XBUILD_VCS_REF="bcea5b6"
+ARG XBUILD_VERSION="0.6.7"
 ARG XBUILD_IMAGE_NAME="xcompany/xbuild"
 ARG XBUILD_IMAGE_DESCRIPTION="A easy to use Framework for your Installation Needs of Docker Base Images"
 ARG XBUILD_VENDOR="IT Solutions Roland Breitschaft"
