@@ -28,6 +28,7 @@ foreground {
 
 foreground {
 
+    if { xb-header "Install Runtimes (if configured)" }
     if { xb-runtime }
 }
 
