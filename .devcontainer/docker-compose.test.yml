@@ -12,8 +12,7 @@ services:
     depends_on:
       - build
     volumes:
-      - ../tests/unit:/tests
+      - ../tests/unit/:/tests/
       - ../src/xcompany/xbuild/build/:/build/
-      - ./sources.list:/etc/xbuild/sources.list
       - ./xbuild.conf:/etc/xbuild/xbuild.conf
     command: /usr/local/bin/xb-test
