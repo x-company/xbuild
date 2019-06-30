@@ -43,6 +43,7 @@ foreground {
 
     if { xb-log "Regenerate Locales" }
 
+    fdmove -c 2 1
     ifelse { s6-test "${core_log_disabled}" = "N" }
     {
         redirfd -a 1 ${logfile}
