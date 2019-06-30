@@ -32,7 +32,7 @@ foreground {
     if { s6-test "${runtime_node}" = "Y" }
     if { xb-log "Configure NodeJS Mirror" }
 
-    if { xb-header "Install NodeJS '$nodever'" }
+    if { xb-header "Install NodeJS '${nodever}'" }
     if { xb-install nodejs }
 
     if { xb-log "Install xinit and yarn" }
