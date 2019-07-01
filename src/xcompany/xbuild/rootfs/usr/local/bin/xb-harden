@@ -4,6 +4,8 @@ s6-envdir /etc/xbuild/env.d/
 
 define -s sysdirs "/bin /etc /lib /sbin /usr"
 
+importas -u logfile XBUILD_LOG
+
 importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
 importas -u harden_packages XBUILD_CONF_HARDEN_PACKAGES
 importas -u harden_libraries XBUILD_CONF_HARDEN_LIBRARIES
