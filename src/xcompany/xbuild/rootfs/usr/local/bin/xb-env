@@ -297,7 +297,13 @@ ifelse -n { s6-test -f ${runfile} }
 
     # Copy all Vars to s6 Environment
     foreground {
-        cp -f /etc/xbuild/env.d/* /etc/s6/init/env/
+        pipeline { s6-ls -0 -- /etc/xbuild/env.d/ }
+        forstdin -0 -o 0 -- env_file
+        importas -u env_file env_file
+
+        foreground {
+            cp -f /etc/xbuild/env.d/${env_file} /etc/s6/init/env/${env_file}
+        }
     }
 }
 
