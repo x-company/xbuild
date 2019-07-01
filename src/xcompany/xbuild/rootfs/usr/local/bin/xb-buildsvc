@@ -84,6 +84,7 @@ foreground {
 foreground {
     if { xb-log "Execute Build for Service '${service}'" }
     if { s6-test -f /build/services/${service}/${service}.build }
-    s6-chmod 0755 /build/services/${service}/${service}.build
+
+    if { s6-chmod 0755 /build/services/${service}/${service}.build }
     /build/services/${service}/${service}.build
 }
