@@ -1,4 +1,3 @@
-#path                       recurse account fmode   dmode
 /var/cache/xbuild           true    root    0750    0750
 /var/local/xbuild           true    root    0750    0750
 /var/local/xbuild/packages  true    root    0750    0750
