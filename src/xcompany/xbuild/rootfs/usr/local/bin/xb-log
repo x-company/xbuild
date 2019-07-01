@@ -4,6 +4,7 @@ s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
+
 importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
 
 foreground {
