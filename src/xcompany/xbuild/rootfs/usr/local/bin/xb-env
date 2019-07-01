@@ -71,6 +71,8 @@ ifelse -n { s6-test -f ${runfile} }
     foreground { redirfd -w 1 ${envdir}/LANG s6-echo -n -- "de_DE.UTF-8" }
     foreground { redirfd -w 1 ${envdir}/LANGUAGE s6-echo -n -- "de_DE.UTF-8" }
 
+    foreground { redirfd -w 1 ${envdir}/LANGUAGE s6-echo -n -- "de_DE.UTF-8" }
+
     # Load Settings
     foreground {
         if { s6-test -f /etc/xbuild/xbuild.conf }
@@ -115,6 +117,12 @@ ifelse -n { s6-test -f ${runfile} }
             foreground {
                 if { s6-test "${key}" = "disable_log" }
                 redirfd -w 1 ${envdir}/XBUILD_CONF_CORE_LOG_DISABLED
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "log_timestamp_format" }
+                redirfd -w 1 ${envdir}/SOCKLOG_TIMESTAMP_FORMAT
                 s6-echo -n -- ${value}
             }
 
