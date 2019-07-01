@@ -90,6 +90,7 @@ foreground {
 
 foreground {
 
+    if { s6-test "${dev_enabled}" = "Y" }
     if { xb-log "Remove Node Packages '${dev_packages_node}'" }
 
     define -s tmp ${dev_packages_node}
