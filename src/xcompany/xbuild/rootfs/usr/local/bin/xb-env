@@ -213,6 +213,85 @@ ifelse -n { s6-test -f ${runfile} }
                 redirfd -w 1 ${envdir}/XBUILD_CONF_HARDEN_ESSENTIAL
                 s6-echo -n -- ${value}
             }
+
+            # s6 Configuration
+            foreground {
+                if { s6-test "${key}" = "s6_keep_env" }
+                redirfd -w 1 ${envdir}/S6_KEEP_ENV
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_logging" }
+                redirfd -w 1 ${envdir}/S6_LOGGING
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_behaviour_if_stage2_fails" }
+                redirfd -w 1 ${envdir}/S6_BEHAVIOUR_IF_STAGE2_FAILS
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_kill_finish_maxtime" }
+                redirfd -w 1 ${envdir}/S6_KILL_FINISH_MAXTIME
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_services_gracetime" }
+                redirfd -w 1 ${envdir}/S6_SERVICES_GRACETIME
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_kill_gracetime" }
+                redirfd -w 1 ${envdir}/S6_KILL_GRACETIME
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_logging_script" }
+                redirfd -w 1 ${envdir}/S6_LOGGING_SCRIPT
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_cmd_arg0" }
+                redirfd -w 1 ${envdir}/S6_CMD_ARG0
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_fix_attrs_hidden" }
+                redirfd -w 1 ${envdir}/S6_FIX_ATTRS_HIDDEN
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_cmd_wait_for_services" }
+                redirfd -w 1 ${envdir}/S6_CMD_WAIT_FOR_SERVICES
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_cmd_wait_for_services_maxtime" }
+                redirfd -w 1 ${envdir}/S6_CMD_WAIT_FOR_SERVICES_MAXTIME
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_read_only_root" }
+                redirfd -w 1 ${envdir}/S6_READ_ONLY_ROOT
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "s6_sync_disks" }
+                redirfd -w 1 ${envdir}/S6_SYNC_DISKS
+                s6-echo -n -- ${value}
+            }
         }
     }
 
