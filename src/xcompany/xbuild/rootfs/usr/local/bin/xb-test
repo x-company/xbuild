@@ -5,8 +5,6 @@ s6-envdir /etc/xbuild/env.d/
 
 define rundir /var/run/xbuild
 
-importas -u core_packages XBUILD_CONF_CORE_PACKAGES
-
 if { xb-header "Prepare the Image for Unit Tests" }
 foreground {
 
@@ -23,17 +21,6 @@ foreground {
 
     if { xb-header "Configure the Image" }
     if { xb-configure }
-}
-
-foreground {
-
-    if -n { test -z ${core_packages} }
-
-    if -n { s6-test -f ${rundir}/xb-user }
-    if { s6-touch ${rundir}/xb-user }
-
-    if { xb-header "Install user defined Packages" }
-    if { xb-install ${core_packages} }
 }
 
 foreground {
