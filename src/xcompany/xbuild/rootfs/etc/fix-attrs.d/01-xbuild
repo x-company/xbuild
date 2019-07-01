@@ -1,5 +1,5 @@
-/var/cache/xbuild           true    root    0750    0750
-/var/local/xbuild           true    root    0750    0750
-/var/local/xbuild/packages  true    root    0750    0750
-/var/log/xbuild             true    root    0750    0750
-/var/run/xbuild             true    root    0750    0750
+/var/cache/xbuild           true    root:root    0750    0750
+/var/local/xbuild           true    root:root    0750    0750
+/var/local/xbuild/packages  true    root:root    0750    0750
+/var/log/xbuild             true    root:root    0750    0750
+/var/run/xbuild             true    root:root    0750    0750
