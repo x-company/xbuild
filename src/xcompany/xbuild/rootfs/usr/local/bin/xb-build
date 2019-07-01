@@ -3,7 +3,6 @@
 if { xb-env }
 s6-envdir /etc/xbuild/env.d/
 
-importas -u core_packages XBUILD_CONF_CORE_PACKAGES
 importas -u cleanup XBUILD_CONF_CLEANUP
 importas -u harden XBUILD_CONF_HARDEN
 
@@ -17,13 +16,6 @@ foreground {
 
     if { xb-header "Configure the Image" }
     if { xb-configure }
-}
-
-foreground {
-
-    if -n { test -z ${core_packages} }
-    if { xb-header "Install user defined Packages" }
-    if { xb-install ${core_packages} }
 }
 
 foreground {
