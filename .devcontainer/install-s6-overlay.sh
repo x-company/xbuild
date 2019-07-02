@@ -23,7 +23,7 @@ rm -rf "${rootfs:?}/etc/leapsecs.dat"
 rm -rf "${rootfs:?}/libexec"
 rm -rf "${rootfs:?}/usr/bin"
 
-tar xzf ./s6-overlay-amd64.tar.gz -C ${rootfs:?}
+tar -xzf ./s6-overlay-amd64.tar.gz -C ${rootfs:?}
 
 if [ ! -f ./socklog-overlay-amd64.tar.gz ]; then
     wget "https://github.com/just-containers/socklog-overlay/releases/download/v$socklogver/socklog-overlay-amd64.tar.gz"
@@ -31,11 +31,11 @@ fi
 
 rm -rf "${rootfs:?}/var/log"
 
-tar xzf ./socklog-overlay-amd64.tar.gz -C ${rootfs:?}
+tar -xzf ./socklog-overlay-amd64.tar.gz -C ${rootfs:?}
 
-mv "${rootfs:?}/etc/services.d/socklog/run" "${servicedir}/socklog/socklog.run"
-mv "${rootfs:?}/etc/services.d/socklog/log/run" "${servicedir}/socklog/log/socklog.run"
-mv "${rootfs:?}/etc/cont-init.d/~-socklog" "${servicedir}/socklog/99-socklog.init"
+mv -f "${rootfs:?}/etc/services.d/socklog/run" "${servicedir}/socklog/socklog.run"
+mv -f "${rootfs:?}/etc/services.d/socklog/log/run" "${servicedir}/socklog/log/socklog.run"
+mv -f "${rootfs:?}/etc/cont-init.d/~-socklog" "${servicedir}/socklog/99-socklog.init"
 rm -rf "${rootfs:?}/etc/cont-init.d/~-socklog"
 rm -rf "${rootfs:?}/etc/services.d/socklog"
 
