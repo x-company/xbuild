@@ -36,8 +36,8 @@
     "prebuild": "appvmgr update build && yarn dockerfile:build && yarn source:update",
     "build": "yarn docker:build",
     "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
-    "test": "yarn prebuild && docker-compose -f ./.devcontainer/docker-compose.test.yml up",
-    "test:travis": "yarn prebuild && docker-compose -f ./.devcontainer/docker-compose.travis.yml up",
+    "test": "yarn prebuild && docker-compose up -f ./.devcontainer/docker-compose.yml ./.devcontainer/docker-compose.tests.yml",
+    "ci": "yarn prebuild && docker-compose up -f ./.devcontainer/docker-compose.yml ./.devcontainer/docker-compose.ci.yml",
     "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all",
     "debug": "yarn build && docker run -it --entrypoint '/bin/bash' --rm $npm_package_config_image_name:latest"
   },
