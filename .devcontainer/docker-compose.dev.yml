@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  run:
+    image: xcompany/xbuild:devcontainer
+    depends_on:
+      - build
+    volumes:
+      - ../:/workspace/
+      - ../tests/unit:/tests
+      - ../src/xcompany/xbuild/build/:/build/
+      - ../src/xcompany/xbuild/rootfs/etc/cont-finish.d/:/etc/cont-finish.d/
+      - ../src/xcompany/xbuild/rootfs/etc/cont-init.d/:/etc/cont-init.d/
+      - ../src/xcompany/xbuild/rootfs/etc/fix-attrs.d/:/etc/fix-attrs.d/
+      - ../src/xcompany/xbuild/rootfs/etc/services.d/:/etc/services.d/
+      - ../src/xcompany/xbuild/rootfs/etc/socklog.rules/:/etc/socklog.rules/
+      - ../src/xcompany/xbuild/rootfs/etc/xbuild/:/etc/xbuild/
+      - ./sources.list:/etc/xbuild/sources.list
+      - ./xbuild.conf:/etc/xbuild/xbuild.conf
+      - ../src/xcompany/xbuild/rootfs/usr/local/bin/:/usr/local/bin/
+      # Configure Git with the current local Settings
+      - ~/.gitconfig:/root/.gitconfig
+      # Persists Extensions and VSCode Server
+      - vscode-server:/root/.vscode-server
+    cap_add:
+        - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    command: sleep infinity
+
+volumes:
+  vscode-server:
