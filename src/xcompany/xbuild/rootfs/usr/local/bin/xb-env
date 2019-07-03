@@ -28,7 +28,7 @@ foreground {
     backtick DATE { date +%d%m%Y }
     importas -u -n date DATE
 
-    define -s logfile "${logdir}/xbuild-prepare-${date}.log"
+    define -s logfile "${logdir}/xbuild-${date}.log"
 
     foreground {
         if -n { s6-test -f ${logfile} }
@@ -50,7 +50,9 @@ ifelse -n { s6-test -f ${runfile} }
     foreground {
         if { s6-test -d /etc/xbuild/env.d/ }
         if { s6-rmrf /etc/xbuild/env.d/ }
-        s6-mkdir -p /etc/xbuild/env.d/
+        if { s6-mkdir -p /etc/xbuild/env.d/ }
+        redirfd -w 1 ${envdir}/XBUILD_LOG
+        s6-echo -n -- "${logfile}"
     }
 
     foreground {
