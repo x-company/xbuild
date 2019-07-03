@@ -3,8 +3,8 @@
 if { xb-env }
 s6-envdir /etc/xbuild/env.d/
 
-importas -u cleanup XBUILD_CONF_CLEANUP
-importas -u harden XBUILD_CONF_HARDEN
+importas -u cleanup CLEANUP_ENABLED
+importas -u harden HARDEN_ENABLED
 
 foreground {
 
