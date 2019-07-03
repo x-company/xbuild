@@ -19,16 +19,21 @@ foreground {
         backtick hostname { hostname -s }
         importas -u hostname hostname
 
+        s6-setuidgid consul
         /usr/local/bin/consul agent \
             -node="${consul_name_prefix}-${hostname}" \
-            -bootstrap-expect=0
-            -client=0.0.0.0
-            -data-dir=/var/lib/consul
-            -domain=${consul_domain}
+            -bootstrap-expect=3 \
+            -data-dir=/var/lib/consul \
+            -domain=${consul_domain} \
             -server
     }
 
     foreground {
         if { xb-log "Consul is running in Client Mode" }
+
+        s6-setuidgid consul
+        /usr/local/bin/consul agent \
+            -data-dir=/var/lib/consul \
+            -domain=${consul_domain}
     }
 }
