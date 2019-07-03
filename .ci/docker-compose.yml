@@ -8,5 +8,5 @@ services:
     volumes:
       - ../tests/unit/:/tests/
       - ../src/xcompany/xbuild/build/:/build/
-      - ./xbuild.ci.conf:/etc/xbuild/xbuild.conf
+      - ./xbuild.conf:/etc/xbuild/xbuild.conf
     command: /usr/local/bin/xb-test
