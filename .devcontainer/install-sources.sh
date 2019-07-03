@@ -4,6 +4,7 @@
 s6ver="1.22.1.0"
 socklogver="3.1.0-2"
 consulver="1.5.2"
+consultemplatever="0.20.0"
 
 mkdir -p ./update
 cd ./update || exit 1
@@ -21,6 +22,10 @@ if [ ! -f "./consul_${consulver}_linux_amd64.zip" ]; then
     wget "https://releases.hashicorp.com/consul/${consulver}/consul_${consulver}_linux_amd64.zip"
 fi
 
+if [ ! -f "./consul-template_${consultemplatever}_linux_amd64.zip" ]; then
+    wget "https://releases.hashicorp.com/consul-template/${consultemplatever}/consul-template_${consultemplatever}_linux_amd64.zip"
+fi
+
 # Cleanup old
 rootfs="../src/xcompany/xbuild/rootfs/"
 servicedir="../src/xcompany/xbuild/build/services"
@@ -36,7 +41,8 @@ rm -rf "${rootfs:?}/var/log"
 # Unpack Downloads
 tar -xzf ./s6-overlay-amd64.tar.gz -C ${rootfs:?}
 tar -xzf ./socklog-overlay-amd64.tar.gz -C ${rootfs:?}
-unzip "./consul_${consulver}_linux_amd64.zip" -d ${rootfs:?}/usr/local/bin
+unzip -o "./consul_${consulver}_linux_amd64.zip" -d ${rootfs:?}/usr/local/bin
+unzip -o "./consul-template_${consultemplatever}_linux_amd64.zip" -d ${rootfs:?}/usr/local/bin
 
 # Move Socklog Service Files to Service Dir
 mv -f "${rootfs:?}/etc/services.d/socklog/run" "${servicedir}/socklog/socklog.run"
