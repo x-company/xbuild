@@ -74,6 +74,6 @@ After you have installed this Tools open Visual Studio Code and install all reco
 
 ### Debugging Best Practices
 
-If your Image not starts after an Build, a good Idea is to deactivate the Cleaning and Hardening of your Image. To do this you have to set the Properties *cleanup_image* and *harden_image* to the Value *N* in the xbuild.conf File. When your Images runs with this settings enable Cleaning and rerun the build. If your Image also running with Cleaning Settings enable Hardening.
+If your Image not starts after an Build, a good Idea is to deactivate the Cleaning and Hardening of your Image. To do this you have to set the Properties *cleanup_enabled* and *harden_enabled* to the Value *N* in the xbuild.conf File. When your Images runs with this settings enable Cleaning and rerun the build. If your Image also running with Cleaning Settings enable Hardening.
 
 Generally check the Packages which will uninstalled in one of this stages.
