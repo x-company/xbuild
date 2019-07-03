@@ -22,8 +22,6 @@
     "editor.tabSize": 4,
     "editor.trimAutoWhitespace": true,
     "editor.useTabStops": true,
-    "extensions.ignoreRecommendations": true,
-    "extensions.showRecommendationsOnlyOnDemand": false,
     "files.autoGuessEncoding": true,
     "files.autoSave": "afterDelay",
     "files.autoSaveDelay": 1000,
@@ -103,9 +101,7 @@
         }
     ],
     "terminal.integrated.cursorBlinking": true,
-    "terminal.integrated.cursorStyle": "line",
     "terminal.integrated.scrollback": 10000,
-    "terminal.integrated.shell.windows": "/usr/bin/pwsh",
     "todo-tree.autoRefresh": true,
     "todo-tree.grouped": true,
     "todo-tree.flat": true,
@@ -189,12 +185,6 @@
     "vsicons.projectDetection.disableDetect": true,
     "workbench.enableExperiments": false,
     "workbench.iconTheme": "vscode-great-icons",
-    "workbench.list.horizontalScrolling": true,
-    "workbench.settings.editor": "json",
-    "workbench.settings.enableNaturalLanguageSearch": false,
-    "workbench.settings.openDefaultSettings": true,
-    "workbench.settings.useSplitJSON": true,
-    "powershell.codeFormatting.alignPropertyValuePairs": false,
     "[json]": {
         "editor.quickSuggestions": {
             "strings": true
@@ -313,6 +303,14 @@
         "yourimage"
     ],
     "git-graph.fetchAvatars": true,
-    "hadolint.hadolintPath": ".vscode/hadolint-Linux-x86_64",
-    "hadolint.outputLevel": "info"
+    "mocha.coverage": {
+        "enable": false,
+        "decoration": false,
+        "runWithInterval": false,
+        "autoUpdateInterval": 20000,
+        "activeOnStart": true,
+        "runAfterTest": false,
+        "runCoverageAfterFileSave": false,
+        "reporters": []
+      },
 }
