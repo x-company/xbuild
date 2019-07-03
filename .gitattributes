@@ -1,0 +1,2 @@
+src/xcompany/xbuild/rootfs/usr/local/bin/consul filter=lfs diff=lfs merge=lfs -text
+src/xcompany/xbuild/rootfs/usr/local/bin/consul-template filter=lfs diff=lfs merge=lfs -text
