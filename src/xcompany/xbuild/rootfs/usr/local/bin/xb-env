@@ -5,6 +5,12 @@ define logdir /var/log/xbuild
 define rundir /var/run/xbuild
 define -s runfile ${rundir}/xb-env
 
+# Cleanup /etc/xbuild/env.d
+foreground {
+    if { s6-test -d /etc/xbuild/env.d/ }
+    s6-rmrf /etc/xbuild/env.d/
+}
+
 foreground {
     if { s6-mkdir -p /etc/cont-finish.d }
     if { s6-mkdir -p /etc/cont-init.d }
@@ -56,6 +62,37 @@ ifelse -n { s6-test -f ${runfile} }
         # Copy sources.list if exists
         if { s6-test -f /build/sources.list }
         mv -f /build/sources.list /etc/xbuild/sources.list
+    }
+
+    # Create an Dump from the current Environment and save it to /etc/xbuild/env.d/
+    foreground {
+        define -s excludes "HOME USER GROUP UID GID HOSTNAME PATH PWD SHLVL _ ?"
+
+        if { s6-dumpenv -m 0777 /tmp/env.d/ }
+
+        foreground {
+            pipeline { s6-ls -0 -- /tmp/env.d/ }
+            forstdin -o 0 -0 -- env_file
+            importas -u env_file env_file
+
+            foreground {
+                forx exclude { ${excludes} }
+                importas -u exclude exclude
+
+                if { s6-test "${env_file}" = "${exclude}" }
+                s6-rmrf /tmp/env.d/${env_file}
+            }
+        }
+
+        foreground {
+            pipeline { s6-ls -0 -- /tmp/env.d/ }
+            forstdin -o 0 -0 -- env_file
+            importas -u env_file env_file
+
+            if { mv -f /tmp/env.d/${env_file} /etc/xbuild/env.d/${env_file} }
+        }
+
+        s6-rmrf /tmp/env.d/
     }
 
     foreground { redirfd -w 1 ${envdir}/LC_ALL s6-echo -n -- "C" }
@@ -173,6 +210,37 @@ ifelse -n { s6-test -f ${runfile} }
             foreground {
                 if { s6-test "${key}" = "dev_node_packages" }
                 redirfd -w 1 ${envdir}/XBUILD_CONF_DEV_PACKAGES_NODE
+                s6-echo -n -- ${value}
+            }
+
+            # Consul Configuration
+            foreground {
+                if { s6-test "${key}" = "consul_enabled" }
+                redirfd -w 1 ${envdir}/XBUILD_CONF_CONSUL_ENABLED
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "consul_domain" }
+                redirfd -w 1 ${envdir}/XBUILD_CONF_CONSUL_DOMAIN
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "consul_mode" }
+                redirfd -w 1 ${envdir}/XBUILD_CONF_CONSUL_MODE
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "consul_servers" }
+                redirfd -w 1 ${envdir}/XBUILD_CONF_CONSUL_SERVERS
+                s6-echo -n -- ${value}
+            }
+
+            foreground {
+                if { s6-test "${key}" = "consul_name_prefix" }
+                redirfd -w 1 ${envdir}/XBUILD_CONF_CONSUL_NAME_PREFIX
                 s6-echo -n -- ${value}
             }
 
@@ -295,17 +363,13 @@ ifelse -n { s6-test -f ${runfile} }
         }
     }
 
-    # Create an Dump from the current Environment
-    foreground {
-        s6-dumpenv -m 0777 /tmp/env.d/
-    }
-
     # Copy all Vars to s6 Environment
     foreground {
         pipeline { s6-ls -0 -- /etc/xbuild/env.d/ }
         forstdin -0 -o 0 -- env_file
         importas -u env_file env_file
 
+        foreground { s6-rmrf /etc/s6/init/env/${env_file} }
         if { s6-ln -s /etc/xbuild/env.d/${env_file} /etc/s6/init/env/${env_file} }
     }
 }
