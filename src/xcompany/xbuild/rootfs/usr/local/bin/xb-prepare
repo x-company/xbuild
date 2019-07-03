@@ -4,16 +4,16 @@ s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
 importas -u logfile XBUILD_LOG
-importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
+importas -u core_log_disabled CORE_LOG_DISABLED
 
-importas -u core_packages XBUILD_CONF_CORE
-importas -u core_custom_packages XBUILD_CONF_CORE_PACKAGES
-importas -u core_custom_mirror XBUILD_CONF_CORE_CUSTOM_MIRROR
+importas -u core_packages CORE_PACKAGES
+importas -u core_custom_packages CORE_CUSTOM_PACKAGES
+importas -u core_custom_mirror CORE_CUSTOM_MIRROR_ENABLED
 
-importas -u runtime_dotnet XBUILD_CONF_RUNTIME_DOTNET
-importas -u runtime_pwsh XBUILD_CONF_RUNTIME_PWSH
-importas -u runtime_node XBUILD_CONF_RUNTIME_NODE
-importas -u runtime_node_version XBUILD_CONF_RUNTIME_NODE_VERSION
+importas -u runtime_dotnet RUNTIME_DOTNET
+importas -u runtime_pwsh RUNTIME_PWSH
+importas -u runtime_node RUNTIME_NODE
+importas -u runtime_node_version RUNTIME_NODE_VERSION
 
 # Load System Informations
 backtick osid { lsb_release -si }
