@@ -295,15 +295,18 @@ ifelse -n { s6-test -f ${runfile} }
         }
     }
 
+    # Create an Dump from the current Environment
+    foreground {
+        s6-dumpenv -m 0777 /tmp/env.d/
+    }
+
     # Copy all Vars to s6 Environment
     foreground {
         pipeline { s6-ls -0 -- /etc/xbuild/env.d/ }
         forstdin -0 -o 0 -- env_file
         importas -u env_file env_file
 
-        foreground {
-            cp -f /etc/xbuild/env.d/${env_file} /etc/s6/init/env/${env_file}
-        }
+        if { s6-ln -s /etc/xbuild/env.d/${env_file} /etc/s6/init/env/${env_file} }
     }
 }
 
