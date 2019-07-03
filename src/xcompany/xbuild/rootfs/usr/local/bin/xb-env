@@ -5,12 +5,6 @@ define logdir /var/log/xbuild
 define rundir /var/run/xbuild
 define -s runfile ${rundir}/xb-env
 
-# Cleanup /etc/xbuild/env.d
-foreground {
-    if { s6-test -d /etc/xbuild/env.d/ }
-    s6-rmrf /etc/xbuild/env.d/
-}
-
 foreground {
     if { s6-mkdir -p /etc/cont-finish.d }
     if { s6-mkdir -p /etc/cont-init.d }
@@ -52,6 +46,13 @@ ifelse -n { s6-test -f ${runfile} }
     # Create Runfile
     if { s6-touch ${runfile} }
 
+    # Cleanup /etc/xbuild/env.d
+    foreground {
+        if { s6-test -d /etc/xbuild/env.d/ }
+        if { s6-rmrf /etc/xbuild/env.d/ }
+        s6-mkdir -p /etc/xbuild/env.d/
+    }
+
     foreground {
         # Copy Configuration if exists
         if { s6-test -f /build/xbuild.conf }
@@ -66,7 +67,7 @@ ifelse -n { s6-test -f ${runfile} }
 
     # Create an Dump from the current Environment and save it to /etc/xbuild/env.d/
     foreground {
-        define -s excludes "HOME USER GROUP UID GID HOSTNAME PATH PWD SHLVL _ ?"
+        define -s excludes "HOME USER GROUP UID GID HOSTNAME PATH PWD OLDPWD SHLVL _ ?"
 
         if { s6-dumpenv -m 0777 /tmp/env.d/ }
 
@@ -134,151 +135,151 @@ ifelse -n { s6-test -f ${runfile} }
 
             # Base Configuration
             foreground {
-                if { s6-test "${key}" = "core" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_CORE
+                if { s6-test "${key}" = "core_packages" }
+                redirfd -w 1 ${envdir}/CORE_PACKAGES
                 s6-echo -n -- ${value}
             }
 
             foreground {
-                if { s6-test "${key}" = "packages" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_CORE_PACKAGES
+                if { s6-test "${key}" = "core_custom_packages" }
+                redirfd -w 1 ${envdir}/CORE_CUSTOM_PACKAGES
                 s6-echo -n -- ${value}
             }
 
             foreground {
-                if { s6-test "${key}" = "custom_mirror" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_CORE_CUSTOM_MIRROR
+                if { s6-test "${key}" = "core_custom_mirror_enabled" }
+                redirfd -w 1 ${envdir}/CORE_CUSTOM_MIRROR_ENABLED
                 s6-echo -n -- ${value}
             }
 
             foreground {
-                if { s6-test "${key}" = "disable_log" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_CORE_LOG_DISABLED
+                if { s6-test "${key}" = "core_log_disabled" }
+                redirfd -w 1 ${envdir}/CORE_LOG_DISABLED
                 s6-echo -n -- ${value}
             }
 
             foreground {
-                if { s6-test "${key}" = "log_timestamp_format" }
+                if { s6-test "${key}" = "core_log_timestamp_format" }
                 redirfd -w 1 ${envdir}/SOCKLOG_TIMESTAMP_FORMAT
                 s6-echo -n -- ${value}
             }
 
             # Runtime Configuration
             foreground {
-                if { s6-test "${key}" = "activate_dotnet" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_DOTNET
+                if { s6-test "${key}" = "runtime_dotnet_enabled" }
+                redirfd -w 1 ${envdir}/RUNTIME_DOTNET
                 s6-echo -n -- ${value}
             }
 
             foreground {
-                if { s6-test "${key}" = "dotnet_version" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_DOTNET_VERSION
+                if { s6-test "${key}" = "runtime_dotnet_version" }
+                redirfd -w 1 ${envdir}/RUNTIME_DOTNET_VERSION
                 s6-echo -n -- ${value}
             }
 
             foreground {
-                if { s6-test "${key}" = "activate_pwsh" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_PWSH
+                if { s6-test "${key}" = "runtime_pwsh_enabled" }
+                redirfd -w 1 ${envdir}/RUNTIME_PWSH
                 s6-echo -n -- ${value}
             }
 
             foreground {
-                if { s6-test "${key}" = "activate_node" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_NODE
+                if { s6-test "${key}" = "runtime_node_enabled" }
+                redirfd -w 1 ${envdir}/RUNTIME_NODE
                 s6-echo -n -- ${value}
             }
 
             foreground {
-                if { s6-test "${key}" = "node_version" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_RUNTIME_NODE_VERSION
+                if { s6-test "${key}" = "runtime_node_version" }
+                redirfd -w 1 ${envdir}/RUNTIME_NODE_VERSION
                 s6-echo -n -- ${value}
             }
 
             # Development Settings
             foreground {
-                if { s6-test "${key}" = "activate_dev" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_DEV
+                if { s6-test "${key}" = "dev_enabled" }
+                redirfd -w 1 ${envdir}/DEV_ENABLED
                 s6-echo -n -- ${value}
             }
 
             foreground {
                 if { s6-test "${key}" = "dev_packages" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_DEV_PACKAGES
+                redirfd -w 1 ${envdir}/DEV_PACKAGES
                 s6-echo -n -- ${value}
             }
 
             foreground {
                 if { s6-test "${key}" = "dev_node_packages" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_DEV_PACKAGES_NODE
+                redirfd -w 1 ${envdir}/DEV_PACKAGES_NODE
                 s6-echo -n -- ${value}
             }
 
             # Consul Configuration
             foreground {
                 if { s6-test "${key}" = "consul_enabled" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_CONSUL_ENABLED
+                redirfd -w 1 ${envdir}/CONSUL_ENABLED
                 s6-echo -n -- ${value}
             }
 
             foreground {
                 if { s6-test "${key}" = "consul_domain" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_CONSUL_DOMAIN
+                redirfd -w 1 ${envdir}/CONSUL_DOMAIN
                 s6-echo -n -- ${value}
             }
 
             foreground {
                 if { s6-test "${key}" = "consul_mode" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_CONSUL_MODE
+                redirfd -w 1 ${envdir}/CONSUL_MODE
                 s6-echo -n -- ${value}
             }
 
             foreground {
                 if { s6-test "${key}" = "consul_servers" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_CONSUL_SERVERS
+                redirfd -w 1 ${envdir}/CONSUL_SERVERS
                 s6-echo -n -- ${value}
             }
 
             foreground {
                 if { s6-test "${key}" = "consul_name_prefix" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_CONSUL_NAME_PREFIX
+                redirfd -w 1 ${envdir}/CONSUL_NAME_PREFIX
                 s6-echo -n -- ${value}
             }
 
             # Cleanup Configuration
             foreground {
-                if { s6-test "${key}" = "cleanup_image" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_CLEANUP
+                if { s6-test "${key}" = "cleanup_enabled" }
+                redirfd -w 1 ${envdir}/CLEANUP_ENABLED
                 s6-echo -n -- ${value}
             }
 
             foreground {
                 if { s6-test "${key}" = "cleanup_packages" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_CLEANUP_PACKAGES
+                redirfd -w 1 ${envdir}/CLEANUP_PACKAGES
                 s6-echo -n -- ${value}
             }
 
             # Hardening Configuration
             foreground {
-                if { s6-test "${key}" = "harden_image" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_HARDEN
+                if { s6-test "${key}" = "harden_enabled" }
+                redirfd -w 1 ${envdir}/HARDEN_ENABLED
                 s6-echo -n -- ${value}
             }
 
             foreground {
                 if { s6-test "${key}" = "harden_packages" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_HARDEN_PACKAGES
+                redirfd -w 1 ${envdir}/HARDEN_PACKAGES
                 s6-echo -n -- ${value}
             }
 
             foreground {
                 if { s6-test "${key}" = "harden_libraries" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_HARDEN_LIBRARIES
+                redirfd -w 1 ${envdir}/HARDEN_LIBRARIES
                 s6-echo -n -- ${value}
             }
 
             foreground {
                 if { s6-test "${key}" = "harden_essential" }
-                redirfd -w 1 ${envdir}/XBUILD_CONF_HARDEN_ESSENTIAL
+                redirfd -w 1 ${envdir}/HARDEN_ESSENTIAL
                 s6-echo -n -- ${value}
             }
 
