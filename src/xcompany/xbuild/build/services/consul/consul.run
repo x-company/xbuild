@@ -1,18 +1,34 @@
 #!/usr/bin/execlineb -P
 
-# File will called to start your Service
-
 s6-envdir /etc/xbuild/env.d/
+
+importas -u consul_enabled CONSUL_ENABLED
+importas -u consul_mode CONSUL_MODE
+
 importas -u consul_domain CONSUL_DOMAIN
+importas -u consul_servers CONSUL_SERVERS
 importas -u consul_name_prefix CONSUL_NAME_PREFIX
 
-backtick hostname { hostname -s }
-importas -u hostname hostname
+foreground {
 
-/usr/local/bin/consul agent \
-    -node="${consul_name_prefix}-${hostname}" \
-    -bootstrap-expect=0
-    -client=0.0.0.0
-    -data-dir=/var/lib/consul
-    -domain=${consul_domain}
-    -server
+    if { s6-test "${consul_enabled}" = "Y" }
+
+    ifelse { s6-test "${consul_mode}" = "server" }
+    {
+        if { xb-log "Consul is running in Server Mode" }
+        backtick hostname { hostname -s }
+        importas -u hostname hostname
+
+        /usr/local/bin/consul agent \
+            -node="${consul_name_prefix}-${hostname}" \
+            -bootstrap-expect=0
+            -client=0.0.0.0
+            -data-dir=/var/lib/consul
+            -domain=${consul_domain}
+            -server
+    }
+
+    foreground {
+        if { xb-log "Consul is running in Client Mode" }
+    }
+}
