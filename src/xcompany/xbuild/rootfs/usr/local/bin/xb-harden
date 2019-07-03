@@ -6,10 +6,10 @@ define -s sysdirs "/bin /etc /lib /sbin /usr"
 
 importas -u logfile XBUILD_LOG
 
-importas -u core_log_disabled XBUILD_CONF_CORE_LOG_DISABLED
-importas -u harden_packages XBUILD_CONF_HARDEN_PACKAGES
-importas -u harden_libraries XBUILD_CONF_HARDEN_LIBRARIES
-importas -u harden_essential XBUILD_CONF_HARDEN_ESSENTIAL
+importas -u core_log_disabled CORE_LOG_DISABLED
+importas -u harden_packages HARDEN_PACKAGES
+importas -u harden_libraries HARDEN_LIBRARIES
+importas -u harden_essential HARDEN_ESSENTIAL
 
 foreground {
     define -s packages "${harden_packages} ${harden_libraries} ${harden_essential}"
