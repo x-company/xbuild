@@ -1,47 +1,53 @@
 {
-    "name": "xbuild",
-    "version": "0.9.0",
-    "description": "A Build System for Docker Images",
-    "license": "MIT",
-    "repository": {
-        "type": "git",
-        "url": "git@github.com:x-company/xbuild.git"
-    },
-    "bugs": {
-        "url": "https://github.com/x-company/xbuild/issues"
-    },
-    "homepage": "https://github.com/x-company/xbuild",
-    "author": "Roland Breitschaft <info@x-company.de> (https://www.x-company.de)",
-    "keywords": [
-        "docker",
-        "build"
-    ],
-    "config": {
-        "image_name": "xcompany/xbuild"
-    },
-    "scripts": {
-        "dockerfile:XBUILD_BUILD_DATE": "echo \"$(sed -e \"s/__XBUILD_BUILD_DATE__/$(date -u +'%Y-%m-%dT%H:%M:%SZ')/g\" ./src/xcompany/xbuild/Dockerfile.tmpl)\" > ./Dockerfile",
-        "dockerfile:XBUILD_VCS_REF": "echo \"$(sed -e \"s/__XBUILD_VCS_REF__/$(git rev-parse --short HEAD)/g\" ./Dockerfile)\" > ./Dockerfile",
-        "dockerfile:XBUILD_VERSION": "echo \"$(sed -e \"s/__XBUILD_VERSION__/$npm_package_version/g\" ./Dockerfile)\" > ./Dockerfile",
-        "dockerfile:build": "yarn dockerfile:XBUILD_BUILD_DATE && yarn dockerfile:XBUILD_VCS_REF && yarn dockerfile:XBUILD_VERSION",
-        "docker:clean:dev": "docker image rm -f xcompany/xbuild:devcontainer",
-        "docker:clean:test": "docker image rm -f xcompany/xbuild:test",
-        "docker:clean:image": "docker image rm -f $npm_package_config_image_name:$npm_package_version",
-        "docker:clean:latest": "docker image rm -f $npm_package_config_image_name:latest",
-        "docker:build": "docker build --tag $npm_package_config_image_name:$npm_package_version --force-rm .",
-        "docker:tag": "docker image tag $npm_package_config_image_name:$npm_package_version $npm_package_config_image_name:latest",
-        "source:update": "./.devcontainer/install-sources.sh",
-        "source:clean": "./.devcontainer/cleanup-sources.sh",
-        "clean": "docker system prune -f && docker container prune -f  && yarn docker:clean:image && yarn docker:clean:latest && yarn docker:clean:dev && yarn docker:clean:test && yarn source:clean",
-        "prebuild": "appvmgr update build && yarn dockerfile:build && yarn source:update",
-        "build": "yarn docker:build",
-        "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
-        "test": "yarn prebuild && docker-compose -f ./.devcontainer/docker-compose.yml -f ./.devcontainer/docker-compose.tests.yml up",
-        "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all"
-    },
-    "devDependencies": {
-        "appversion-mgr": "^0.7.0",
-        "covgen": "^3.1.0",
-        "nyc": "^14.1.1"
-    }
+  "name": "xbuild",
+  "version": "0.9.0",
+  "description": "A Build System for Docker Images",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:x-company/xbuild.git"
+  },
+  "bugs": {
+    "url": "https://github.com/x-company/xbuild/issues"
+  },
+  "homepage": "https://github.com/x-company/xbuild",
+  "author": "Roland Breitschaft <info@x-company.de> (https://www.x-company.de)",
+  "keywords": [
+    "docker",
+    "build"
+  ],
+  "config": {
+    "image_name": "xcompany/xbuild"
+  },
+  "scripts": {
+    "dockerfile:XBUILD_BUILD_DATE": "echo \"$(sed -e \"s/__XBUILD_BUILD_DATE__/$(date -u +'%Y-%m-%dT%H:%M:%SZ')/g\" ./src/xcompany/xbuild/Dockerfile.tmpl)\" > ./Dockerfile",
+    "dockerfile:XBUILD_VCS_REF": "echo \"$(sed -e \"s/__XBUILD_VCS_REF__/$(git rev-parse --short HEAD)/g\" ./Dockerfile)\" > ./Dockerfile",
+    "dockerfile:XBUILD_VERSION": "echo \"$(sed -e \"s/__XBUILD_VERSION__/$npm_package_version/g\" ./Dockerfile)\" > ./Dockerfile",
+    "dockerfile:build": "yarn dockerfile:XBUILD_BUILD_DATE && yarn dockerfile:XBUILD_VCS_REF && yarn dockerfile:XBUILD_VERSION",
+    "docker:clean:dev": "docker image rm -f xcompany/xbuild:devcontainer",
+    "docker:clean:test": "docker image rm -f xcompany/xbuild:test",
+    "docker:clean:image": "docker image rm -f $npm_package_config_image_name:$npm_package_version",
+    "docker:clean:latest": "docker image rm -f $npm_package_config_image_name:latest",
+    "docker:build": "docker build --tag $npm_package_config_image_name:$npm_package_version --force-rm .",
+    "docker:tag": "docker image tag $npm_package_config_image_name:$npm_package_version $npm_package_config_image_name:latest",
+    "source:update": "./.devcontainer/install-sources.sh",
+    "source:clean": "./.devcontainer/cleanup-sources.sh",
+    "clean": "docker system prune -f && docker container prune -f  && yarn docker:clean:image && yarn docker:clean:latest && yarn docker:clean:dev && yarn docker:clean:test && yarn source:clean",
+    "prebuild": "appvmgr update build && yarn dockerfile:build && yarn source:update",
+    "build": "yarn docker:build",
+    "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
+    "test": "yarn prebuild && docker-compose -f ./.devcontainer/docker-compose.yml -f ./.devcontainer/docker-compose.tests.yml up",
+    "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "devDependencies": {
+    "appversion-mgr": "^0.7.0",
+    "covgen": "^3.1.0",
+    "nyc": "^14.1.1"
+  },
+  "snyk": true,
+  "dependencies": {
+    "snyk": "^1.189.0"
+  }
 }
