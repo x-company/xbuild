@@ -12,5 +12,4 @@ rm -rf "${rootfs:?}/var/local/"
 rm -rf "${rootfs:?}/var/log/xbuild/"
 rm -rf "${rootfs:?}/var/run/"
 
-echo "/usr/bin:/usr/sbin:/bin:/sbin" > "${rootfs:?}/etc/s6/init/env/PATH"
 cd ..

@@ -2,38 +2,19 @@
 
 s6-envdir /etc/xbuild/env.d/
 
-importas -u consul_enabled CONSUL_ENABLED
-importas -u consul_mode CONSUL_MODE
-
-importas -u consul_domain CONSUL_DOMAIN
-importas -u consul_servers CONSUL_SERVERS
-importas -u consul_name_prefix CONSUL_NAME_PREFIX
+importas -u dev_enabled DEV_ENABLED
 
 foreground {
 
-    if { s6-test "${consul_enabled}" = "Y" }
-
-    ifelse { s6-test "${consul_mode}" = "server" }
-    {
-        if { xb-log "Consul is running in Server Mode" }
-        backtick hostname { hostname -s }
-        importas -u hostname hostname
-
-        s6-setuidgid consul
-        /usr/local/bin/consul agent \
-            -node="${consul_name_prefix}-${hostname}" \
-            -bootstrap-expect=3 \
-            -data-dir=/var/lib/consul \
-            -domain=${consul_domain} \
-            -server
-    }
-
+    define -s dev_mode ""
     foreground {
-        if { xb-log "Consul is running in Client Mode" }
-
-        s6-setuidgid consul
-        /usr/local/bin/consul agent \
-            -data-dir=/var/lib/consul \
-            -domain=${consul_domain}
+        if { s6-test "${dev_enabled}" = "Y"}
+        define -s dev_mode "-dev"
     }
+
+    define -s consul_default_params "-data-dir=/var/lib/consul -config-dir=/etc/consul.d/ -pid-file=/var/run/consul ${dev_mode} -enable-local-script-checks"
+
+    xb-log "Start Service Registry"
+    s6-setuidgid consul
+    /usr/local/bin/consul agent "${consul_default_params}"
 }

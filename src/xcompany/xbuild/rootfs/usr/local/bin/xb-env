@@ -5,6 +5,13 @@ define logdir /var/log/xbuild
 define rundir /var/run/xbuild
 define -s runfile ${rundir}/xb-env
 
+# Cleanup /etc/xbuild/env.d
+foreground {
+    if -n { s6-test -f ${runfile} }
+    if { s6-test -d /etc/xbuild/env.d/ }
+    s6-rmrf /etc/xbuild/env.d/
+}
+
 foreground {
     if { s6-mkdir -p /etc/cont-finish.d }
     if { s6-mkdir -p /etc/cont-init.d }
@@ -45,15 +52,6 @@ ifelse -n { s6-test -f ${runfile} }
 {
     # Create Runfile
     if { s6-touch ${runfile} }
-
-    # Cleanup /etc/xbuild/env.d
-    foreground {
-        if { s6-test -d /etc/xbuild/env.d/ }
-        if { s6-rmrf /etc/xbuild/env.d/ }
-        if { s6-mkdir -p /etc/xbuild/env.d/ }
-        redirfd -w 1 ${envdir}/XBUILD_LOG
-        s6-echo -n -- "${logfile}"
-    }
 
     foreground {
         # Copy Configuration if exists
@@ -213,37 +211,6 @@ ifelse -n { s6-test -f ${runfile} }
             foreground {
                 if { s6-test "${key}" = "dev_node_packages" }
                 redirfd -w 1 ${envdir}/DEV_PACKAGES_NODE
-                s6-echo -n -- ${value}
-            }
-
-            # Consul Configuration
-            foreground {
-                if { s6-test "${key}" = "consul_enabled" }
-                redirfd -w 1 ${envdir}/CONSUL_ENABLED
-                s6-echo -n -- ${value}
-            }
-
-            foreground {
-                if { s6-test "${key}" = "consul_domain" }
-                redirfd -w 1 ${envdir}/CONSUL_DOMAIN
-                s6-echo -n -- ${value}
-            }
-
-            foreground {
-                if { s6-test "${key}" = "consul_mode" }
-                redirfd -w 1 ${envdir}/CONSUL_MODE
-                s6-echo -n -- ${value}
-            }
-
-            foreground {
-                if { s6-test "${key}" = "consul_servers" }
-                redirfd -w 1 ${envdir}/CONSUL_SERVERS
-                s6-echo -n -- ${value}
-            }
-
-            foreground {
-                if { s6-test "${key}" = "consul_name_prefix" }
-                redirfd -w 1 ${envdir}/CONSUL_NAME_PREFIX
                 s6-echo -n -- ${value}
             }
 

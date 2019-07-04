@@ -1,0 +1,9 @@
+#!/usr/bin/execlineb -P
+
+s6-envdir /etc/xbuild/env.d/
+
+s6-setuidgid consul
+if -n { /usr/local/bin/consul leave }
+
+# Normal leaving is not working so we force it
+/usr/local/bin/consul force-leave
