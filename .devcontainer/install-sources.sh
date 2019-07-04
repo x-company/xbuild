@@ -14,8 +14,8 @@ if [ ! -f ./s6-overlay-amd64.tar.gz ]; then
     wget "https://github.com/just-containers/s6-overlay/releases/download/v${s6ver}/s6-overlay-amd64.tar.gz"
 fi
 
-if [ ! -f ./s6-overlay-amd64.tar.gz ]; then
-    wget "https://github.com/just-containers/s6-overlay/releases/download/v${s6ver}/s6-overlay-amd64.tar.gz"
+if [ ! -f ./socklog-overlay-amd64.tar.gz ]; then
+    wget "https://github.com/just-containers/socklog-overlay/releases/download/v${socklogver}/socklog-overlay-amd64.tar.gz"
 fi
 
 if [ ! -f "./consul_${consulver}_linux_amd64.zip" ]; then
