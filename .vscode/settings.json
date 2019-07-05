@@ -312,5 +312,6 @@
         "runAfterTest": false,
         "runCoverageAfterFileSave": false,
         "reporters": []
-      },
+    },
+    "search.useIgnoreFiles": false,
 }
