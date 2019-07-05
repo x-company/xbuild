@@ -3,5 +3,5 @@
 s6-setuidgid consul
 if -n { /usr/local/bin/consul leave }
 
-# Normal leaving is not working so we force it
-/usr/local/bin/consul force-leave
+# if { xb-log "Normal leaving is not working so we force it" }
+# if { /usr/local/bin/consul force-leave }
