@@ -40,7 +40,8 @@
     "ci": "yarn prebuild && docker-compose -f ./.ci/docker-compose.yml up",
     "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all",
     "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect"
+    "prepublish": "npm run snyk-protect",
+    "debug": "yarn build && docker container run -it --rm $npm_package_config_image_name:$npm_package_version xb-build && /bin/bash"
   },
   "devDependencies": {
     "appversion-mgr": "^0.7.0",
