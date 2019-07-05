@@ -4,17 +4,10 @@ s6-envdir /etc/xbuild/env.d/
 
 importas -u dev_enabled DEV_ENABLED
 
-foreground {
-
-    define -s dev_mode ""
-    foreground {
-        if { s6-test "${dev_enabled}" = "Y"}
-        define -s dev_mode "-dev"
-    }
-
-    define -s consul_default_params "-data-dir=/var/lib/consul -config-dir=/etc/consul.d/ -pid-file=/var/run/consul ${dev_mode} -enable-local-script-checks"
-
-    xb-log "Start Service Registry"
-    s6-setuidgid consul
-    /usr/local/bin/consul agent "${consul_default_params}"
+if { xb-log "Start Service Registry" }
+s6-setuidgid consul
+ifelse { s6-test "${dev_enabled}" = "Y" }
+{
+    /usr/local/bin/consul agent -data-dir=/var/lib/consul/ -config-dir=/etc/consul.d/ -pid-file=/tmp/consul.pid -enable-local-script-checks -dev
 }
+/usr/local/bin/consul agent -data-dir=/var/lib/consul/ -config-dir=/etc/consul.d/ -pid-file=/tmp/consul.pid -enable-local-script-checks
