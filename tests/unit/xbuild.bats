@@ -10,6 +10,7 @@ load init
     # Act
 
     # Assert
+    [ -f "/usr/local/bin/xb-addserviceuser" ]
     [ -f "/usr/local/bin/xb-build" ]
     [ -f "/usr/local/bin/xb-buildsvc" ]
     [ -f "/usr/local/bin/xb-cleanup" ]
@@ -22,6 +23,7 @@ load init
     [ -f "/usr/local/bin/xb-log" ]
     [ -f "/usr/local/bin/xb-prepare" ]
     [ -f "/usr/local/bin/xb-rmrf" ]
+    [ -f "/usr/local/bin/xb-runtime" ]
     [ -f "/usr/local/bin/xb-test" ]
 }
 
@@ -34,30 +36,4 @@ load init
     # Assert
     [ -d "/etc/xbuild" ]
     [ -d "/etc/xbuild/env.d" ]
-}
-
-@test "Exists s6 Folders" {
-
-    # Arrange
-
-    # Act
-
-    # Assert
-    [ -d "/etc/cont-finish.d" ]
-    [ -d "/etc/cont-init.d" ]
-    [ -d "/etc/fix-attrs.d" ]
-    [ -d "/etc/s6" ]
-    [ -d "/etc/services.d" ]
-    [ -d "/libexec" ]
-}
-
-@test "Exists socklog Folders" {
-
-    # Arrange
-
-    # Act
-
-    # Assert
-    [ -d "/etc/socklog.rules" ]
-    [ -d "/var/log/socklog" ]
 }

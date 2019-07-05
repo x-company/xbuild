@@ -1,8 +1,14 @@
 version: "3.7"
 
 services:
+  build:
+    image: xcompany/xbuild:test
+    build:
+      context: ../
+      dockerfile: Dockerfile
+
   unit:
-    image: xcompany/xbuild:devcontainer
+    image: xcompany/xbuild:test
     depends_on:
       - build
     volumes:

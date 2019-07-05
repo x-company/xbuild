@@ -1,6 +1,12 @@
 version: "3.7"
 
 services:
+  build:
+    image: xcompany/xbuild:devcontainer
+    build:
+      context: ../
+      dockerfile: Dockerfile
+
   run:
     image: xcompany/xbuild:devcontainer
     depends_on:
