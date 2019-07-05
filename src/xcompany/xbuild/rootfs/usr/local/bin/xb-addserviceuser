@@ -1,0 +1,30 @@
+#!/usr/bin/execlineb
+
+elgetopt "u:i:"
+multisubstitute
+{
+  importas -u account_name ELGETOPT_u
+  importas -u -D 990 account_id ELGETOPT_i
+}
+elgetpositionals -P0
+
+foreground {
+
+    ifelse -n { test -z "${account_name}" }
+    {
+        if { xb-log "Create Group '${account_name}'" }
+        if { groupadd --system --force --gid ${account_id} ${account_name} }
+
+        if { xb-log "Create User '${account_name}'" }
+        if { adduser --system --force --quiet --no-create-home --disabled-login --uid ${account_id} --gid ${account_id} ${account_name} }
+
+        # Persist User
+        foreground {
+            if -n { s6-test -d /var/cache/xbuild/users }
+            s6-mkdir -p /var/cache/xbuild/users/
+        }
+
+        if { s6-touch /var/cache/xbuild/users/${account_name} }
+    }
+    if { xb-log "No Accout Name is given." }
+}
