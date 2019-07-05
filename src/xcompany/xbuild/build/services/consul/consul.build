@@ -2,18 +2,10 @@
 
 s6-envdir /etc/xbuild/env.d/
 
-define account_id 990
-define service_name consul
-define account_name consul
-
-if { xb-header "Build Service '${service_name}'" }
+if { xb-header "Build Service 'consul'" }
 
 if { xb-log "Create Service Folders" }
 if { s6-mkdir -p /var/lib/consul }
 if { s6-mkdir -p /etc/consul.d/ }
 
-foreground {
-    if { xb-log "Create User Account and Group" }
-    if { groupadd --system --force --gid ${account_id} ${account_name} }
-    if { adduser --system --force --quiet --no-create-home --disabled-login --uid ${account_id} --gid ${account_id} ${account_name} }
-}
+if { xb-addserviceuser -u consul -i 990 }
