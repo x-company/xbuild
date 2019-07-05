@@ -9,8 +9,6 @@ consultemplatever="0.20.0"
 mkdir -p ./update
 cd ./update || exit 1
 
-apt install -qy unzip
-
 # Download Sources
 if [ ! -f ./s6-overlay-amd64.tar.gz ]; then
     wget "https://github.com/just-containers/s6-overlay/releases/download/v${s6ver}/s6-overlay-amd64.tar.gz"
