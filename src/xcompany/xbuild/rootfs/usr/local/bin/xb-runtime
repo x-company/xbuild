@@ -3,18 +3,20 @@
 s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
-importas -u logfile XBUILD_LOG
-importas -u core_log_disabled CORE_LOG_DISABLED
+multisubstitute {
+    importas -u logfile XBUILD_LOG
+    importas -u core_log_disabled CORE_LOG_DISABLED
 
-importas -u runtime_dotnet RUNTIME_DOTNET
-importas -u runtime_dotnet_version RUNTIME_DOTNET_VERSION
-importas -u runtime_pwsh RUNTIME_PWSH
-importas -u runtime_node RUNTIME_NODE
-importas -u runtime_node_version RUNTIME_NODE_VERSION
+    importas -u runtime_dotnet RUNTIME_DOTNET
+    importas -u runtime_dotnet_version RUNTIME_DOTNET_VERSION
+    importas -u runtime_pwsh RUNTIME_PWSH
+    importas -u runtime_node RUNTIME_NODE
+    importas -u runtime_node_version RUNTIME_NODE_VERSION
 
-importas -u dev_enabled DEV_ENABLED
-importas -u dev_packages DEV_PACKAGES
-importas -u dev_packages_node DEV_PACKAGES_NODE
+    importas -u dev_enabled DEV_ENABLED
+    importas -u dev_packages DEV_PACKAGES
+    importas -u dev_packages_node DEV_PACKAGES_NODE
+}
 
 if { xb-log "Execute Runtime Install Script" }
 

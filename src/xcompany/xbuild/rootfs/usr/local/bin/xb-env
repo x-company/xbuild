@@ -130,8 +130,10 @@ ifelse -n { s6-test -f ${runfile} }
             pipeline { s6-echo -n ${line} }
             backtick value { s6-cut -d = -f2 }
 
-            importas -u key key
-            importas -u value value
+            multisubstitute {
+                importas -u key key
+                importas -u value value
+            }
 
             # Base Configuration
             foreground {

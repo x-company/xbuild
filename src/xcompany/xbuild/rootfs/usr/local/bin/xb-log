@@ -3,9 +3,11 @@
 s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
-importas -u logfile XBUILD_LOG
+multisubstitute {
+    importas -u logfile XBUILD_LOG
 
-importas -u core_log_disabled CORE_LOG_DISABLED
+    importas -u core_log_disabled CORE_LOG_DISABLED
+}
 
 foreground {
 
@@ -13,8 +15,10 @@ foreground {
     define FOREGROUND_COLOR "\\e[34m"
     define RESET "\\e[0m"
 
-    importas -u FOREGROUND_COLOR FOREGROUND_COLOR
-    importas -u RESET RESET
+    multisubstitute {
+        importas -u FOREGROUND_COLOR FOREGROUND_COLOR
+        importas -u RESET RESET
+    }
 
     elgetpositionals -P0
 

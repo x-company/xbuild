@@ -3,17 +3,19 @@
 s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
-importas -u logfile XBUILD_LOG
-importas -u core_log_disabled CORE_LOG_DISABLED
+multisubstitute {
+    importas -u logfile XBUILD_LOG
+    importas -u core_log_disabled CORE_LOG_DISABLED
 
-importas -u core_packages CORE_PACKAGES
-importas -u core_custom_packages CORE_CUSTOM_PACKAGES
-importas -u core_custom_mirror CORE_CUSTOM_MIRROR_ENABLED
+    importas -u core_packages CORE_PACKAGES
+    importas -u core_custom_packages CORE_CUSTOM_PACKAGES
+    importas -u core_custom_mirror CORE_CUSTOM_MIRROR_ENABLED
 
-importas -u runtime_dotnet RUNTIME_DOTNET
-importas -u runtime_pwsh RUNTIME_PWSH
-importas -u runtime_node RUNTIME_NODE
-importas -u runtime_node_version RUNTIME_NODE_VERSION
+    importas -u runtime_dotnet RUNTIME_DOTNET
+    importas -u runtime_pwsh RUNTIME_PWSH
+    importas -u runtime_node RUNTIME_NODE
+    importas -u runtime_node_version RUNTIME_NODE_VERSION
+}
 
 # Load System Informations
 backtick osid { lsb_release -si }
@@ -44,8 +46,10 @@ foreground {
 
     foreground {
 
-        importas -u -n osid osid
-        importas -u -n oscodename oscodename
+        multisubstitute {
+            importas -u -n osid osid
+            importas -u -n oscodename oscodename
+        }
 
         s6-rename /etc/apt/sources.list.d/${osid}.${oscodename}.disabled /etc/apt/sources.list.d/${osid}.${oscodename}.list
     }
@@ -56,9 +60,11 @@ foreground {
     if { s6-test "${core_custom_mirror}" = "N" }
     if { xb-header "Configure Mirrors for activated Runtimes" }
 
-    importas -u -n osid osid
-    importas -u -n oscodename oscodename
-    importas -u -n oscodever oscodever
+    multisubstitute {
+        importas -u -n osid osid
+        importas -u -n oscodename oscodename
+        importas -u -n oscodever oscodever
+    }
 
     foreground {
         if { s6-test "${runtime_dotnet}" = "Y" }

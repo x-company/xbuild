@@ -3,15 +3,17 @@
 s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
-importas -u logfile XBUILD_LOG
-importas -u core_log_disabled CORE_LOG_DISABLED
+multisubstitute {
+    importas -u logfile XBUILD_LOG
+    importas -u core_log_disabled CORE_LOG_DISABLED
 
-importas -u core_packages CORE_PACKAGES
-importas -u cleanup_packages CLEANUP_PACKAGES
+    importas -u core_packages CORE_PACKAGES
+    importas -u cleanup_packages CLEANUP_PACKAGES
 
-importas -u dev_enabled DEV_ENABLED
-importas -u dev_packages DEV_PACKAGES
-importas -u dev_packages_node DEV_PACKAGES_NODE
+    importas -u dev_enabled DEV_ENABLED
+    importas -u dev_packages DEV_PACKAGES
+    importas -u dev_packages_node DEV_PACKAGES_NODE
+}
 
 foreground {
 
@@ -26,7 +28,7 @@ foreground {
     foreground {
 
         # This Packages installed by User and should not removed
-        if { xb-log "Prepare Package excludes" }
+        if { xb-log "Prepare Package Excludes" }
         foreground {
             if { s6-test /tmp/cleanup }
             s6-rmrf /tmp/cleanup

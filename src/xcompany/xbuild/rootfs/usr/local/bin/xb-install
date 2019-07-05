@@ -3,13 +3,15 @@
 s6-envdir /etc/xbuild/env.d/
 
 # Import Environment Vars
-importas -u logfile XBUILD_LOG
+multisubstitute {
+    importas -u logfile XBUILD_LOG
 
-importas -u core_packages CORE_PACKAGES
-importas -u core_log_disabled CORE_LOG_DISABLED
+    importas -u core_packages CORE_PACKAGES
+    importas -u core_log_disabled CORE_LOG_DISABLED
 
-importas -u cleanup_packages CLEANUP_PACKAGES
-importas -u harden_packages HARDEN_PACKAGES
+    importas -u cleanup_packages CLEANUP_PACKAGES
+    importas -u harden_packages HARDEN_PACKAGES
+}
 
 foreground {
 

@@ -2,8 +2,10 @@
 
 s6-envdir /etc/xbuild/env.d/
 
-importas -u logfile XBUILD_LOG
-importas -u core_log_disabled CORE_LOG_DISABLED
+multisubstitute {
+    importas -u logfile XBUILD_LOG
+    importas -u core_log_disabled CORE_LOG_DISABLED
+}
 
 foreground {
     if { xb-log "Configure timezone" }
