@@ -30,10 +30,10 @@
     "docker:clean:latest": "docker image rm -f $npm_package_config_image_name:latest",
     "docker:build": "docker build --tag $npm_package_config_image_name:$npm_package_version --force-rm .",
     "docker:tag": "docker image tag $npm_package_config_image_name:$npm_package_version $npm_package_config_image_name:latest",
-    "source:update": "./.devcontainer/install-sources.sh",
     "source:clean": "./.devcontainer/cleanup-sources.sh",
+    "source:update": "./.devcontainer/install-sources.sh",
     "clean": "docker system prune -f && docker container prune -f  && yarn docker:clean:image && yarn docker:clean:latest && yarn docker:clean:dev && yarn docker:clean:test && yarn source:clean",
-    "prebuild": "appvmgr update build && yarn dockerfile:build && yarn source:update",
+    "prebuild": "appvmgr update build  && yarn source:clean && yarn source:update && yarn dockerfile:build",
     "build": "yarn docker:build",
     "postbuild": "yarn docker:tag && git add . && git commit -m 'Automatic Build Commit'",
     "test": "yarn prebuild && docker-compose -f ./.devcontainer/docker-compose.tests.yml up",
@@ -41,7 +41,7 @@
     "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all",
     "snyk-protect": "snyk protect",
     "prepublish": "npm run snyk-protect",
-    "debug": "yarn build && docker container run -it --rm $npm_package_config_image_name:$npm_package_version xb-build && /bin/bash"
+    "debug": "yarn prebuild && docker container run -it --mount type=bind,source=$(pwd)/.devcontainer/sources.list,target=/etc/xbuild/sources.list --mount type=bind,source=$(pwd)/.devcontainer/xbuild.conf,target=/etc/xbuild/xbuild.conf $npm_package_config_image_name:latest /bin/bash"
   },
   "devDependencies": {
     "appversion-mgr": "^0.7.0",

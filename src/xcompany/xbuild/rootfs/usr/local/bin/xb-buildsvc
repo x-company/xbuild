@@ -8,7 +8,7 @@ importas -u service service
 foreground {
     if -n { s6-test -d /etc/services.d/${service} }
     if { xb-log "Create Service Home" }
-    s6-mkdir -p /etc/services.d/${service}
+    if { s6-mkdir -p /etc/services.d/${service} }
 }
 
 foreground {
