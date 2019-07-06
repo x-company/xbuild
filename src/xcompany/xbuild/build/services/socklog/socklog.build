@@ -1,3 +1,2 @@
 #!/usr/bin/execlineb -P
 
-if { xb-header "Build Service 'socklog'" }

@@ -2,8 +2,6 @@
 
 s6-envdir /etc/xbuild/env.d/
 
-if { xb-header "Build Service 'consul'" }
-
 if { xb-log "Create Service Folders" }
 if { s6-mkdir -p /var/lib/consul }
 if { s6-mkdir -p /etc/consul.d/ }
