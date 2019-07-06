@@ -1,10 +1,8 @@
 #!/usr/bin/execlineb -P
 
 s6-envdir /etc/xbuild/env.d/
-
 importas -u dev_enabled DEV_ENABLED
 
-if { xb-log "Start Service Registry" }
 s6-setuidgid consul
 ifelse { s6-test "${dev_enabled}" = "Y" }
 {

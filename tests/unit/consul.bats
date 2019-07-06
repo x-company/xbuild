@@ -22,6 +22,6 @@ load init
 
     # Assert
     [ -f "/etc/fix-attrs.d/10-consul.attrs" ]
-    [ -f "/etc/service.d/consul/run" ]
-    [ -f "/etc/service.d/consul/finish" ]
+    [ -f "/etc/services.d/consul/run" ]
+    [ -f "/etc/services.d/consul/finish" ]
 }

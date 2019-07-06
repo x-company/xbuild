@@ -1,7 +1,5 @@
 #!/usr/bin/execlineb -P
 
 s6-setuidgid consul
-if -n { /usr/local/bin/consul leave }
 
-# if { xb-log "Normal leaving is not working so we force it" }
-# if { /usr/local/bin/consul force-leave }
+if -n { /usr/local/bin/consul leave }
