@@ -11,9 +11,9 @@ multisubstitute {
     importas -u core_custom_packages CORE_CUSTOM_PACKAGES
     importas -u core_custom_mirror CORE_CUSTOM_MIRROR_ENABLED
 
-    importas -u runtime_dotnet RUNTIME_DOTNET
-    importas -u runtime_pwsh RUNTIME_PWSH
-    importas -u runtime_node RUNTIME_NODE
+    importas -u runtime_dotnet_enabled RUNTIME_DOTNET_ENABLED
+    importas -u runtime_pwsh_enabled RUNTIME_PWSH_ENABLED
+    importas -u runtime_node_enabled RUNTIME_NODE_ENABLED
     importas -u runtime_node_version RUNTIME_NODE_VERSION
 }
 
@@ -67,21 +67,21 @@ foreground {
     }
 
     foreground {
-        if { s6-test "${runtime_dotnet}" = "Y" }
+        if { s6-test "${runtime_dotnet_enabled}" = "Y" }
         if { xb-log "Configure DotNet Core Mirror" }
         redirfd -w 1 /etc/apt/sources.list.d/dotnet.list
         s6-echo -n -- "deb [arch=amd64] https://packages.microsoft.com/${osid}/${oscodever}/prod ${oscodename} main"
     }
 
     foreground {
-        if { s6-test "${runtime_pwsh}" = "Y" }
+        if { s6-test "${runtime_pwsh_enabled}" = "Y" }
         if { xb-log "Configure PowerShell Mirror" }
         redirfd -w 1 /etc/apt/sources.list.d/pwsh.list
         s6-echo -n -- "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft-${osid}-${oscodename}-prod ${oscodename} main"
     }
 
     foreground {
-        if { s6-test "${runtime_node}" = "Y" }
+        if { s6-test "${runtime_node_enabled}" = "Y" }
         if { xb-log "Configure NodeJS Mirror" }
         redirfd -w 1 /etc/apt/sources.list.d/node.list
         s6-echo -n -- "deb [arch=amd64] https://deb.nodesource.com/node_${runtime_node_version}.x ${oscodename} main"

@@ -7,10 +7,10 @@ multisubstitute {
     importas -u logfile XBUILD_LOG
     importas -u core_log_disabled CORE_LOG_DISABLED
 
-    importas -u runtime_dotnet RUNTIME_DOTNET
+    importas -u runtime_dotnet_enabled RUNTIME_DOTNET_ENABLED
     importas -u runtime_dotnet_version RUNTIME_DOTNET_VERSION
-    importas -u runtime_pwsh RUNTIME_PWSH
-    importas -u runtime_node RUNTIME_NODE
+    importas -u runtime_pwsh_enabled RUNTIME_PWSH_ENABLED
+    importas -u runtime_node_enabled RUNTIME_NODE_ENABLED
     importas -u runtime_node_version RUNTIME_NODE_VERSION
 
     importas -u dev_enabled DEV_ENABLED
@@ -21,11 +21,12 @@ multisubstitute {
 if { xb-log "Execute Runtime Install Script" }
 
 foreground {
-    if { s6-test "${runtime_dotnet}" = "Y" }
+    if { s6-test "${runtime_dotnet_enabled}" = "Y" }
     if { xb-header "Install DotNet Core Runtime ${runtime_dotnet_version}" }
 
     foreground { redirfd -w 1 /etc/xbuild/env.d/DOTNET_CLI_TELEMETRY_OPTOUT s6-echo -n -- "1" }
     if { xb-install "aspnetcore-runtime-${runtime_dotnet_version}" }
+    if { xb-install "dotnet-runtime-${runtime_dotnet_version}" }
 
     if { s6-test "${dev_enabled}" = "Y" }
     if { xb-log "Install DotNet Core SDK ${runtime_dotnet_version}" }
@@ -33,14 +34,14 @@ foreground {
 }
 
 foreground {
-    if { s6-test "${runtime_pwsh}" = "Y" }
+    if { s6-test "${runtime_pwsh_enabled}" = "Y" }
     if { xb-header "Install Powershell" }
 
     xb-install powershell
 }
 
 foreground {
-    if { s6-test "${runtime_node}" = "Y" }
+    if { s6-test "${runtime_node_enabled}" = "Y" }
     if { xb-header "Install NodeJS '${runtime_node_version}'" }
     if { xb-install nodejs }
 

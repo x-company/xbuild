@@ -169,7 +169,7 @@ ifelse -n { s6-test -f ${runfile} }
             # Runtime Configuration
             foreground {
                 if { s6-test "${key}" = "runtime_dotnet_enabled" }
-                redirfd -w 1 ${envdir}/RUNTIME_DOTNET
+                redirfd -w 1 ${envdir}/RUNTIME_DOTNET_ENABLED
                 s6-echo -n -- ${value}
             }
 
@@ -181,13 +181,13 @@ ifelse -n { s6-test -f ${runfile} }
 
             foreground {
                 if { s6-test "${key}" = "runtime_pwsh_enabled" }
-                redirfd -w 1 ${envdir}/RUNTIME_PWSH
+                redirfd -w 1 ${envdir}/RUNTIME_PWSH_ENABLED
                 s6-echo -n -- ${value}
             }
 
             foreground {
                 if { s6-test "${key}" = "runtime_node_enabled" }
-                redirfd -w 1 ${envdir}/RUNTIME_NODE
+                redirfd -w 1 ${envdir}/RUNTIME_NODE_ENABLED
                 s6-echo -n -- ${value}
             }
 
