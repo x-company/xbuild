@@ -8,6 +8,7 @@ multisubstitute {
     importas -u logfile XBUILD_LOG
 
     importas -u core_log_disabled CORE_LOG_DISABLED
+
     importas -u harden_packages HARDEN_PACKAGES
     importas -u harden_libraries HARDEN_LIBRARIES
     importas -u harden_essential HARDEN_ESSENTIAL
@@ -32,6 +33,21 @@ foreground {
             apt-get purge -qy --allow-remove-essential ${package}
         }
     }
+}
+
+foreground {
+
+    if { xb-log "Remove Packages which have no Dependencies" }
+
+    ifelse { s6-test "${core_log_disabled}" = "N" }
+    {
+        redirfd -a 1 ${logfile}
+        if { apt-get -qy autoremove }
+        apt-get clean
+    }
+
+    if { apt-get -qy autoremove }
+    apt-get clean
 }
 
 foreground {
