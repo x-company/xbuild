@@ -5,5 +5,6 @@ s6-envdir /etc/xbuild/env.d/
 if { xb-log "Create Service Folders" }
 if { s6-mkdir -p /var/lib/consul }
 if { s6-mkdir -p /etc/consul.d/ }
+if { s6-mkdir -p /var/log/consul }
 
-if { xb-addserviceuser -u consul -i 990 }
+if { xb-addserviceuser -u consul -i 890 }
