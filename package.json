@@ -1,6 +1,6 @@
 {
   "name": "xbuild",
-  "version": "0.9.7",
+  "version": "0.9.8",
   "description": "A Build System for Docker Images",
   "license": "MIT",
   "repository": {
@@ -24,19 +24,15 @@
     "dockerfile:XBUILD_VCS_REF": "echo \"$(sed -e \"s/__XBUILD_VCS_REF__/$(git rev-parse --short HEAD)/g\" ./Dockerfile)\" > ./Dockerfile",
     "dockerfile:XBUILD_VERSION": "echo \"$(sed -e \"s/__XBUILD_VERSION__/$npm_package_version/g\" ./Dockerfile)\" > ./Dockerfile",
     "dockerfile:build": "yarn dockerfile:XBUILD_BUILD_DATE && yarn dockerfile:XBUILD_VCS_REF && yarn dockerfile:XBUILD_VERSION",
-
     "docker:clean:dev": "docker image rm -f xcompany/xbuild:devcontainer",
     "docker:clean:debug": "docker image rm -f xcompany/xbuild:debug",
     "docker:clean:test": "docker image rm -f xcompany/xbuild:test",
     "docker:clean:image": "docker image rm -f $npm_package_config_image_name:$npm_package_version",
     "docker:clean:latest": "docker image rm -f $npm_package_config_image_name:latest",
-
     "docker:build": "docker build --tag $npm_package_config_image_name:$npm_package_version --force-rm .",
     "docker:tag": "docker image tag $npm_package_config_image_name:$npm_package_version $npm_package_config_image_name:latest",
-
     "source:clean": "./.devcontainer/cleanup-sources.sh",
     "source:update": "./.devcontainer/install-sources.sh",
-
     "clean": "docker system prune -f && docker container prune -f  && yarn docker:clean:image && yarn docker:clean:latest && yarn docker:clean:dev && yarn docker:clean:debug && yarn docker:clean:test && yarn source:clean",
     "prebuild": "appvmgr update build  && yarn source:clean && yarn source:update && yarn dockerfile:build",
     "build": "yarn docker:build",
