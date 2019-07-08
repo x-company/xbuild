@@ -13,6 +13,8 @@ multisubstitute {
     importas -u dev_enabled DEV_ENABLED
     importas -u dev_packages DEV_PACKAGES
     importas -u dev_packages_node DEV_PACKAGES_NODE
+
+    importas -u runtime_node_enabled RUNTIME_NODE_ENABLED
 }
 
 foreground {
@@ -93,6 +95,7 @@ foreground {
 foreground {
 
     if { s6-test "${dev_enabled}" = "Y" }
+    if { s6-test "${runtime_node_enabled}" = "Y" }
     if { xb-log "Remove Node Packages '${dev_packages_node}'" }
 
     define -s tmp ${dev_packages_node}
