@@ -40,12 +40,9 @@ foreground {
     if { s6-test -f /build/services/${service}/${service}.health }
     if { xb-log "Copy Service Health File" }
 
-    foreground {
-        if -n { s6-test -d /etc/xbuild/health.d }
-        s6-mkdir -p /etc/xbuild/health.d
-    }
-
-    s6-hiercopy /build/services/${service}/${service}.health /etc/xbuild/health.d/
+    if { mv -f /build/services/${service}/${service}.health /usr/local/bin/${service} }
+    if { s6-chmod 0755 /usr/local/bin/${service} }
+    if { s6-chown -u 0 -g 0 /usr/local/bin/${service} }
 }
 
 foreground {
