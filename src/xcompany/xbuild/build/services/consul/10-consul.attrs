@@ -1,4 +1,4 @@
-/etc/consul.d/      true    consul      0640    0755
-/var/lib/consul/    true    consul      0640    0755
-/usr/local/bin/     false   consul      0555    0755
-/var/log/consul/    true    consul      0640    0755
+/etc/consul.d/      true    consul:consul      0640    0755
+/var/lib/consul/    true    consul:consul      0640    0755
+/usr/local/bin/     false   consul:consul      0555    0755
+/var/log/consul/    true    nobody,32768:32768 0644    0750

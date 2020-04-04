@@ -25,6 +25,7 @@ foreground {
     if { xb-header "Install DotNet Core Runtime ${runtime_dotnet_version}" }
 
     foreground { redirfd -w 1 /etc/xbuild/env.d/DOTNET_CLI_TELEMETRY_OPTOUT s6-echo -n -- "1" }
+    foreground { redirfd -w 1 /etc/s6/init/env/DOTNET_CLI_TELEMETRY_OPTOUT s6-echo -n -- "1" }
     if { xb-install "aspnetcore-runtime-${runtime_dotnet_version}" }
     if { xb-install "dotnet-runtime-${runtime_dotnet_version}" }
 

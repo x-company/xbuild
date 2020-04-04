@@ -1,5 +1,5 @@
 #!/usr/bin/execlineb -P
 
+s6-envuidgid -B consul
 s6-setuidgid consul
-
 if -n { /usr/local/bin/consul leave }

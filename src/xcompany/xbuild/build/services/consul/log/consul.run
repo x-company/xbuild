@@ -1,3 +1,3 @@
 #!/usr/bin/execlineb -P
 
-exec logutil-service /var/log/consul
+exec logutil-service /var/log/consul/

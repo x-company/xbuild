@@ -1,7 +1,9 @@
 #!/usr/bin/execlineb -P
 
-s6-envdir /etc/xbuild/env.d/
+with-contenv
 importas -u dev_enabled DEV_ENABLED
+
+s6-envuidgid -B consul
 
 s6-setuidgid consul
 ifelse { s6-test "${dev_enabled}" = "Y" }

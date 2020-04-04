@@ -1,0 +1,4 @@
+#!/bin/execlineb -S0
+
+/usr/local/bin/xb-withenv
+/init $@

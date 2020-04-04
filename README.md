@@ -21,6 +21,7 @@ Normally a Service, e.g. *nginx*, *mysql* a.s.o will installed by the Docker *Ru
 
 #### Commands and Subcommands
 
+- *xb-init* The Main Starter of your Image
 - *xb-build* Main Command to build the Image and Services. This command calls other Subcommands
 - *xb-buildsvc* Build your Services and prepares it for *s6*
 - *xb-cleanup* Cleanup the Image. Removes all Packages which was installed by *xb-prepare* and deletes temporary Files
@@ -31,7 +32,8 @@ Normally a Service, e.g. *nginx*, *mysql* a.s.o will installed by the Docker *Ru
 
 #### Tools
 
-- *xb-env* Saves/Load Environment Variables
+- *xb-env* Saves Environment Variables
+- *xb-withenv* Loads the Environment Variables
 - *xb-header* Writes an Log Header
 - *xb-install* Install Packages
 - *xb-log* Log a Message
