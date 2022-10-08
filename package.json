@@ -40,17 +40,17 @@
     "test": "yarn prebuild && docker-compose -f ./.devcontainer/docker-compose.tests.yml up",
     "ci": "yarn prebuild && docker-compose -f ./.ci/docker-compose.yml up",
     "release": "yarn build && appvmgr add-git-tag && git push --tags && git push --all",
-    "snyk-protect": "snyk protect",
-    "prepublish": "npm run snyk-protect",
+    "snyk-protect": "snyk-protect",
+    "prepublish": "yarn run snyk-protect",
     "debug": "yarn prebuild && docker container run -it --mount type=bind,source=$(pwd)/.devcontainer/sources.list,target=/etc/xbuild/sources.list --mount type=bind,source=$(pwd)/.devcontainer/xbuild.conf,target=/etc/xbuild/xbuild.conf --mount type=bind,source=$(pwd)/tests/unit,target=/tests $npm_package_config_image_name:latest /bin/bash"
   },
   "devDependencies": {
     "appversion-mgr": "^0.7.0",
     "covgen": "^3.1.0",
-    "nyc": "^14.1.1"
+    "nyc": "^15.0.0"
   },
   "snyk": true,
   "dependencies": {
-    "snyk": "^1.189.0"
+    "@snyk/protect": "latest"
   }
 }
